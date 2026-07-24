@@ -331,7 +331,7 @@
     <span class="beta-pill">Beta</span>
   </div>
   <p class="attribution">Developed by Patryck Allen</p>
-  <p class="sub">A toolkit of 82 skills to draw on for strong social and competition dancing. Some skills are more or less critical at different levels of experience. Not every skill needs to be used in every dance.</p>
+  <p class="sub">A toolkit of 80 skills to draw on for strong social and competition dancing. Some skills are more or less critical at different levels of experience. Not every skill needs to be used in every dance.</p>
 
 
   <h2 class="usecases-heading">Why this framework exists</h2>
@@ -468,7 +468,7 @@ function preprocessRepertoire(skills){
 }
 const SKILLS = preprocessRepertoire(RAW_SKILLS);
 
-// ---------- curated icon vocabulary (reusable shapes, mapped across all 82 skills) ----------
+// ---------- curated icon vocabulary (reusable shapes, mapped across all 80 skills) ----------
 const ICONS = {
   beat: '<line x1="6" y1="16" x2="6" y2="8"/><line x1="12" y1="19" x2="12" y2="5"/><line x1="18" y1="14" x2="18" y2="10"/>',
   clock: '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/>',
@@ -667,7 +667,7 @@ document.getElementById('btn-pdf').addEventListener('click', () => { window.prin
 
 // ---------- share (per platform) ----------
 const pageUrl = window.location.href;
-const shareText = 'A toolkit of 82 Modern Jive skills for dancers, teachers, and judges.';
+const shareText = 'A toolkit of 80 Modern Jive skills for dancers, teachers, and judges.';
 
 document.getElementById('btn-share-fb').addEventListener('click', () => {
   window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`, '_blank', 'noopener');
