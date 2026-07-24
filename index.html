@@ -594,9 +594,7 @@ categories.forEach(cat => {
     tile.dataset.role = s.role;
     tile.style.borderLeftColor = colColor;
     let pill = '';
-    if (s.role === 'DUAL') {
-      pill = `<span class="role-pill dual">L&middot;F</span>`;
-    } else if (s.role !== 'BOTH') {
+    if (s.role !== 'BOTH' && s.role !== 'DUAL') {
       pill = `<span class="role-pill" style="background:${ROLE_COLOR[s.role]}">${s.role === 'LEAD' ? 'L' : 'F'}</span>`;
     }
     const icon = iconSVG(SKILL_ICON_MAP[s.name]);
