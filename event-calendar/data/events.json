@@ -1,0 +1,975 @@
+[
+  {
+    "id": "united-kingdom-liphook-pure-dance-spa-weekender",
+    "name": "Pure Dance & Spa Weekender",
+    "city": "Liphook",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 51.0827,
+    "lon": -0.8058,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-01-17",
+    "end_date": "2026-01-19",
+    "multiday": true,
+    "website": "https://www.ceroc.com/30/12289/pure-luxury-spa-dance-weekend",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-antrim-flame-weekender",
+    "name": "Flame Weekender",
+    "city": "Antrim",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 54.714,
+    "lon": -6.211,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-02-06",
+    "end_date": "2026-02-08",
+    "multiday": true,
+    "website": "https://www.ceroc.com/28/13181/flame-weekender-northern-ireland",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-nelson-summer-smash",
+    "name": "Summer Smash",
+    "city": "Nelson",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -41.2706,
+    "lon": 173.284,
+    "types": [
+      "Other"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-02-13",
+    "end_date": "2026-02-15",
+    "multiday": true,
+    "website": "https://inspiredance.co.nz/summer-smash",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-hopton-on-sea-swish",
+    "name": "Swish",
+    "city": "Hopton-on-Sea",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 52.5462,
+    "lon": 1.7292,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-02-20",
+    "end_date": "2026-02-23",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/swish/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "scotland-pitlochry-party-at-the-palace",
+    "name": "Party at the Palace",
+    "city": "Pitlochry",
+    "country": "Scotland",
+    "region": "Europe",
+    "lat": 56.7,
+    "lon": -3.73,
+    "types": [
+      "Other"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-02-20",
+    "end_date": "2026-02-23",
+    "multiday": true,
+    "website": "https://www.boogaloo.dance/patp",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-blackpool-world-modern-jive-championships-wmjc",
+    "name": "World Modern Jive Championships (WMJC)",
+    "city": "Blackpool",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 53.8175,
+    "lon": -3.0357,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-03-06",
+    "end_date": "2026-03-08",
+    "multiday": true,
+    "website": "https://wmjc-blackpool.com",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-auckland-cerocmania",
+    "name": "Cerocmania",
+    "city": "Auckland",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -36.8485,
+    "lon": 174.7633,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-03-27",
+    "end_date": "2026-03-29",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/cerocmania/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "australia-melbourne-the-downunder-pros-dup",
+    "name": "The DownUnder Pros (DUP)",
+    "city": "Melbourne",
+    "country": "Australia",
+    "region": "Oceania",
+    "lat": -37.8136,
+    "lon": 144.9631,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-04-09",
+    "end_date": "2026-04-12",
+    "multiday": true,
+    "website": "https://www.instagram.com/thedownunderpros/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-christchurch-christchurch-modern-jive-championship-chchch",
+    "name": "Christchurch Modern Jive Championship (ChChCh)",
+    "city": "Christchurch",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -43.5321,
+    "lon": 172.6362,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-04-17",
+    "end_date": "2026-04-19",
+    "multiday": true,
+    "website": "https://fevah.dance/chchchamps/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-isle-of-wight-beachroc",
+    "name": "BeachRoc",
+    "city": "Isle of Wight",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 50.6936,
+    "lon": -1.3043,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-04-24",
+    "end_date": "2026-04-26",
+    "multiday": true,
+    "website": "https://www.facebook.com/groups/787987104556476/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-waikato-ceroc-nz-waikato-champs",
+    "name": "Ceroc NZ Waikato Champs",
+    "city": "Waikato",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -37.787,
+    "lon": 175.2793,
+    "types": [
+      "Competition"
+    ],
+    "status": "tbc",
+    "start_date": "2026-05-01",
+    "end_date": "2026-05-02",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/waikato-champs-2/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "greece-crete-dance-holiday-crete",
+    "name": "Dance Holiday Crete",
+    "city": "Crete",
+    "country": "Greece",
+    "region": "Europe",
+    "lat": 35.2401,
+    "lon": 24.8093,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-02",
+    "end_date": "2026-05-09",
+    "multiday": true,
+    "website": "https://jiveaddiction.com/event-type/dance-holiday/dance-holiday-crete/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "spain-huelva-ceroc-blaze",
+    "name": "Ceroc Blaze",
+    "city": "Huelva",
+    "country": "Spain",
+    "region": "Europe",
+    "lat": 37.2614,
+    "lon": -6.9447,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-10",
+    "end_date": "2026-05-17",
+    "multiday": true,
+    "website": "https://www.cerocblaze.com/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "cambodia-siem-reap-ceroc-pan-asia-dance-championships",
+    "name": "Ceroc Pan Asia Dance Championships",
+    "city": "Siem Reap",
+    "country": "Cambodia",
+    "region": "Asia",
+    "lat": 13.3671,
+    "lon": 103.8448,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-13",
+    "end_date": "2026-05-18",
+    "multiday": true,
+    "website": "https://cerocasia.com/index.html",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-weston-super-mare-ceroc-breeze",
+    "name": "Ceroc Breeze",
+    "city": "Weston-Super-Mare",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 51.3462,
+    "lon": -2.9773,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-15",
+    "end_date": "2026-05-18",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/breeze/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "vietnam-hoi-an-dive-jive-ceroc-pan-asia-dance-championships",
+    "name": "Dive & Jive (Ceroc Pan Asia Dance Championships)",
+    "city": "Hoi An",
+    "country": "Vietnam",
+    "region": "Asia",
+    "lat": 15.8801,
+    "lon": 108.338,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-18",
+    "end_date": "2026-05-22",
+    "multiday": true,
+    "website": "https://cerocasia.com/index.html",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-windsor-nrg-dance-weekender",
+    "name": "NRG Dance Weekender",
+    "city": "Windsor",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 51.4839,
+    "lon": -0.6044,
+    "types": [
+      "Other"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-22",
+    "end_date": "2026-05-25",
+    "multiday": true,
+    "website": "https://jiveaddiction.com/event-type/dance-weekender/nrg-dance-weekender/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-tauranga-coast-to-coast-champs",
+    "name": "Coast to Coast Champs",
+    "city": "Tauranga",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -37.6878,
+    "lon": 176.1651,
+    "types": [
+      "Competition"
+    ],
+    "status": "tbc",
+    "start_date": "2026-05-29",
+    "end_date": "2026-05-31",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/coasttocoast/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-norfolk-chill",
+    "name": "Chill",
+    "city": "Norfolk",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 52.6309,
+    "lon": 1.2974,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-06-05",
+    "end_date": "2026-06-08",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/chill/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "australia-sydney-australia-ceroc-dance-championship-acdc",
+    "name": "Australia Ceroc Dance Championship (ACDC)",
+    "city": "Sydney",
+    "country": "Australia",
+    "region": "Oceania",
+    "lat": -33.8688,
+    "lon": 151.2093,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-06-12",
+    "end_date": "2026-06-14",
+    "multiday": true,
+    "website": "https://ceroc.com.au/events/championships/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-wellington-idance-classic",
+    "name": "iDance Classic",
+    "city": "Wellington",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -41.2865,
+    "lon": 174.7762,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-06-26",
+    "end_date": "2026-06-27",
+    "multiday": true,
+    "website": "https://www.idance.co.nz/classic",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-wigton-camp-and-dance",
+    "name": "Camp and Dance",
+    "city": "Wigton",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 54.828,
+    "lon": -3.158,
+    "types": [
+      "Other"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-07-03",
+    "end_date": "2026-07-06",
+    "multiday": true,
+    "website": "https://www.boogaloo.dance/events/camp-and-dance",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "france-paris-ceroc-river-cruise",
+    "name": "Ceroc River Cruise",
+    "city": "Paris",
+    "country": "France",
+    "region": "Europe",
+    "lat": 48.8566,
+    "lon": 2.3522,
+    "types": [
+      "Dance Holiday",
+      "Cruise"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-07-23",
+    "end_date": "2026-07-30",
+    "multiday": true,
+    "website": "https://www.ceroccruise.com/river-cruise-with-ceroc-2026.html",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "australia-gold-coast-ignite-queensland-modern-jive-championship",
+    "name": "Ignite/ Queensland Modern Jive Championship",
+    "city": "Gold Coast",
+    "country": "Australia",
+    "region": "Oceania",
+    "lat": -28.0167,
+    "lon": 153.4,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-08-28",
+    "end_date": "2026-08-30",
+    "multiday": true,
+    "website": "https://www.qmjc.com.au/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-bracknell-lux-weekend",
+    "name": "LUX Weekend",
+    "city": "Bracknell",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 51.4136,
+    "lon": -0.75,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-08-29",
+    "end_date": "2026-08-31",
+    "multiday": true,
+    "website": "https://www.ceroc.com/28/14003/lux-august-bank-holiday-weekender",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-auckland-auckland-championships",
+    "name": "Auckland Championships",
+    "city": "Auckland",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -36.8485,
+    "lon": 174.7633,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-09-04",
+    "end_date": "2026-09-06",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/auckland-ceroc-champs/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-hemsby-jamfest",
+    "name": "Jamfest",
+    "city": "Hemsby",
+    "country": "England",
+    "region": "Europe",
+    "lat": 52.694,
+    "lon": 1.6832,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-09-04",
+    "end_date": "2026-09-07",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/jamfest/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "spain-islantilla-huelva-medfest",
+    "name": "Medfest",
+    "city": "Islantilla / Huelva",
+    "country": "Spain",
+    "region": "Europe",
+    "lat": 37.1985,
+    "lon": -7.2103,
+    "types": [
+      "Workshops",
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-10-04",
+    "end_date": "2026-10-11",
+    "multiday": true,
+    "website": "https://www.cerocmedfest.com",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-blackpool-bliss",
+    "name": "Bliss",
+    "city": "Blackpool",
+    "country": "England",
+    "region": "Europe",
+    "lat": 53.8179,
+    "lon": -3.051,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-10-16",
+    "end_date": "2026-10-19",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/bliss/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-wellington-simply-idance",
+    "name": "Simply iDance",
+    "city": "Wellington",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -41.2865,
+    "lon": 174.7762,
+    "types": [
+      "Other"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-10-23",
+    "end_date": "2026-10-25",
+    "multiday": true,
+    "website": "https://www.idance.co.nz/simply",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-auckland-ceroc-nz-jurassic-jam",
+    "name": "Ceroc NZ Jurassic Jam",
+    "city": "Auckland",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -36.8485,
+    "lon": 174.7633,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-10-24",
+    "end_date": "2026-10-25",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/calendar/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-folkstone-splash",
+    "name": "Splash",
+    "city": "Folkstone",
+    "country": "England",
+    "region": "Europe",
+    "lat": 54.5196,
+    "lon": -1.2435,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-11-06",
+    "end_date": "2026-11-09",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/splash/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "germany-berlin-berlin-october-dancefest",
+    "name": "Berlin October DanceFest",
+    "city": "Berlin",
+    "country": "Germany",
+    "region": "Europe",
+    "lat": 52.52,
+    "lon": 13.405,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-11-13",
+    "end_date": "2026-11-15",
+    "multiday": true,
+    "website": "https://www.jive.berlin/weekender/dancefest/?fbclid=IwY2xjawOJMJJleHRuA2FlbQIxMABicmlkETFJc1RCRTdtQU1CRElvU2phc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHrYSFDsG5CfAthKznNHqLmWJ6Pc8irJKzTg0iMcx4qr_pjTqicgAt-za87g7_aem_HwsgayTXvGUkDoL551riGw",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "cyprus-paphos-cyprus-dance-holiday",
+    "name": "Cyprus Dance Holiday",
+    "city": "Paphos",
+    "country": "Cyprus",
+    "region": "Europe",
+    "lat": 34.772,
+    "lon": 32.4297,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-11-18",
+    "end_date": "2026-11-25",
+    "multiday": true,
+    "website": "https://www.boogaloo.dance/holidays",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-london-ceroc-champs-uk",
+    "name": "Ceroc Champs (UK)",
+    "city": "London",
+    "country": "England",
+    "region": "Europe",
+    "lat": 51.5074,
+    "lon": -0.1278,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-11-20",
+    "end_date": "2026-11-22",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/champs/ceroc/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-auckland-cnz-championships",
+    "name": "CNZ Championships",
+    "city": "Auckland",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -36.8485,
+    "lon": 174.7633,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-11-27",
+    "end_date": "2026-11-29",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/ceroc-nz-champs/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-norfolk-swish",
+    "name": "Swish",
+    "city": "Norfolk",
+    "country": "England",
+    "region": "Europe",
+    "lat": 52.6667,
+    "lon": 1,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-02-19",
+    "end_date": "2027-02-22",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/swish/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-folkstone-storm",
+    "name": "Storm",
+    "city": "Folkstone",
+    "country": "England",
+    "region": "Europe",
+    "lat": 54.5196,
+    "lon": -1.2435,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-03-12",
+    "end_date": "2027-03-15",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/storm/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-sand-bay-breeze",
+    "name": "Breeze",
+    "city": "Sand Bay",
+    "country": "England",
+    "region": "Europe",
+    "lat": 51.3759,
+    "lon": -2.9618,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-05-14",
+    "end_date": "2027-05-17",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/breeze/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "australia-sydney-australian-ceroc-dance-championships-acdc",
+    "name": "Australian Ceroc Dance Championships (ACDC)",
+    "city": "Sydney",
+    "country": "Australia",
+    "region": "Oceania",
+    "lat": -33.8698,
+    "lon": 151.2083,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-06-11",
+    "end_date": "2027-06-13",
+    "multiday": true,
+    "website": "https://ceroc.com.au/events/championships/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-hemsby-chill",
+    "name": "Chill",
+    "city": "Hemsby",
+    "country": "England",
+    "region": "Europe",
+    "lat": 52.694,
+    "lon": 1.6832,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-06-11",
+    "end_date": "2027-06-14",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/chill/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "croatia-veli-lo-inj-blaze",
+    "name": "Blaze",
+    "city": "Veli Lošinj",
+    "country": "Croatia",
+    "region": "Other",
+    "lat": 44.5211,
+    "lon": 14.5017,
+    "types": [
+      "Other"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-06-12",
+    "end_date": "2027-06-19",
+    "multiday": true,
+    "website": "https://www.cerocblaze.com/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "france-strasbourg-river-cruise",
+    "name": "River Cruise",
+    "city": "Strasbourg",
+    "country": "France",
+    "region": "Europe",
+    "lat": 48.5846,
+    "lon": 7.7507,
+    "types": [
+      "Workshops",
+      "Cruise"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-07-15",
+    "end_date": "2027-07-23",
+    "multiday": true,
+    "website": "https://www.ceroccruise.com/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-hemsby-jamfest",
+    "name": "Jamfest",
+    "city": "Hemsby",
+    "country": "England",
+    "region": "Europe",
+    "lat": 52.694,
+    "lon": 1.6832,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-09-10",
+    "end_date": "2027-09-13",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/jamfest/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "spain-islantilla-medfest",
+    "name": "Medfest",
+    "city": "Islantilla",
+    "country": "Spain",
+    "region": "Europe",
+    "lat": 37.2066,
+    "lon": -7.2367,
+    "types": [
+      "Workshops",
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-10-03",
+    "end_date": "2027-10-10",
+    "multiday": true,
+    "website": "https://www.cerocmedfest.com/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-blackpool-bliss",
+    "name": "Bliss",
+    "city": "Blackpool",
+    "country": "England",
+    "region": "Europe",
+    "lat": 53.8179,
+    "lon": -3.051,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-10-15",
+    "end_date": "2027-10-18",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/bliss/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-folkstone-splash",
+    "name": "Splash",
+    "city": "Folkstone",
+    "country": "England",
+    "region": "Europe",
+    "lat": 54.5196,
+    "lon": -1.2435,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-11-05",
+    "end_date": "2027-11-08",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/splash/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-london-ceroc-champs-uk",
+    "name": "Ceroc Champs (UK)",
+    "city": "London",
+    "country": "England",
+    "region": "Europe",
+    "lat": 51.5074,
+    "lon": -0.1278,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-11-19",
+    "end_date": "2027-11-20",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/champs/ceroc/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  }
+]

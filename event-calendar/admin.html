@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2312131a'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle'%3E%F0%9F%94%A7%3C/text%3E%3C/svg%3E">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Data Editor — internal tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12131a; --floor:#1a1c26; --floor-raised:#22242f; --paper:#f4f2ec;
+    --gold:#e8a33d; --magenta:#d6396b; --slate:#8b8fa3; --line: rgba(244,242,236,0.09);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--ink); color:var(--paper); font-family:'Work Sans', sans-serif; padding:24px;}
+  h1{font-family:'Bricolage Grotesque', sans-serif; font-size:1.6rem; margin:0 0 6px;}
+  .subtitle{color:var(--slate); font-size:0.9rem; margin-bottom:24px;}
+  .banner{
+    background:rgba(232,163,61,0.1); border:1px solid rgba(232,163,61,0.3);
+    border-radius:10px; padding:14px 18px; font-size:0.88rem; color:#f2c675; margin-bottom:24px; line-height:1.5;
+  }
+  .steps{background:var(--floor-raised); border:1px solid var(--line); border-radius:10px; padding:18px 22px; margin-bottom:26px; font-size:0.9rem; line-height:1.7;}
+  .steps b{color:var(--gold);}
+  table{width:100%; border-collapse:collapse; font-size:0.84rem; margin-bottom:16px;}
+  th{text-align:left; color:var(--slate); font-weight:600; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; padding:8px 6px; border-bottom:1px solid var(--line);}
+  td{padding:6px; border-bottom:1px solid var(--line); vertical-align:top;}
+  input, select{
+    width:100%; background:var(--floor); border:1px solid var(--line); border-radius:6px;
+    color:var(--paper); padding:7px 8px; font-family:'Work Sans', sans-serif; font-size:0.84rem;
+  }
+  input[type=date]{font-family:'IBM Plex Mono', monospace; font-size:0.78rem;}
+  input.narrow{width:70px;}
+  .del-btn{
+    background:transparent; border:1px solid rgba(214,57,107,0.4); color:var(--magenta);
+    border-radius:6px; padding:6px 10px; cursor:pointer; font-size:0.78rem;
+  }
+  .del-btn:hover{background:rgba(214,57,107,0.15);}
+  .btn{
+    background:var(--gold); color:var(--ink); font-weight:600; border:none;
+    padding:11px 20px; border-radius:999px; cursor:pointer; font-size:0.88rem; margin-right:10px;
+  }
+  .btn:hover{background:#f2b455;}
+  .btn.secondary{background:var(--floor-raised); color:var(--paper); border:1px solid var(--line);}
+  .btn.secondary:hover{border-color:var(--gold);}
+  #output{
+    width:100%; min-height:200px; background:var(--floor-raised); color:var(--paper);
+    border:1px solid var(--line); border-radius:10px; padding:14px; font-family:'IBM Plex Mono', monospace;
+    font-size:0.76rem; margin-top:16px; display:none;
+  }
+  #copyMsg{color:var(--gold); font-size:0.84rem; margin-left:8px; display:none;}
+  #loadArea{display:none; margin-bottom:20px;}
+  #loadArea textarea{width:100%; min-height:140px; background:var(--floor-raised); color:var(--paper); border:1px solid var(--line); border-radius:10px; padding:12px; font-family:'IBM Plex Mono', monospace; font-size:0.76rem;}
+  .type-checks{display:flex; flex-direction:column; gap:2px; min-width:110px;}
+  .type-checks label{display:flex; align-items:center; gap:5px; font-size:0.76rem; color:var(--slate); cursor:pointer;}
+  .type-checks input{width:auto; accent-color:var(--gold);}
+  .geo-status{display:block; font-size:0.66rem; color:var(--slate); margin-top:3px; white-space:nowrap;}
+  .geo-status.ok{color:#3ba55d;}
+  .geo-status.fail{color:#e2583e;}
+  .token-box{background:var(--floor-raised); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:24px;}
+  .token-box input{max-width:420px; display:inline-block; margin-right:8px;}
+  .token-box .btn{padding:8px 16px; font-size:0.8rem;}
+  #publishMsg{display:block; margin-top:10px; font-size:0.84rem;}
+</style>
+</head>
+<body>
+
+<h1>Event Data Editor</h1>
+<div class="subtitle">Internal tool — not linked from the public site. Generates valid JSON so you don't have to hand-edit it.</div>
+
+<div class="banner">
+  This tool doesn't save anything by itself. It just builds the correct <code>data/events.json</code> content for you —
+  you still need to copy the result and paste it into that file on GitHub, then commit.
+</div>
+
+<div class="steps">
+  <b>1.</b> Edit rows below, or click "Add event" for a new one.<br>
+  <b>2.</b> Click <b>Generate JSON</b> at the bottom.<br>
+  <b>3.</b> Click <b>Publish directly to GitHub</b> (needs a token, set up below) — or use <b>Copy to clipboard</b> and paste into <code>data/events.json</code> on GitHub yourself.
+</div>
+
+<div class="token-box">
+  <b>GitHub token</b> (kept only in this browser's storage, never sent anywhere except GitHub's API)<br><br>
+  <input type="password" id="tokenInput" placeholder="Paste your fine-grained PAT here">
+  <button class="btn secondary" onclick="saveToken()">Save</button>
+  <button class="btn secondary" onclick="forgetToken()">Forget</button>
+  <div id="tokenStatus" style="margin-top:8px; font-size:0.8rem; color:var(--slate);"></div>
+  <div style="margin-top:10px; font-size:0.78rem; color:var(--slate); line-height:1.5;">
+    Needs a fine-grained token scoped to just this repo with <b>Contents: Read and write</b> —
+    the same kind used for the approval-email flow. If you're on a shared or public computer, click Forget when done.
+  </div>
+</div>
+
+<div id="loadArea">
+  <p style="color:var(--slate); font-size:0.86rem;">Couldn't auto-load your live data (this usually just means you're opening this file locally rather than via GitHub Pages). Paste the current contents of <code>data/events.json</code> below and click Load:</p>
+  <textarea id="pasteInput" placeholder="Paste events.json contents here..."></textarea>
+  <br><br>
+  <button class="btn" onclick="loadFromPaste()">Load pasted data</button>
+</div>
+
+<table id="eventTable">
+  <thead>
+    <tr>
+      <th style="min-width:160px;">Event name</th>
+      <th style="min-width:110px;">City</th>
+      <th style="min-width:110px;">Country</th>
+      <th style="min-width:150px;">Types</th>
+      <th style="min-width:90px;">Status</th>
+      <th style="min-width:120px;">Start date</th>
+      <th style="min-width:120px;">End date</th>
+      <th style="min-width:160px;">Website</th>
+      <th style="min-width:70px;">Lat</th>
+      <th style="min-width:70px;">Lon</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<button class="btn secondary" onclick="addRow()">+ Add event</button>
+<button class="btn secondary" onclick="geocodeAllMissing()">📍 Fill missing coordinates</button>
+<button class="btn" onclick="generateJSON()">Generate JSON</button>
+
+<div id="output"></div>
+<button class="btn secondary" id="copyBtn" style="display:none;" onclick="copyOutput()">Copy to clipboard</button>
+<button class="btn" id="publishBtn" style="display:none;" onclick="publishToGitHub()">Publish directly to GitHub</button>
+<span id="copyMsg">Copied!</span>
+<div id="publishMsg"></div>
+
+<script>
+const GITHUB_OWNER = "PatryckA";
+const GITHUB_REPO = "International-Modern-Jive-Event-Calendar";
+const GITHUB_PATH = "data/events.json";
+const GITHUB_BRANCH = "main";
+const TOKEN_STORAGE_KEY = "otf_admin_github_token";
+
+let lastGeneratedJSON = null;
+
+function saveToken(){
+  const val = document.getElementById('tokenInput').value.trim();
+  if (!val){ alert('Paste a token first.'); return; }
+  localStorage.setItem(TOKEN_STORAGE_KEY, val);
+  document.getElementById('tokenInput').value = '';
+  updateTokenStatus();
+}
+
+function forgetToken(){
+  localStorage.removeItem(TOKEN_STORAGE_KEY);
+  updateTokenStatus();
+}
+
+function updateTokenStatus(){
+  const has = !!localStorage.getItem(TOKEN_STORAGE_KEY);
+  document.getElementById('tokenStatus').textContent = has
+    ? '✅ Token saved in this browser.'
+    : 'No token saved yet — "Publish directly to GitHub" won\'t work until one is set.';
+}
+
+function toBase64Unicode(str){
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary);
+}
+
+async function publishToGitHub(){
+  const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+  const msg = document.getElementById('publishMsg');
+  if (!token){
+    msg.style.color = '#e2583e';
+    msg.textContent = 'No token saved — paste one above and click Save first.';
+    return;
+  }
+  if (!lastGeneratedJSON){
+    msg.style.color = '#e2583e';
+    msg.textContent = 'Click "Generate JSON" first.';
+    return;
+  }
+
+  msg.style.color = 'var(--slate)';
+  msg.textContent = 'Publishing…';
+
+  try{
+    const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
+    const getRes = await fetch(`${apiUrl}?ref=${GITHUB_BRANCH}`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' }
+    });
+    if (!getRes.ok) throw new Error(`Couldn't read the current file (${getRes.status}). Check the token has Contents: Read and write access.`);
+    const fileData = await getRes.json();
+
+    const putRes = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
+      body: JSON.stringify({
+        message: 'Update events via admin tool',
+        content: toBase64Unicode(lastGeneratedJSON),
+        sha: fileData.sha,
+        branch: GITHUB_BRANCH,
+      }),
+    });
+    if (!putRes.ok){
+      const errText = await putRes.text();
+      throw new Error(`GitHub rejected the commit (${putRes.status}): ${errText}`);
+    }
+
+    msg.style.color = 'var(--gold)';
+    msg.textContent = '✅ Published! The site will update within about a minute.';
+  }catch(err){
+    msg.style.color = '#e2583e';
+    msg.textContent = '❌ ' + err.message;
+  }
+}
+
+const TYPES = ["Competition","Workshops","Dance Holiday","Cruise","Other"];
+const COUNTRY_REGION = {
+  'United Kingdom':'Europe','Scotland':'Europe','England':'Europe','Wales':'Europe','Ireland':'Europe',
+  'France':'Europe','Germany':'Europe','Spain':'Europe','Greece':'Europe','Cyprus':'Europe','Italy':'Europe',
+  'New Zealand':'Oceania','Australia':'Oceania',
+  'Cambodia':'Asia','Vietnam':'Asia','Bali':'Asia','Indonesia':'Asia',
+  'USA':'Americas','Canada':'Americas',
+};
+
+let events = [];
+
+function slugify(str){
+  return str.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+}
+
+function rowHTML(e = {}){
+  const currentTypes = e.types || [];
+  const checks = TYPES.map(t => `
+    <label><input type="checkbox" class="f-type" value="${t}" ${currentTypes.includes(t)?'checked':''}> ${t}</label>
+  `).join('');
+  return `
+    <tr>
+      <td><input class="f-name" value="${e.name||''}"></td>
+      <td><input class="f-city" value="${e.city||''}"></td>
+      <td><input class="f-country" value="${e.country||''}"></td>
+      <td><div class="type-checks">${checks}</div></td>
+      <td><select class="f-status">
+        <option value="confirmed" ${e.status==='confirmed'?'selected':''}>confirmed</option>
+        <option value="tbc" ${e.status==='tbc'?'selected':''}>tbc</option>
+      </select></td>
+      <td><input type="date" class="f-start" value="${e.start_date||''}"></td>
+      <td><input type="date" class="f-end" value="${e.end_date||''}"></td>
+      <td><input class="f-website" value="${e.website||''}"></td>
+      <td><input class="f-lat narrow" value="${e.lat ?? ''}"></td>
+      <td><input class="f-lon narrow" value="${e.lon ?? ''}"><span class="geo-status"></span></td>
+      <td><button class="del-btn" onclick="this.closest('tr').remove()">Remove</button></td>
+    </tr>
+  `;
+}
+
+function renderTable(){
+  document.getElementById('tbody').innerHTML = events.map(rowHTML).join('');
+}
+
+function addRow(){
+  document.getElementById('tbody').insertAdjacentHTML('beforeend', rowHTML());
+}
+
+/** Looks up lat/lon for a city+country. Tries Nominatim first, then falls back
+ *  to Photon (also OSM-based). Returns {lat, lon} or null. */
+async function geocodeCity(city, country){
+  const query = `${city}, ${country}`;
+  try{
+    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`;
+    const res = await fetch(url);
+    if (res.ok){
+      const results = await res.json();
+      if (results.length) return { lat: parseFloat(results[0].lat), lon: parseFloat(results[0].lon) };
+    }
+  }catch(err){ console.error('Nominatim error', err); }
+  try{
+    const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=1`;
+    const res = await fetch(url);
+    if (res.ok){
+      const data = await res.json();
+      if (data.features && data.features.length){
+        const [lon, lat] = data.features[0].geometry.coordinates;
+        return { lat, lon };
+      }
+    }
+  }catch(err){ console.error('Photon error', err); }
+  return null;
+}
+
+async function geocodeRow(row){
+  const cityInput = row.querySelector('.f-city');
+  const countryInput = row.querySelector('.f-country');
+  const latInput = row.querySelector('.f-lat');
+  const lonInput = row.querySelector('.f-lon');
+  const status = row.querySelector('.geo-status');
+
+  const city = cityInput.value.trim();
+  const country = countryInput.value.trim();
+  if (!city || !country) return;
+
+  status.className = 'geo-status';
+  status.textContent = 'Looking up…';
+  const coords = await geocodeCity(city, country);
+  if (coords){
+    latInput.value = coords.lat.toFixed(4);
+    lonInput.value = coords.lon.toFixed(4);
+    status.className = 'geo-status ok';
+    status.textContent = '✓ found';
+  } else {
+    status.className = 'geo-status fail';
+    status.textContent = '✗ not found — enter manually';
+  }
+}
+
+// Auto-trigger a lookup when city/country is filled in and lat/lon are still empty.
+// Uses 'focusout' (bubbles, unlike 'blur') with delegation so it works on rows added later too.
+document.addEventListener('focusout', (evt) => {
+  if (!evt.target.matches('.f-city, .f-country')) return;
+  const row = evt.target.closest('tr');
+  if (!row) return;
+  const latInput = row.querySelector('.f-lat');
+  const lonInput = row.querySelector('.f-lon');
+  if (latInput.value.trim() === '' && lonInput.value.trim() === ''){
+    geocodeRow(row);
+  }
+});
+
+async function geocodeAllMissing(){
+  const rows = [...document.querySelectorAll('#tbody tr')].filter(row => {
+    const lat = row.querySelector('.f-lat').value.trim();
+    const lon = row.querySelector('.f-lon').value.trim();
+    const city = row.querySelector('.f-city').value.trim();
+    const country = row.querySelector('.f-country').value.trim();
+    return lat === '' && lon === '' && city && country;
+  });
+  if (rows.length === 0){
+    alert('No rows are missing coordinates (with both city and country filled in).');
+    return;
+  }
+  for (let i = 0; i < rows.length; i++){
+    await geocodeRow(rows[i]);
+    // Nominatim's usage policy asks for max ~1 request/second - stay well under that.
+    await new Promise(r => setTimeout(r, 1100));
+  }
+}
+
+function loadFromPaste(){
+  try{
+    events = JSON.parse(document.getElementById('pasteInput').value);
+    renderTable();
+    document.getElementById('loadArea').style.display = 'none';
+  }catch(err){
+    alert('That didn\'t parse as valid JSON. Make sure you copied the whole file, starting with [ and ending with ].');
+  }
+}
+
+function generateJSON(){
+  const rows = [...document.querySelectorAll('#tbody tr')];
+  const result = rows.map(row => {
+    const get = cls => row.querySelector('.'+cls).value.trim();
+    const name = get('f-name'), city = get('f-city'), country = get('f-country');
+    const start = get('f-start'), end = get('f-end');
+    const lat = get('f-lat'), lon = get('f-lon');
+    const types = [...row.querySelectorAll('.f-type:checked')].map(cb => cb.value);
+    return {
+      id: slugify(`${country}-${city}-${name}`),
+      name, city, country,
+      region: COUNTRY_REGION[country] || "Other",
+      lat: lat === '' ? null : parseFloat(lat),
+      lon: lon === '' ? null : parseFloat(lon),
+      types: types.length ? types : ["Other"],
+      status: get('f-status'),
+      start_date: start,
+      end_date: end || start,
+      multiday: !!(end && end > start),
+      website: get('f-website'),
+      ai_sourced: false,
+      needs_review: false,
+      source: "organiser-submitted"
+    };
+  }).filter(e => e.name); // skip totally empty rows
+
+  result.sort((a,b) => a.start_date.localeCompare(b.start_date));
+
+  const missingCoords = result.filter(e => e.lat === null || e.lon === null);
+  let warning = '';
+  if (missingCoords.length){
+    warning = `\n\n// ⚠ Missing lat/lon for: ${missingCoords.map(e=>e.city).join(', ')} — these events won't show on the map view until coordinates are added.`;
+  }
+
+  const out = document.getElementById('output');
+  out.style.display = 'block';
+  lastGeneratedJSON = JSON.stringify(result, null, 2);
+  out.textContent = lastGeneratedJSON + warning;
+  document.getElementById('copyBtn').style.display = 'inline-block';
+  document.getElementById('publishBtn').style.display = 'inline-block';
+  document.getElementById('publishMsg').textContent = '';
+}
+
+function copyOutput(){
+  navigator.clipboard.writeText(lastGeneratedJSON).then(() => {
+    const msg = document.getElementById('copyMsg');
+    msg.style.display = 'inline';
+    setTimeout(() => msg.style.display = 'none', 2000);
+  });
+}
+
+async function init(){
+  updateTokenStatus();
+  try{
+    const res = await fetch('data/events.json');
+    if (!res.ok) throw new Error();
+    events = await res.json();
+    renderTable();
+  }catch(err){
+    document.getElementById('loadArea').style.display = 'block';
+  }
+}
+init();
+</script>
+</body>
+</html>
