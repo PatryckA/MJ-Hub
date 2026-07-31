@@ -1,0 +1,36 @@
+name: Scrape organiser sites for new events
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"   # every Monday 03:00 UTC
+  workflow_dispatch: {}    # lets you trigger it manually from the Actions tab
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4 python-dateutil
+
+      - name: Run scraper
+        run: python scripts/scrape_events.py
+
+      - name: Open a PR if anything changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Scraper: candidate events for review"
+          title: "New candidate events found by the scraper"
+          body: |
+            The scheduled scraper found event listings that aren't in `data/events.json` yet.
+
+            Every new entry here has `needs_review: true` and `ai_sourced: true`, and most are
+            missing fields (city, type, exact name) that only a human glance at the source can
+            fill in confidently. Please check each `source_url` before merging.
+          branch: scraper/candidate-events
+          add-paths: data/events.json
