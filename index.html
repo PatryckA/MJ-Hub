@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MJ Hub — International Modern Jive & Ceroc Community</title>
-<meta name="description" content="Growing the international Modern Jive & Ceroc dance family — skills, events, and community, all in one place.">
+<title>MJ Hub — International Ceroc & Modern Jive Community</title>
+<meta name="description" content="Growing the international Ceroc & Modern Jive dance family — skills, events, and community, all in one place.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2312131a'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle'%3E%F0%9F%92%83%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -140,6 +140,39 @@
     color:var(--slate);
     font-size:0.82rem;
   }
+  .share-row{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .share-btn{
+    width:38px; height:38px;
+    border-radius:50%;
+    background:var(--floor-raised);
+    border:1px solid var(--line);
+    color:var(--paper);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    font-size:0.85rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:border-color .15s ease;
+  }
+  .share-btn:hover{border-color:var(--gold); color:var(--gold);}
+  .share-msg{
+    font-size:0.76rem;
+    color:var(--gold);
+    margin-bottom:12px;
+    display:none;
+  }
+  .footer-copyright{
+    margin-top:8px;
+    color:var(--slate);
+    opacity:0.8;
+  }
 
   @media (prefers-reduced-motion: reduce){
     .tile{transition:none;}
@@ -149,9 +182,8 @@
 <body>
 
   <section class="hero">
-    <div class="hero-eyebrow">Welcome to the MJ Hub</div>
-    <h1>Supporting the growth of our<br><em>international dance family.</em></h1>
-    <p class="hero-sub">Helpful resources to support the Ceroc & Modern Jive community.</p>
+    <h1>MJ Hub: Resources for the <span style="white-space:nowrap;">Ceroc &amp; Modern Jive</span> Community</h1>
+    <p class="hero-sub">Supporting the growth of our international dance family.</p>
   </section>
 
   <main>
@@ -166,15 +198,33 @@
       <a class="tile calendar" href="/event-calendar/">
         <div class="tile-icon">📍</div>
         <h2>International Event Calendar</h2>
-        <p>Championships, weekenders and dance holidays across the world — see what's on around the world.</p>
+        <p>Championships, weekenders and dance holidays across the world. Use it to plan your next trip around what's on.</p>
         <div class="tile-cta">Browse events <span>→</span></div>
       </a>
     </div>
   </main>
 
   <footer>
-    MJ Hub · Built by and for the international Modern Jive &amp; Ceroc community
+    <div class="share-row">
+      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmjhub.dance" target="_blank" rel="noopener" aria-label="Share on Facebook">f</a>
+      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fmjhub.dance&text=Resources%20for%20the%20Ceroc%20%26%20Modern%20Jive%20community%20%E2%80%94%20MJ%20Hub" target="_blank" rel="noopener" aria-label="Share on X">𝕏</a>
+      <a class="share-btn" href="mailto:?subject=MJ%20Hub&body=Resources%20for%20the%20Ceroc%20%26%20Modern%20Jive%20community%3A%20https%3A%2F%2Fmjhub.dance" aria-label="Share via email">✉</a>
+      <button class="share-btn" onclick="copyForInstagram()" aria-label="Copy link for Instagram">IG</button>
+    </div>
+    <div class="share-msg" id="shareMsg">Link copied — paste it in your Instagram bio or story.</div>
+    MJ Hub · Built by and for the international Ceroc &amp; Modern Jive community
+    <div class="footer-copyright">© 2026 Patryck Allen. All rights reserved.</div>
   </footer>
+
+  <script>
+    function copyForInstagram(){
+      navigator.clipboard.writeText('https://mjhub.dance').then(() => {
+        const msg = document.getElementById('shareMsg');
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 3000);
+      });
+    }
+  </script>
 
 </body>
 </html>
