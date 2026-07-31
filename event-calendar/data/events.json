@@ -465,26 +465,6 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "australia-sydney-test7",
-    "name": "Test7",
-    "city": "Sydney",
-    "country": "Australia",
-    "region": "Oceania",
-    "lat": null,
-    "lon": null,
-    "types": [
-      "Competition"
-    ],
-    "status": "confirmed",
-    "start_date": "2026-08-01",
-    "end_date": "2026-08-02",
-    "multiday": true,
-    "website": "",
-    "ai_sourced": false,
-    "needs_review": false,
-    "source": "organiser-submitted"
-  },
-  {
     "id": "australia-gold-coast-ignite-queensland-modern-jive-championship",
     "name": "Ignite/ Queensland Modern Jive Championship",
     "city": "Gold Coast",
