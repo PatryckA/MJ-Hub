@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2312131a'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle'%3E%F0%9F%92%83%3C/text%3E%3C/svg%3E">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T0JXGYPZK0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T0JXGYPZK0');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>International Modern Jive Event Calendar</title>
+<meta name="description" content="Every major Modern Jive & Ceroc weekender, championship and dance holiday worth the flight, in one place.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  :root{
+    --ink:#12131a;
+    --floor:#1a1c26;
+    --floor-raised:#22242f;
+    --paper:#f4f2ec;
+    --gold:#e8a33d;
+    --magenta:#d6396b;
+    --slate:#8b8fa3;
+    --line: rgba(244,242,236,0.09);
+    --radius: 14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3, .display{
+    font-family:'Bricolage Grotesque', sans-serif;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding: 64px 24px 40px;
+    max-width:1100px;
+    margin:0 auto;
+    position:relative;
+  }
+  .hero-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.2rem, 6vw, 4.2rem);
+    line-height:1.02;
+    max-width:15ch;
+  }
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg, var(--gold), var(--magenta));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero-sub{
+    margin-top:20px;
+    font-size:1.08rem;
+    color:var(--slate);
+    max-width:52ch;
+    line-height:1.55;
+  }
+  .stat-row{
+    display:flex;
+    gap:36px;
+    margin-top:40px;
+    flex-wrap:wrap;
+  }
+  .stat b{
+    display:block;
+    font-family:'Bricolage Grotesque', sans-serif;
+    font-size:2rem;
+    color:var(--paper);
+  }
+  .stat.wide b{
+    font-size:1.3rem;
+    max-width:32ch;
+    line-height:1.25;
+  }
+  .stat span{
+    font-size:0.82rem;
+    color:var(--slate);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(18,19,26,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:16px 24px;
+  }
+  .controls-inner{
+    max-width:1100px;
+    margin:0 auto;
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:center;
+  }
+  .search{
+    flex:1 1 220px;
+    background:var(--floor-raised);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:10px 18px;
+    color:var(--paper);
+    font-family:'Work Sans', sans-serif;
+    font-size:0.92rem;
+  }
+  .search::placeholder{color:var(--slate);}
+  .chip-group{display:flex; gap:8px; flex-wrap:wrap;}
+  .chip{
+    background:var(--floor-raised);
+    border:1px solid var(--line);
+    color:var(--slate);
+    border-radius:999px;
+    padding:8px 15px;
+    font-size:0.82rem;
+    cursor:pointer;
+    font-family:'Work Sans', sans-serif;
+    transition:all .15s ease;
+    white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--gold); color:var(--paper);}
+  .chip.active{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:var(--ink);
+    font-weight:600;
+  }
+  select.chip{appearance:none; padding-right:28px;}
+  .toggle-tbc{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:0.82rem;
+    color:var(--slate);
+    cursor:pointer;
+    user-select:none;
+  }
+  .toggle-tbc input{accent-color:var(--gold);}
+
+  .view-toggle{
+    display:flex;
+    background:var(--floor-raised);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:3px;
+    margin-left:auto;
+  }
+  .view-toggle button{
+    background:transparent;
+    border:none;
+    color:var(--slate);
+    font-family:'Work Sans', sans-serif;
+    font-size:0.82rem;
+    font-weight:600;
+    padding:7px 16px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .view-toggle button.active{
+    background:var(--gold);
+    color:var(--ink);
+  }
+
+  /* ---------- Map view ---------- */
+  #mapView{display:none;}
+  #mapView.visible{display:block;}
+  #listView.hidden{display:none;}
+  #map{
+    height:560px;
+    border-radius:var(--radius);
+    border:1px solid var(--line);
+    overflow:hidden;
+    margin-top:8px;
+  }
+  .leaflet-popup-content-wrapper{
+    background:var(--floor-raised);
+    color:var(--paper);
+    border-radius:10px;
+  }
+  .leaflet-popup-tip{background:var(--floor-raised);}
+  .popup-city{font-family:'Bricolage Grotesque', sans-serif; font-weight:700; font-size:1rem; margin-bottom:8px;}
+  .popup-event{padding:8px 0; border-top:1px solid var(--line);}
+  .popup-event:first-of-type{border-top:none;}
+  .popup-event a{color:var(--gold); text-decoration:none; font-weight:600; font-size:0.9rem;}
+  .popup-event a:hover{text-decoration:underline;}
+  .popup-event .popup-meta{color:var(--slate); font-size:0.78rem; margin-top:2px;}
+  .map-pin{
+    position:absolute;
+    border-radius:50% 50% 50% 0;
+    border:2px solid var(--ink);
+    box-shadow:0 1px 4px rgba(0,0,0,0.4);
+    transform:rotate(-45deg);
+  }
+  .map-pin-label{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) rotate(45deg);
+    color:var(--ink);
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .map-hint{
+    text-align:center;
+    color:var(--slate);
+    font-size:0.8rem;
+    margin-top:12px;
+  }
+
+  .topbar{
+    display:flex;
+    justify-content:flex-end;
+    max-width:1100px;
+    margin:0 auto;
+    padding:20px 24px 0;
+  }
+  .topbar .btn{
+    padding:9px 18px;
+    font-size:0.82rem;
+  }
+
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    padding:14px 24px 0;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:0.76rem;
+    color:var(--slate);
+  }
+  .legend-dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    flex-shrink:0;
+  }
+
+  /* ---------- Timeline / list ---------- */
+  main{max-width:1100px; margin:0 auto; padding:36px 24px 90px;}
+  .month-heading{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.82rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:44px 0 18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .month-heading::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+  .month-heading:first-of-type{margin-top:0;}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+    gap:18px;
+  }
+
+  /* Ticket-stub card: the signature element */
+  .ticket{
+    position:relative;
+    background:var(--floor-raised);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 20px 18px 88px;
+    text-decoration:none;
+    display:block;
+    transition:transform .15s ease, border-color .15s ease;
+    overflow:hidden;
+  }
+  .ticket:hover{transform:translateY(-2px); border-color:var(--gold);}
+  .ticket:focus-visible{transform:translateY(-2px);}
+
+  /* rotated date stub on the left */
+  .date-stub{
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:72px;
+    background:linear-gradient(160deg, var(--gold), #c97a1f);
+    color:var(--ink);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    line-height:1.05;
+    text-align:center;
+  }
+  .ticket.tbc .date-stub{
+    background:repeating-linear-gradient(135deg, var(--floor) 0 6px, #2c2f3d 6px 12px);
+    color:var(--slate);
+  }
+  .date-stub .d{font-size:1.5rem; font-weight:600;}
+  .date-stub .mo{font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; margin-top:2px;}
+  .date-stub::after{
+    content:"";
+    position:absolute;
+    right:-6px; top:0; bottom:0;
+    width:12px;
+    background:
+      radial-gradient(circle 6px at 6px 0, var(--ink) 6px, transparent 6.5px) top left / 12px 18px repeat-y;
+  }
+
+  .ticket-name{font-size:1.12rem; font-weight:600; margin-bottom:6px; line-height:1.25; display:block; color:var(--paper); text-decoration:none;}
+  .ticket-name:hover{color:var(--gold); text-decoration:underline;}
+  .report-issue{
+    display:inline-block;
+    margin-top:12px;
+    font-size:0.7rem;
+    color:var(--slate);
+    text-decoration:underline;
+  }
+  .report-issue:hover{color:var(--gold);}
+  .ticket-loc{color:var(--slate); font-size:0.86rem; margin-bottom:12px;}
+  .ticket-tags{display:flex; gap:6px; flex-wrap:wrap; align-items:center;}
+  .tag{
+    font-size:0.7rem;
+    padding:4px 9px;
+    border-radius:999px;
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.02em;
+  }
+  .tag.type{background:rgba(214,57,107,0.16); color:#ef7ba4;}
+  .tag.status-tbc{
+    background:rgba(214,57,107,0.18);
+    color:#ef4d6f;
+    font-weight:700;
+    font-size:0.78rem;
+    padding:5px 11px;
+  }
+  .status-tbc-top{
+    display:inline-block;
+    margin-bottom:8px;
+  }
+  .tag.range{background:rgba(232,163,61,0.14); color:var(--gold);}
+
+  .ai-flag{
+    margin-top:12px;
+    font-size:0.74rem;
+    color:#f2c675;
+    background:rgba(232,163,61,0.1);
+    border:1px solid rgba(232,163,61,0.3);
+    border-radius:8px;
+    padding:7px 10px;
+    line-height:1.4;
+  }
+
+  .empty-state{
+    text-align:center;
+    padding:70px 20px;
+    color:var(--slate);
+  }
+  .empty-state b{display:block; color:var(--paper); font-size:1.2rem; margin-bottom:8px; font-family:'Bricolage Grotesque', sans-serif;}
+
+  /* ---------- Footer / submit ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:56px 24px 48px;
+  }
+  .footer-inner{
+    max-width:1100px;
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .footer-copy h2{font-size:1.5rem; max-width:24ch;}
+  .footer-copy p{color:var(--slate); max-width:44ch; margin-top:10px; line-height:1.5; font-size:0.94rem;}
+  .btn{
+    display:inline-block;
+    background:var(--gold);
+    color:var(--ink);
+    font-weight:600;
+    padding:13px 24px;
+    border-radius:999px;
+    text-decoration:none;
+    font-size:0.92rem;
+    white-space:nowrap;
+  }
+  .btn:hover{background:#f2b455;}
+  .footer-meta{font-size:0.78rem; color:var(--slate); margin-top:28px; text-align:right;}
+
+  @media (prefers-reduced-motion: reduce){
+    .ticket{transition:none;}
+    html{scroll-behavior:auto;}
+  }
+  @media (max-width:560px){
+    .ticket{padding-left:76px;}
+    .date-stub{width:62px;}
+    .footer-inner{flex-direction:column;}
+    .footer-meta{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <a class="btn" href="https://forms.gle/rd3Dw94GBQt66cZx9" target="_blank" rel="noopener">Submit your event</a>
+  </div>
+
+  <section class="hero">
+    <h1>International Modern Jive<br><em>Event Calendar</em></h1>
+    <p class="hero-sub">Championships, weekenders and dance holidays across the international Ceroc & Modern Jive community — one list, always sorted by what's coming up next.</p>
+    <div class="stat-row" id="statRow"></div>
+  </section>
+
+  <div class="controls">
+    <div class="controls-inner">
+      <input class="search" id="search" type="text" placeholder="Search events, cities, countries…">
+      <select class="chip" id="regionFilter">
+        <option value="">All regions</option>
+      </select>
+      <select class="chip" id="typeFilter">
+        <option value="">All event types</option>
+      </select>
+      <label class="toggle-tbc">
+        <input type="checkbox" id="tbcToggle" checked>
+        Include unconfirmed dates
+      </label>
+      <label class="toggle-tbc">
+        <input type="checkbox" id="pastToggle">
+        Show past events
+      </label>
+      <div class="view-toggle">
+        <button id="listBtn" class="active" type="button">List</button>
+        <button id="mapBtn" type="button">Map</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend" id="legend"></div>
+
+  <main id="main">
+    <div id="listView">
+      <div id="results"></div>
+    </div>
+    <div id="mapView">
+      <div id="map"></div>
+      <div class="map-hint">Click a marker to see the events in that city.</div>
+    </div>
+  </main>
+
+  <script type="application/json" id="embeddedEvents">
+[
+  {
+    "id": "united-kingdom-liphook-pure-dance-spa-weekender",
+    "name": "Pure Dance & Spa Weekender",
+    "city": "Liphook",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 51.0827,
+    "lon": -0.8058,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-01-17",
+    "end_date": "2026-01-19",
+    "multiday": true,
+    "website": "https://www.ceroc.com/30/12289/pure-luxury-spa-dance-weekend",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-antrim-flame-weekender",
+    "name": "Flame Weekender",
+    "city": "Antrim",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 54.714,
+    "lon": -6.211,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-02-06",
+    "end_date": "2026-02-08",
+    "multiday": true,
+    "website": "https://www.ceroc.com/28/13181/flame-weekender-northern-ireland",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-nelson-summer-smash",
+    "name": "Summer Smash",
+    "city": "Nelson",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -41.2706,
+    "lon": 173.284,
+    "types": [
+      "Other"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-02-13",
+    "end_date": "2026-02-15",
+    "multiday": true,
+    "website": "https://inspiredance.co.nz/summer-smash",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-hopton-on-sea-swish",
+    "name": "Swish",
+    "city": "Hopton-on-Sea",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 52.5462,
+    "lon": 1.7292,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-02-20",
+    "end_date": "2026-02-23",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/swish/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "scotland-pitlochry-party-at-the-palace",
+    "name": "Party at the Palace",
+    "city": "Pitlochry",
+    "country": "Scotland",
+    "region": "Europe",
+    "lat": 56.7,
+    "lon": -3.73,
+    "types": [
+      "Other"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-02-20",
+    "end_date": "2026-02-23",
+    "multiday": true,
+    "website": "https://www.boogaloo.dance/patp",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-blackpool-world-modern-jive-championships-wmjc",
+    "name": "World Modern Jive Championships (WMJC)",
+    "city": "Blackpool",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 53.8175,
+    "lon": -3.0357,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-03-06",
+    "end_date": "2026-03-08",
+    "multiday": true,
+    "website": "https://wmjc-blackpool.com",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-auckland-cerocmania",
+    "name": "Cerocmania",
+    "city": "Auckland",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -36.8485,
+    "lon": 174.7633,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-03-27",
+    "end_date": "2026-03-29",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/cerocmania/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "australia-melbourne-the-downunder-pros-dup",
+    "name": "The DownUnder Pros (DUP)",
+    "city": "Melbourne",
+    "country": "Australia",
+    "region": "Oceania",
+    "lat": -37.8136,
+    "lon": 144.9631,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-04-09",
+    "end_date": "2026-04-12",
+    "multiday": true,
+    "website": "https://www.instagram.com/thedownunderpros/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-christchurch-christchurch-modern-jive-championship-chchch",
+    "name": "Christchurch Modern Jive Championship (ChChCh)",
+    "city": "Christchurch",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -43.5321,
+    "lon": 172.6362,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-04-17",
+    "end_date": "2026-04-19",
+    "multiday": true,
+    "website": "https://fevah.dance/chchchamps/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-isle-of-wight-beachroc",
+    "name": "BeachRoc",
+    "city": "Isle of Wight",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 50.6936,
+    "lon": -1.3043,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-04-24",
+    "end_date": "2026-04-26",
+    "multiday": true,
+    "website": "https://www.facebook.com/groups/787987104556476/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-waikato-ceroc-nz-waikato-champs",
+    "name": "Ceroc NZ Waikato Champs",
+    "city": "Waikato",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -37.787,
+    "lon": 175.2793,
+    "types": [
+      "Competition"
+    ],
+    "status": "tbc",
+    "start_date": "2026-05-01",
+    "end_date": "2026-05-02",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/waikato-champs-2/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "greece-crete-dance-holiday-crete",
+    "name": "Dance Holiday Crete",
+    "city": "Crete",
+    "country": "Greece",
+    "region": "Europe",
+    "lat": 35.2401,
+    "lon": 24.8093,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-02",
+    "end_date": "2026-05-09",
+    "multiday": true,
+    "website": "https://jiveaddiction.com/event-type/dance-holiday/dance-holiday-crete/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "spain-huelva-ceroc-blaze",
+    "name": "Ceroc Blaze",
+    "city": "Huelva",
+    "country": "Spain",
+    "region": "Europe",
+    "lat": 37.2614,
+    "lon": -6.9447,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-10",
+    "end_date": "2026-05-17",
+    "multiday": true,
+    "website": "https://www.cerocblaze.com/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "cambodia-siem-reap-ceroc-pan-asia-dance-championships",
+    "name": "Ceroc Pan Asia Dance Championships",
+    "city": "Siem Reap",
+    "country": "Cambodia",
+    "region": "Asia",
+    "lat": 13.3671,
+    "lon": 103.8448,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-13",
+    "end_date": "2026-05-18",
+    "multiday": true,
+    "website": "https://cerocasia.com/index.html",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-weston-super-mare-ceroc-breeze",
+    "name": "Ceroc Breeze",
+    "city": "Weston-Super-Mare",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 51.3462,
+    "lon": -2.9773,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-15",
+    "end_date": "2026-05-18",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/breeze/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "vietnam-hoi-an-dive-jive-ceroc-pan-asia-dance-championships",
+    "name": "Dive & Jive (Ceroc Pan Asia Dance Championships)",
+    "city": "Hoi An",
+    "country": "Vietnam",
+    "region": "Asia",
+    "lat": 15.8801,
+    "lon": 108.338,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-18",
+    "end_date": "2026-05-22",
+    "multiday": true,
+    "website": "https://cerocasia.com/index.html",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-windsor-nrg-dance-weekender",
+    "name": "NRG Dance Weekender",
+    "city": "Windsor",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 51.4839,
+    "lon": -0.6044,
+    "types": [
+      "Other"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-05-22",
+    "end_date": "2026-05-25",
+    "multiday": true,
+    "website": "https://jiveaddiction.com/event-type/dance-weekender/nrg-dance-weekender/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-tauranga-coast-to-coast-champs",
+    "name": "Coast to Coast Champs",
+    "city": "Tauranga",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -37.6878,
+    "lon": 176.1651,
+    "types": [
+      "Competition"
+    ],
+    "status": "tbc",
+    "start_date": "2026-05-29",
+    "end_date": "2026-05-31",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/coasttocoast/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-norfolk-chill-silc-weekender",
+    "name": "Chill- SILC Weekender",
+    "city": "Norfolk",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 52.6309,
+    "lon": 1.2974,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-06-05",
+    "end_date": "2026-06-08",
+    "multiday": true,
+    "website": "https://www.cerocescape.com/chill/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "australia-sydney-australia-ceroc-dance-championship-acdc",
+    "name": "Australia Ceroc Dance Championship (ACDC)",
+    "city": "Sydney",
+    "country": "Australia",
+    "region": "Oceania",
+    "lat": -33.8688,
+    "lon": 151.2093,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-06-12",
+    "end_date": "2026-06-14",
+    "multiday": true,
+    "website": "https://ceroc.com.au/events/championships/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-wellington-idance-classic",
+    "name": "iDance Classic",
+    "city": "Wellington",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -41.2865,
+    "lon": 174.7762,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-06-26",
+    "end_date": "2026-06-27",
+    "multiday": true,
+    "website": "https://www.idance.co.nz/classic",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-wigton-camp-and-dance",
+    "name": "Camp and Dance",
+    "city": "Wigton",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 54.828,
+    "lon": -3.158,
+    "types": [
+      "Other"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-07-03",
+    "end_date": "2026-07-06",
+    "multiday": true,
+    "website": "https://www.boogaloo.dance/events/camp-and-dance",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "france-paris-ceroc-river-cruise",
+    "name": "Ceroc River Cruise",
+    "city": "Paris",
+    "country": "France",
+    "region": "Europe",
+    "lat": 48.8566,
+    "lon": 2.3522,
+    "types": [
+      "Cruise",
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-07-23",
+    "end_date": "2026-07-30",
+    "multiday": true,
+    "website": "https://www.ceroccruise.com/river-cruise-with-ceroc-2026.html",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "australia-gold-coast-ignite-queensland-modern-jive-championship",
+    "name": "Ignite/ Queensland Modern Jive Championship",
+    "city": "Gold Coast",
+    "country": "Australia",
+    "region": "Oceania",
+    "lat": -28.0167,
+    "lon": 153.4,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-08-28",
+    "end_date": "2026-08-30",
+    "multiday": true,
+    "website": "https://www.qmjc.com.au/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "united-kingdom-bracknell-lux-weekend",
+    "name": "LUX Weekend",
+    "city": "Bracknell",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 51.4136,
+    "lon": -0.75,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-08-29",
+    "end_date": "2026-08-31",
+    "multiday": true,
+    "website": "https://www.ceroc.com/28/14003/lux-august-bank-holiday-weekender",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-auckland-auckland-championships",
+    "name": "Auckland Championships",
+    "city": "Auckland",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -36.8485,
+    "lon": 174.7633,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-09-04",
+    "end_date": "2026-09-06",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/auckland-ceroc-champs/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "spain-islantilla-huelva-ceroc-medfest",
+    "name": "Ceroc Medfest",
+    "city": "Islantilla / Huelva",
+    "country": "Spain",
+    "region": "Europe",
+    "lat": 37.1985,
+    "lon": -7.2103,
+    "types": [
+      "Dance Holiday",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-10-04",
+    "end_date": "2026-10-11",
+    "multiday": true,
+    "website": "https://www.cerocmedfest.com",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-auckland-ceroc-nz-jurassic-jam",
+    "name": "Ceroc NZ Jurassic Jam",
+    "city": "Auckland",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -36.8485,
+    "lon": 174.7633,
+    "types": [
+      "Competition"
+    ],
+    "status": "tbc",
+    "start_date": "2026-10-23",
+    "end_date": "2026-10-24",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/ceroc-jurassic-jam-2/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-wellington-simply-idance",
+    "name": "Simply iDance",
+    "city": "Wellington",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -41.2865,
+    "lon": 174.7762,
+    "types": [
+      "Other"
+    ],
+    "status": "tbc",
+    "start_date": "2026-10-23",
+    "end_date": "2026-10-25",
+    "multiday": true,
+    "website": "https://www.idance.co.nz/simply",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "germany-berlin-berlin-october-dancefest",
+    "name": "Berlin October DanceFest",
+    "city": "Berlin",
+    "country": "Germany",
+    "region": "Europe",
+    "lat": 52.52,
+    "lon": 13.405,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "tbc",
+    "start_date": "2026-11-06",
+    "end_date": "2026-11-08",
+    "multiday": true,
+    "website": "https://www.jive.berlin/weekender/dancefest/?fbclid=IwY2xjawOJMJJleHRuA2FlbQIxMABicmlkETFJc1RCRTdtQU1CRElvU2phc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHrYSFDsG5CfAthKznNHqLmWJ6Pc8irJKzTg0iMcx4qr_pjTqicgAt-za87g7_aem_HwsgayTXvGUkDoL551riGw",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "cyprus-paphos-cyprus-dance-holiday",
+    "name": "Cyprus Dance Holiday",
+    "city": "Paphos",
+    "country": "Cyprus",
+    "region": "Europe",
+    "lat": 34.772,
+    "lon": 32.4297,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-11-18",
+    "end_date": "2026-11-25",
+    "multiday": true,
+    "website": "https://www.boogaloo.dance/holidays",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "new-zealand-auckland-cnz-championships",
+    "name": "CNZ Championships",
+    "city": "Auckland",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lat": -36.8485,
+    "lon": 174.7633,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "tbc",
+    "start_date": "2026-11-27",
+    "end_date": "2026-11-29",
+    "multiday": true,
+    "website": "https://cerocevents.co.nz/ceroc-nz-champs/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  }
+]
+  </script>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-copy">
+        <h2>Running an event we don't have yet?</h2>
+        <p>Tell us about it and we'll add it to the calendar after a quick check. Takes two minutes.</p>
+      </div>
+      <a class="btn" href="https://forms.gle/rd3Dw94GBQt66cZx9" target="_blank" rel="noopener">Submit your event</a>
+    </div>
+    <div class="footer-meta">Data sourced from organiser listings & the community · Last built <span id="buildDate"></span></div>
+  </footer>
+
+<script>
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+// Maps country names/common aliases to ISO 3166-1 alpha-2 codes. Flag emoji are
+// then computed from the code automatically (see countryFlag below), so any
+// correctly-typed country works without needing its flag added by hand.
+const COUNTRY_CODES = {
+  "afghanistan":"AF","albania":"AL","algeria":"DZ","andorra":"AD","angola":"AO",
+  "argentina":"AR","armenia":"AM","australia":"AU","austria":"AT","azerbaijan":"AZ",
+  "bahamas":"BS","bahrain":"BH","bangladesh":"BD","barbados":"BB","belarus":"BY",
+  "belgium":"BE","belize":"BZ","benin":"BJ","bhutan":"BT","bolivia":"BO",
+  "bosnia and herzegovina":"BA","botswana":"BW","brazil":"BR","brunei":"BN","bulgaria":"BG",
+  "burkina faso":"BF","burundi":"BI","cambodia":"KH","cameroon":"CM","canada":"CA",
+  "cape verde":"CV","chad":"TD","chile":"CL","china":"CN","colombia":"CO",
+  "costa rica":"CR","croatia":"HR","cuba":"CU","cyprus":"CY","czech republic":"CZ","czechia":"CZ",
+  "denmark":"DK","djibouti":"DJ","dominican republic":"DO","ecuador":"EC","egypt":"EG",
+  "el salvador":"SV","estonia":"EE","ethiopia":"ET","fiji":"FJ","finland":"FI",
+  "france":"FR","gabon":"GA","gambia":"GM","georgia":"GE","germany":"DE",
+  "ghana":"GH","greece":"GR","guatemala":"GT","guyana":"GY","haiti":"HT",
+  "honduras":"HN","hong kong":"HK","hungary":"HU","iceland":"IS","india":"IN",
+  "indonesia":"ID","bali":"ID","iran":"IR","iraq":"IQ","ireland":"IE",
+  "israel":"IL","italy":"IT","jamaica":"JM","japan":"JP","jordan":"JO",
+  "kazakhstan":"KZ","kenya":"KE","kuwait":"KW","kyrgyzstan":"KG","laos":"LA",
+  "latvia":"LV","lebanon":"LB","liberia":"LR","libya":"LY","liechtenstein":"LI",
+  "lithuania":"LT","luxembourg":"LU","macau":"MO","madagascar":"MG","malawi":"MW",
+  "malaysia":"MY","maldives":"MV","mali":"ML","malta":"MT","mauritius":"MU",
+  "mexico":"MX","moldova":"MD","monaco":"MC","mongolia":"MN","montenegro":"ME",
+  "morocco":"MA","mozambique":"MZ","myanmar":"MM","namibia":"NA","nepal":"NP",
+  "netherlands":"NL","holland":"NL","new zealand":"NZ","nicaragua":"NI","niger":"NE",
+  "nigeria":"NG","north korea":"KP","north macedonia":"MK","norway":"NO","oman":"OM",
+  "pakistan":"PK","panama":"PA","papua new guinea":"PG","paraguay":"PY","peru":"PE",
+  "philippines":"PH","poland":"PL","portugal":"PT","qatar":"QA","romania":"RO",
+  "russia":"RU","rwanda":"RW","saudi arabia":"SA","senegal":"SN","serbia":"RS",
+  "singapore":"SG","slovakia":"SK","slovenia":"SI","somalia":"SO","south africa":"ZA",
+  "south korea":"KR","korea":"KR","spain":"ES","sri lanka":"LK","sudan":"SD",
+  "sweden":"SE","switzerland":"CH","syria":"SY","taiwan":"TW","tajikistan":"TJ",
+  "tanzania":"TZ","thailand":"TH","togo":"TG","trinidad and tobago":"TT","tunisia":"TN",
+  "turkey":"TR","turkiye":"TR","turkmenistan":"TM","uganda":"UG","ukraine":"UA",
+  "united arab emirates":"AE","uae":"AE",
+  "united kingdom":"GB","uk":"GB","great britain":"GB","britain":"GB",
+  "united states":"US","united states of america":"US","usa":"US","america":"US",
+  "uruguay":"UY","uzbekistan":"UZ","venezuela":"VE","vietnam":"VN","yemen":"YE",
+  "zambia":"ZM","zimbabwe":"ZW",
+};
+
+// Great Britain's constituent countries aren't ISO countries themselves, but have
+// their own recognisable flag emoji via Unicode "tag sequences".
+const SUBDIVISION_FLAGS = {
+  "england": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+  "scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  "wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+};
+
+function toCodepoints(str){
+  return [...str].map(c => c.codePointAt(0).toString(16)).join('-');
+}
+
+// Renders flags as actual images (Twemoji) rather than relying on the visitor's OS
+// having flag emoji at all - Windows in particular ships without real flag glyphs
+// and instead shows the raw two-letter code or an odd placeholder for rarer ones
+// (like the England/Scotland/Wales tag-sequence flags). If the image ever fails
+// to load, it falls back to the plain emoji character so nothing breaks silently.
+function flagImgHtml(emoji){
+  const cp = toCodepoints(emoji);
+  const url = `https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${cp}.svg`;
+  return `<img src="${url}" alt="" data-fallback-cp="${cp}" style="width:1.05em;height:1.05em;vertical-align:-0.15em;display:inline-block;" onerror="this.outerHTML=String.fromCodePoint(...this.dataset.fallbackCp.split('-').map(x=>parseInt(x,16)))">`;
+}
+
+function countryFlag(countryName){
+  if (!countryName) return flagImgHtml('🌍');
+  const key = countryName.trim().toLowerCase();
+  let emoji;
+  if (SUBDIVISION_FLAGS[key]){
+    emoji = SUBDIVISION_FLAGS[key];
+  } else {
+    const code = COUNTRY_CODES[key];
+    if (!code) return flagImgHtml('🌍');
+    emoji = String.fromCodePoint(...[...code.toUpperCase()].map(c => 127397 + c.charCodeAt(0)));
+  }
+  return flagImgHtml(emoji);
+}
+const TYPE_COLORS = {
+  "Competition": "#3ba55d",
+  "Workshops": "#9b6bd6",
+  "Dance Holiday": "#4a90d9",
+  "Cruise": "#3fb8af",
+  "Other": "#8b8fa3",
+};
+const FALLBACK_COLOR = "#8b8fa3";
+function typeColor(type){ return TYPE_COLORS[type] || FALLBACK_COLOR; }
+
+// TODO: replace both values below once the "Report an issue" Google Form exists.
+// REPORT_FORM_BASE_URL: the form's full viewform URL (not the forms.gle short link,
+// to be safe that query params carry through correctly).
+// REPORT_FORM_EVENT_ID_ENTRY: the entry ID for the "Event ID" question.
+const REPORT_FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfnsH_4y9s9KeA4u0F6UHw_iYDnx8JZFa8pc5Y-r-3lWm4vgQ/viewform";
+const REPORT_FORM_EVENT_ID_ENTRY = "entry.159512279";
+
+function reportIssueUrl(e){
+  return `${REPORT_FORM_BASE_URL}?usp=pp_url&${REPORT_FORM_EVENT_ID_ENTRY}=${encodeURIComponent(e.id)}`;
+}
+
+let EVENTS = [];
+
+function fmtRange(startISO, endISO){
+  const s = new Date(startISO+"T00:00:00");
+  const e = new Date(endISO+"T00:00:00");
+  const startStr = `${s.getDate()} ${MONTHS[s.getMonth()]}`;
+  const endStr = `${e.getDate()} ${MONTHS[e.getMonth()]}`;
+  return `${startStr}–${endStr}`;
+}
+
+function getFiltered(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const region = document.getElementById('regionFilter').value;
+  const type = document.getElementById('typeFilter').value;
+  const includeTbc = document.getElementById('tbcToggle').checked;
+  const showPast = document.getElementById('pastToggle').checked;
+  const today = new Date().toISOString().slice(0,10);
+
+  let filtered = showPast ? EVENTS.slice() : EVENTS.filter(e => e.end_date >= today);
+  if (!includeTbc) filtered = filtered.filter(e => e.status === 'confirmed');
+  if (region) filtered = filtered.filter(e => e.region === region);
+  if (type) filtered = filtered.filter(e => e.types.includes(type));
+  if (q) filtered = filtered.filter(e =>
+    (e.name+' '+e.city+' '+e.country).toLowerCase().includes(q)
+  );
+  filtered.sort((a,b) => a.start_date.localeCompare(b.start_date));
+  return filtered;
+}
+
+function renderList(filtered){
+  const results = document.getElementById('results');
+  results.innerHTML = '';
+
+  if (filtered.length === 0){
+    results.innerHTML = `<div class="empty-state"><b>No events match those filters.</b>Try clearing the search or including unconfirmed dates.</div>`;
+    return;
+  }
+
+  let currentMonth = '';
+  filtered.forEach(e => {
+    const d = new Date(e.start_date+"T00:00:00");
+    const monthLabel = `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+    if (monthLabel !== currentMonth){
+      currentMonth = monthLabel;
+      const h = document.createElement('div');
+      h.className = 'month-heading';
+      h.textContent = monthLabel;
+      results.appendChild(h);
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+      grid.dataset.month = monthLabel;
+      results.appendChild(grid);
+    }
+    const grid = results.lastElementChild;
+    const a = document.createElement('div');
+    a.className = 'ticket' + (e.status === 'tbc' ? ' tbc' : '');
+    const flag = countryFlag(e.country);
+    const typeTags = e.types.map(t => `<span class="tag type" style="background:${typeColor(t)}29; color:${typeColor(t)};">${t}</span>`).join('');
+    const websiteHref = e.website && e.website !== 'nan' ? e.website : '#';
+    a.innerHTML = `
+      <div class="date-stub">
+        <span class="d">${d.getDate()}</span>
+        <span class="mo">${MONTHS[d.getMonth()]}</span>
+      </div>
+      ${e.status === 'tbc' ? '<span class="tag status-tbc status-tbc-top">Unconfirmed</span>' : ''}
+      <a class="ticket-name" href="${websiteHref}" target="_blank" rel="noopener">${e.name}</a>
+      <div class="ticket-loc">${flag} ${e.city}, ${e.country}</div>
+      <div class="ticket-tags">
+        <span class="tag range">${fmtRange(e.start_date, e.end_date)}</span>
+        ${typeTags}
+      </div>
+      ${e.ai_sourced ? '<div class="ai-flag">⚠ Identified automatically — confirm details with the organiser before booking.</div>' : ''}
+      <a class="report-issue" href="${reportIssueUrl(e)}" target="_blank" rel="noopener">Report an issue</a>
+    `;
+    grid.appendChild(a);
+  });
+}
+
+let map, markerLayer;
+
+function initMap(){
+  map = L.map('map', { scrollWheelZoom: true, worldCopyJump: true }).setView([20, 20], 2);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    maxZoom: 18,
+  }).addTo(map);
+  markerLayer = L.layerGroup().addTo(map);
+}
+
+function renderMap(filtered){
+  if (!map) initMap();
+  markerLayer.clearLayers();
+
+  const byCity = {};
+  filtered.forEach(e => {
+    if (e.lat == null || e.lon == null) return;
+    const key = `${e.lat},${e.lon}`;
+    (byCity[key] = byCity[key] || []).push(e);
+  });
+
+  Object.values(byCity).forEach(group => {
+    const { lat, lon, city, country } = group[0];
+    const size = group.length > 1 ? 40 : 30;
+    // The pin is a square rotated -45deg with three rounded corners (classic
+    // "teardrop" trick). Sized at size/1.2071 and centered in the box, its sharp
+    // point lands exactly on the box's bottom-center after rotation - so iconAnchor
+    // can just point at [size/2, size] and land precisely on the marker's coordinate.
+    const pin = size / 1.2071;
+    const pinOffset = (size - pin) / 2;
+    const primaryTypes = group.map(e => e.types[0]);
+    const uniqueTypes = [...new Set(primaryTypes)];
+    let markerBg;
+    if (uniqueTypes.length === 1){
+      markerBg = typeColor(uniqueTypes[0]);
+    } else {
+      // multiple event types at this city: render a small pie split by each event's primary type
+      const slice = 360 / group.length;
+      markerBg = `conic-gradient(${group.map((e,i) => `${typeColor(e.types[0])} ${i*slice}deg ${(i+1)*slice}deg`).join(', ')})`;
+    }
+    const icon = L.divIcon({
+      className: '',
+      html: `
+        <div class="map-pin" style="width:${pin}px;height:${pin}px;top:${pinOffset}px;left:${pinOffset}px;background:${markerBg};">
+          <span class="map-pin-label" style="font-size:${group.length>1?'0.72rem':'0.62rem'};">${group.length > 1 ? group.length : ''}</span>
+        </div>
+      `,
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size],
+    });
+    const popupHtml = `
+      <div class="popup-city">${countryFlag(country)} ${city}, ${country}</div>
+      ${group.map(e => `
+        <div class="popup-event">
+          <a href="${e.website}" target="_blank" rel="noopener">${e.name}</a>
+          <div class="popup-meta">
+            ${e.types.map(t => `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${typeColor(t)};margin-right:3px;"></span>`).join('')}
+            ${fmtRange(e.start_date, e.end_date)} · ${e.types.join(', ')}${e.status==='tbc' ? ` · <span style="color:#ef4d6f;font-weight:600;">Unconfirmed</span>` : ''}
+          </div>
+        </div>
+      `).join('')}
+    `;
+    L.marker([lat, lon], { icon }).bindPopup(popupHtml).addTo(markerLayer);
+  });
+}
+
+function render(){
+  const filtered = getFiltered();
+  renderList(filtered);
+  if (currentView === 'map') renderMap(filtered);
+}
+
+let currentView = 'list';
+
+function setView(view){
+  currentView = view;
+  document.getElementById('listView').classList.toggle('hidden', view !== 'list');
+  document.getElementById('mapView').classList.toggle('visible', view === 'map');
+  document.getElementById('listBtn').classList.toggle('active', view === 'list');
+  document.getElementById('mapBtn').classList.toggle('active', view === 'map');
+  if (view === 'map'){
+    renderMap(getFiltered());
+    setTimeout(() => map && map.invalidateSize(), 50);
+  }
+}
+
+function populateLegend(){
+  const types = [...new Set(EVENTS.flatMap(e=>e.types))].sort();
+  document.getElementById('legend').innerHTML = types.map(t =>
+    `<div class="legend-item"><span class="legend-dot" style="background:${typeColor(t)}"></span>${t}</div>`
+  ).join('');
+}
+
+function populateFilters(){
+  const regions = [...new Set(EVENTS.map(e=>e.region))].sort();
+  const types = [...new Set(EVENTS.flatMap(e=>e.types))].sort();
+  const regionSel = document.getElementById('regionFilter');
+  const typeSel = document.getElementById('typeFilter');
+  regions.forEach(r => regionSel.insertAdjacentHTML('beforeend', `<option value="${r}">${r}</option>`));
+  types.forEach(t => typeSel.insertAdjacentHTML('beforeend', `<option value="${t}">${t}</option>`));
+}
+
+function populateStats(){
+  const today = new Date().toISOString().slice(0,10);
+  const upcoming = EVENTS.filter(e => e.end_date >= today);
+  const countries = new Set(upcoming.map(e=>e.country)).size;
+  const soonest = upcoming.slice().sort((a,b)=>a.start_date.localeCompare(b.start_date))[0];
+  const stats = [
+    { b: upcoming.length, s: "Upcoming events" },
+    { b: countries, s: "Countries" },
+    { b: soonest ? `${soonest.name}, ${fmtRange(soonest.start_date, soonest.end_date)}` : "—", s: "Next up", wide: true },
+  ];
+  document.getElementById('statRow').innerHTML = stats.map(s=>`<div class="stat${s.wide ? ' wide' : ''}"><b>${s.b}</b><span>${s.s}</span></div>`).join('');
+}
+
+async function init(){
+  // Prefer fetching data/events.json (so hosted deployments always show the latest
+  // file without needing this page rebuilt). Fall back to the embedded copy below
+  // when opened directly as file:// (browsers block fetch() of local files) or if
+  // the request fails for any other reason.
+  try{
+    const res = await fetch('data/events.json');
+    if (!res.ok) throw new Error('fetch not ok');
+    EVENTS = await res.json();
+  }catch(err){
+    try{
+      EVENTS = JSON.parse(document.getElementById('embeddedEvents').textContent);
+    }catch(err2){
+      document.getElementById('results').innerHTML =
+        `<div class="empty-state"><b>Couldn't load the event data.</b>Check that data/events.json is present alongside this page.</div>`;
+      return;
+    }
+  }
+  populateFilters();
+  populateLegend();
+  populateStats();
+  render();
+  document.getElementById('buildDate').textContent = new Date().toISOString().slice(0,10);
+
+  ['search','regionFilter','typeFilter'].forEach(id =>
+    document.getElementById(id).addEventListener('input', render)
+  );
+  document.getElementById('tbcToggle').addEventListener('change', render);
+  document.getElementById('pastToggle').addEventListener('change', render);
+  document.getElementById('listBtn').addEventListener('click', () => setView('list'));
+  document.getElementById('mapBtn').addEventListener('click', () => setView('map'));
+}
+init();
+</script>
+</body>
+</html>
