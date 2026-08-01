@@ -116,6 +116,30 @@
   .tile.skills .tile-icon{background:rgba(155,107,214,0.16);}
   .tile.calendar .tile-icon{background:rgba(232,163,61,0.16);}
 
+  .tile-thumb-wrap{
+    position:relative;
+    width:100%;
+    height:280px;
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:4px;
+  }
+  .tile-thumb{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:top left;
+    display:block;
+  }
+  .tile-thumb-wrap::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg, rgba(34,36,47,0) 82%, var(--floor-raised) 100%);
+    pointer-events:none;
+  }
+
   .tile h2{font-size:1.3rem;}
   .tile p{color:var(--slate); font-size:0.94rem; line-height:1.55; margin:0;}
   .tile-cta{
@@ -189,14 +213,14 @@
   <main>
     <div class="tile-grid">
       <a class="tile skills" href="/skills-framework/">
-        <div class="tile-icon">🕺</div>
+        <div class="tile-thumb-wrap"><img class="tile-thumb" src="hub-toolkit-thumb-v4.png" alt="Preview of the Modern Jive Skills Toolkit page"></div>
         <h2>Modern Jive Skills Toolkit</h2>
         <p>Improve yourself and others using this map of 85 skills across 7 categories.</p>
         <div class="tile-cta">Explore the toolkit <span>→</span></div>
       </a>
 
       <a class="tile calendar" href="/event-calendar/">
-        <div class="tile-icon">📍</div>
+        <div class="tile-thumb-wrap"><img class="tile-thumb" src="hub-calendar-thumb-v3.png" alt="Map preview of the International Event Calendar"></div>
         <h2>International Event Calendar</h2>
         <p>Championships, weekenders and dance holidays across the world. Use it to plan your next trip around what's on.</p>
         <div class="tile-cta">Browse events <span>→</span></div>
