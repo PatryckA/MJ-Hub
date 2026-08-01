@@ -242,15 +242,24 @@
   }
 
   .topbar{
-    display:flex;
-    justify-content:flex-end;
-    max-width:1100px;
-    margin:0 auto;
-    padding:20px 24px 0;
+    position:absolute;
+    top:64px;
+    right:24px;
   }
   .topbar .btn{
     padding:9px 18px;
     font-size:0.82rem;
+  }
+  @media (max-width:560px){
+    /* On narrow screens the headline can wrap onto multiple lines, so the
+       overlaid button risks colliding with it - drop back to normal flow
+       above the hero, like before. */
+    .topbar{
+      position:static;
+      display:flex;
+      justify-content:flex-end;
+      padding:20px 24px 0;
+    }
   }
 
   .legend{
@@ -442,11 +451,10 @@
 </head>
 <body>
 
-  <div class="topbar">
-    <a class="btn" href="https://forms.gle/rd3Dw94GBQt66cZx9" target="_blank" rel="noopener">Submit your event</a>
-  </div>
-
   <section class="hero">
+    <div class="topbar">
+      <a class="btn" href="https://forms.gle/rd3Dw94GBQt66cZx9" target="_blank" rel="noopener">Submit an event</a>
+    </div>
     <h1>International Modern Jive<br><em>Event Calendar</em></h1>
     <p class="hero-sub">Championships, weekenders and dance holidays across the international Ceroc & Modern Jive community — one list, always sorted by what's coming up next.</p>
     <div class="stat-row" id="statRow"></div>
