@@ -770,6 +770,27 @@
     "source": "organiser-submitted"
   },
   {
+    "id": "sri-lanka-colombo-cpac",
+    "name": "CPAC",
+    "city": "Colombo",
+    "country": "Sri Lanka",
+    "region": "Other",
+    "lat": 6.9389,
+    "lon": 79.8542,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "tbc",
+    "start_date": "2027-05-12",
+    "end_date": "2927-05-17",
+    "multiday": true,
+    "website": "https://cerocasia.com/index.html",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
     "id": "england-sand-bay-breeze",
     "name": "Breeze",
     "city": "Sand Bay",
@@ -785,6 +806,26 @@
     "end_date": "2027-05-17",
     "multiday": true,
     "website": "https://www.cerocescape.com/breeze/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "sri-lanka-colombo-cpac-post-champs-holiday",
+    "name": "CPAC Post-Champs Holiday",
+    "city": "Colombo",
+    "country": "Sri Lanka",
+    "region": "Other",
+    "lat": 6.9389,
+    "lon": 79.8542,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "tbc",
+    "start_date": "2027-05-17",
+    "end_date": "2027-05-17",
+    "multiday": false,
+    "website": "https://cerocasia.com/index.html",
     "ai_sourced": false,
     "needs_review": false,
     "source": "organiser-submitted"
