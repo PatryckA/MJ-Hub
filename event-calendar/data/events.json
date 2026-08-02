@@ -480,9 +480,9 @@
     "end_date": "2026-08-09",
     "multiday": true,
     "website": "https://www.ceroc.com/30/14212/ceroc-glasgow-braw-weekender",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "ai-identified"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "australia-gold-coast-ignite-queensland-modern-jive-championship-2026",
@@ -582,9 +582,9 @@
     "end_date": "2026-09-07",
     "multiday": true,
     "website": "https://www.ceroc.com/28/14999/the-summer-sizzler-weekender",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "ai-identified"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "wales-barry-welsh-champs-2026-2026",
@@ -602,9 +602,9 @@
     "end_date": "2026-09-20",
     "multiday": true,
     "website": "https://www.ceroc.com/124/14523/welsh-champs-2026-competition",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "ai-identified"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "spain-islantilla-huelva-medfest-2026",
@@ -643,9 +643,9 @@
     "end_date": "2026-10-11",
     "multiday": true,
     "website": "https://www.ceroc.com/28/13793/xtra-weekender-2026-perth",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "ai-identified"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "england-blackpool-bliss-2026",
@@ -723,9 +723,9 @@
     "end_date": "2026-11-01",
     "multiday": true,
     "website": "https://bookings.cerocescapes.co.uk/book/3260",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "ai-identified"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "england-folkestone-splash-2026",
@@ -845,9 +845,9 @@
     "end_date": "2027-01-24",
     "multiday": true,
     "website": "https://bookings.cerocescapes.co.uk/book/2892",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "ai-identified"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "england-york-euphoria-york-weekender-2027",
@@ -865,9 +865,9 @@
     "end_date": "2027-02-01",
     "multiday": true,
     "website": "https://www.revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/York/",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "ai-identified"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "united-kingdom-antrim-flame-weekender-2027-2027",
@@ -885,9 +885,9 @@
     "end_date": "2027-02-07",
     "multiday": true,
     "website": "https://www.ceroc.com/27/events/1000?filter=weekender",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "ai-identified"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "england-norfolk-swish-2027",
@@ -945,9 +945,9 @@
     "end_date": "2027-04-19",
     "multiday": true,
     "website": "https://bookings.cerocescapes.co.uk/book/3149",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "ai-identified"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "england-chippenham-chill-out-champs-2027-2027",
@@ -965,9 +965,9 @@
     "end_date": "2027-05-03",
     "multiday": true,
     "website": "https://bookings.cerocescapes.co.uk/book/2651",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "ai-identified"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "sri-lanka-colombo-ceroc-pan-asia-championships-cpac-2027",
