@@ -465,6 +465,26 @@
     "source": "organiser-submitted"
   },
   {
+    "id": "scotland-glasgow-ceroc-glasgow-braw-weekender",
+    "name": "Ceroc Glasgow: Braw Weekender",
+    "city": "Glasgow",
+    "country": "Scotland",
+    "region": "Europe",
+    "lat": 55.8642,
+    "lon": -4.2518,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-08-07",
+    "end_date": "2026-08-09",
+    "multiday": true,
+    "website": "https://www.ceroc.com/30/14212/ceroc-glasgow-braw-weekender",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "ai-identified"
+  },
+  {
     "id": "australia-gold-coast-ignite-queensland-modern-jive-championship",
     "name": "Ignite/ Queensland Modern Jive Championship",
     "city": "Gold Coast",
@@ -527,7 +547,7 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-hemsby-jamfest",
+    "id": "england-hemsby-jamfest-2026",
     "name": "Jamfest",
     "city": "Hemsby",
     "country": "England",
@@ -545,6 +565,46 @@
     "ai_sourced": false,
     "needs_review": false,
     "source": "organiser-submitted"
+  },
+  {
+    "id": "england-dawlish-the-summer-sizzler-weekender",
+    "name": "The Summer Sizzler Weekender",
+    "city": "Dawlish",
+    "country": "England",
+    "region": "Europe",
+    "lat": 50.5809,
+    "lon": -3.4695,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-09-04",
+    "end_date": "2026-09-07",
+    "multiday": true,
+    "website": "https://www.ceroc.com/28/14999/the-summer-sizzler-weekender",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "ai-identified"
+  },
+  {
+    "id": "wales-barry-welsh-champs-2026",
+    "name": "Welsh Champs 2026",
+    "city": "Barry",
+    "country": "Wales",
+    "region": "Europe",
+    "lat": 51.4045,
+    "lon": -3.2739,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-09-19",
+    "end_date": "2026-09-20",
+    "multiday": true,
+    "website": "https://www.ceroc.com/124/14523/welsh-champs-2026-competition",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "ai-identified"
   },
   {
     "id": "spain-islantilla-huelva-medfest",
@@ -568,7 +628,27 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-blackpool-bliss",
+    "id": "scotland-perth-xtra-weekender-2026",
+    "name": "XTRA Weekender 2026",
+    "city": "Perth",
+    "country": "Scotland",
+    "region": "Europe",
+    "lat": 56.395,
+    "lon": -3.4308,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-10-09",
+    "end_date": "2026-10-11",
+    "multiday": true,
+    "website": "https://www.ceroc.com/28/13793/xtra-weekender-2026-perth",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "ai-identified"
+  },
+  {
+    "id": "england-blackpool-bliss-2026",
     "name": "Bliss",
     "city": "Blackpool",
     "country": "England",
@@ -628,13 +708,33 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-folkstone-splash",
+    "id": "scotland-edinburgh-ceroc-champs-scotland",
+    "name": "Ceroc Champs Scotland",
+    "city": "Edinburgh",
+    "country": "Scotland",
+    "region": "Europe",
+    "lat": 55.9533,
+    "lon": -3.1883,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2026-10-30",
+    "end_date": "2026-11-01",
+    "multiday": true,
+    "website": "https://bookings.cerocescapes.co.uk/book/3260",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "ai-identified"
+  },
+  {
+    "id": "england-folkestone-splash-2026",
     "name": "Splash",
-    "city": "Folkstone",
+    "city": "Folkestone",
     "country": "England",
     "region": "Europe",
-    "lat": 54.5196,
-    "lon": -1.2435,
+    "lat": 51.0813,
+    "lon": 1.167,
     "types": [
       "Workshops"
     ],
@@ -648,8 +748,8 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "germany-berlin-berlin-october-dancefest",
-    "name": "Berlin October DanceFest",
+    "id": "germany-berlin-berlin-dancefest",
+    "name": "Berlin DanceFest",
     "city": "Berlin",
     "country": "Germany",
     "region": "Europe",
@@ -663,7 +763,7 @@
     "start_date": "2026-11-13",
     "end_date": "2026-11-15",
     "multiday": true,
-    "website": "https://www.jive.berlin/weekender/dancefest/?fbclid=IwY2xjawOJMJJleHRuA2FlbQIxMABicmlkETFJc1RCRTdtQU1CRElvU2phc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHrYSFDsG5CfAthKznNHqLmWJ6Pc8irJKzTg0iMcx4qr_pjTqicgAt-za87g7_aem_HwsgayTXvGUkDoL551riGw",
+    "website": "https://www.jive.berlin/weekender/dancefest/",
     "ai_sourced": false,
     "needs_review": false,
     "source": "organiser-submitted"
@@ -689,7 +789,7 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-london-ceroc-champs-uk",
+    "id": "england-london-ceroc-champs-uk-2026",
     "name": "Ceroc Champs (UK)",
     "city": "London",
     "country": "England",
@@ -730,6 +830,66 @@
     "source": "organiser-submitted"
   },
   {
+    "id": "united-kingdom-liphook-pure-dance-weekend-2027",
+    "name": "PURE Dance Weekend 2027",
+    "city": "Liphook",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 51.0827,
+    "lon": -0.8058,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-01-22",
+    "end_date": "2027-01-24",
+    "multiday": true,
+    "website": "https://bookings.cerocescapes.co.uk/book/2892",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "ai-identified"
+  },
+  {
+    "id": "england-york-euphoria-york-weekender",
+    "name": "Euphoria York Weekender",
+    "city": "York",
+    "country": "England",
+    "region": "Europe",
+    "lat": 53.9591,
+    "lon": -1.0815,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-01-29",
+    "end_date": "2027-02-01",
+    "multiday": true,
+    "website": "https://www.revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/York/",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "ai-identified"
+  },
+  {
+    "id": "united-kingdom-antrim-flame-weekender-2027",
+    "name": "FLAME Weekender 2027",
+    "city": "Antrim",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lat": 54.714,
+    "lon": -6.211,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-02-05",
+    "end_date": "2027-02-07",
+    "multiday": true,
+    "website": "https://www.ceroc.com/27/events/1000?filter=weekender",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "ai-identified"
+  },
+  {
     "id": "england-norfolk-swish",
     "name": "Swish",
     "city": "Norfolk",
@@ -750,13 +910,13 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-folkstone-storm",
+    "id": "england-folkestone-storm-2027",
     "name": "Storm",
-    "city": "Folkstone",
+    "city": "Folkestone",
     "country": "England",
     "region": "Europe",
-    "lat": 54.5196,
-    "lon": -1.2435,
+    "lat": 51.0813,
+    "lon": 1.167,
     "types": [
       "Workshops"
     ],
@@ -768,6 +928,46 @@
     "ai_sourced": false,
     "needs_review": false,
     "source": "organiser-submitted"
+  },
+  {
+    "id": "england-daventry-core-2027",
+    "name": "CORE 2027",
+    "city": "Daventry",
+    "country": "England",
+    "region": "Europe",
+    "lat": 52.2544,
+    "lon": -1.159,
+    "types": [
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-04-16",
+    "end_date": "2027-04-19",
+    "multiday": true,
+    "website": "https://bookings.cerocescapes.co.uk/book/3149",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "ai-identified"
+  },
+  {
+    "id": "england-chippenham-chill-out-champs-2027",
+    "name": "Chill Out Champs 2027",
+    "city": "Chippenham",
+    "country": "England",
+    "region": "Europe",
+    "lat": 51.4614,
+    "lon": -2.1156,
+    "types": [
+      "Competition"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-05-02",
+    "end_date": "2027-05-03",
+    "multiday": true,
+    "website": "https://bookings.cerocescapes.co.uk/book/2651",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "ai-identified"
   },
   {
     "id": "sri-lanka-colombo-ceroc-pan-asia-championships-cpac",
@@ -783,7 +983,7 @@
     ],
     "status": "tbc",
     "start_date": "2027-05-12",
-    "end_date": "2927-05-17",
+    "end_date": "2027-05-17",
     "multiday": true,
     "website": "https://cerocasia.com/index.html",
     "ai_sourced": false,
@@ -874,7 +1074,7 @@
   {
     "id": "croatia-veli-lo-inj-blaze",
     "name": "Blaze",
-    "city": "Veli Lošinj",
+    "city": "Veli Lo\u0161inj",
     "country": "Croatia",
     "region": "Other",
     "lat": 44.5211,
@@ -913,7 +1113,7 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-hemsby-jamfest",
+    "id": "england-hemsby-jamfest-2027",
     "name": "Jamfest",
     "city": "Hemsby",
     "country": "England",
@@ -954,7 +1154,7 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-blackpool-bliss",
+    "id": "england-blackpool-bliss-2027",
     "name": "Bliss",
     "city": "Blackpool",
     "country": "England",
@@ -974,13 +1174,13 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-folkstone-splash",
+    "id": "england-folkestone-splash-2027",
     "name": "Splash",
-    "city": "Folkstone",
+    "city": "Folkestone",
     "country": "England",
     "region": "Europe",
-    "lat": 54.5196,
-    "lon": -1.2435,
+    "lat": 51.0813,
+    "lon": 1.167,
     "types": [
       "Workshops"
     ],
@@ -994,7 +1194,7 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-london-ceroc-champs-uk",
+    "id": "england-london-ceroc-champs-uk-2027",
     "name": "Ceroc Champs (UK)",
     "city": "London",
     "country": "England",
