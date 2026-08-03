@@ -77,14 +77,19 @@ KEYWORD_CHECK = ["ceroc", "modern jive"]
 
 STRIKE_LIMIT = 104  # ~24 months of consecutive weekly zero-result runs
 
+MONTH_PATTERN = (
+    r"(January|Jan|February|Feb|March|Mar|April|Apr|May|"
+    r"June|Jun|July|Jul|August|Aug|September|Sept|Sep|"
+    r"October|Oct|November|Nov|December|Dec)"
+)
+
 DATE_RANGE_RE = re.compile(
-    r"(\d{1,2})(?:st|nd|rd|th)?\s*[-–—to]{1,3}\s*(\d{1,2})(?:st|nd|rd|th)?\s+"
-    r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})",
+    r"(\d{1,2})(?:st|nd|rd|th)?\s*[-–—to]{1,3}\s*(\d{1,2})(?:st|nd|rd|th)?\s+" +
+    MONTH_PATTERN + r"\.?\s+(\d{2,4})",
     re.IGNORECASE,
 )
 SINGLE_DATE_RE = re.compile(
-    r"(\d{1,2})(?:st|nd|rd|th)?\s+"
-    r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})",
+    r"(\d{1,2})(?:st|nd|rd|th)?\s+" + MONTH_PATTERN + r"\.?\s+(\d{2,4})",
     re.IGNORECASE,
 )
 
@@ -263,6 +268,12 @@ def try_jsonld_events(html, page_url):
     return candidates
 
 
+def _normalize_year(year_str):
+    if len(year_str) == 2:
+        return "20" + year_str
+    return year_str
+
+
 def _clean_name_candidate(text):
     if not text:
         return None
@@ -270,13 +281,21 @@ def _clean_name_candidate(text):
     return text if text else None
 
 
-def _choose_name(last_heading, page_title):
-    """Prefer a heading/title that actually mentions a relevant keyword
-    (weekender, championship, etc.) since that's a strong signal it's the
-    event name and not just a generic nav label. Fall back to whichever is a
-    plausible short name. Return None only if nothing usable at all."""
+def _choose_name(url_name, last_heading, page_title):
+    """A name pulled from the event's own link URL (e.g. cerocescape.com's
+    /storm/ slug) is inherently specific to that one event, so it outranks
+    everything else whenever it's available and sane-looking — a generic
+    page title matching a keyword ("Ceroc ESCAPE Dance Weekenders") is not
+    more trustworthy than an actual per-event slug just because it happens
+    to contain the word "weekenders". After that, prefer a heading/title
+    that mentions a relevant keyword, then any plausible short heading/
+    title. Return None only if nothing usable at all."""
+    url_name = _clean_name_candidate(url_name)
     last_heading = _clean_name_candidate(last_heading)
     page_title = _clean_name_candidate(page_title)
+
+    if url_name and 1 <= len(url_name.split()) <= 12 and len(url_name) < 100:
+        return url_name
 
     for candidate in (last_heading, page_title):
         if candidate and any(k in candidate.lower() for k in KEYWORDS) and len(candidate) < 100:
@@ -292,6 +311,26 @@ def _choose_name(last_heading, page_title):
     return None
 
 
+def _name_from_url(url):
+    """Card/tile calendars (common WordPress pattern) often wrap each date
+    in a link to that specific event's own page, e.g. cerocescape.com/storm/
+    — even when there's no visible name text nearby, the URL slug usually is
+    the name."""
+    if not url:
+        return None
+    try:
+        path = urlparse(url).path.strip("/")
+        if not path:
+            return None
+        slug = path.split("/")[-1]
+        slug = re.sub(r"[-_]+", " ", slug).strip()
+        if not slug or slug.isdigit():
+            return None
+        return slug.title()
+    except Exception:
+        return None
+
+
 def try_regex_dates(html, page_url):
     soup = BeautifulSoup(html, "html.parser")
     page_title = soup.title.get_text(strip=True) if soup.title and soup.title.string else None
@@ -304,21 +343,11 @@ def try_regex_dates(html, page_url):
     seen_keys = set()
     last_heading = None
 
-    # Walk headings and text-bearing leaf elements in document order so a
-    # date mentioned under "Ceroc Escape 2027" gets that as its name, rather
-    # than every date on the page being lumped together as unnamed.
-    for el in soup.find_all(["h1", "h2", "h3", "h4", "p", "li", "td", "span", "div", "section", "article"]):
-        text = el.get_text(" ", strip=True)
-        if not text:
-            continue
-
-        if el.name in ("h1", "h2", "h3", "h4"):
-            last_heading = text
-            continue
-
+    def extract_from(text, url_name, heading):
         for m in DATE_RANGE_RE.finditer(text):
             try:
                 start_day, end_day, month, year = m.groups()
+                year = _normalize_year(year)
                 start = dateparser.parse(f"{start_day} {month} {year}").date().isoformat()
                 end = dateparser.parse(f"{end_day} {month} {year}").date().isoformat()
             except (ValueError, OverflowError):
@@ -328,17 +357,17 @@ def try_regex_dates(html, page_url):
                 continue
             seen_keys.add(key)
             candidates.append({
-                "name": _choose_name(last_heading, page_title),
+                "name": _choose_name(url_name, heading, page_title),
                 "start_date": start, "end_date": end,
                 "website": page_url, "source_url": page_url, "confidence": "low",
             })
 
-        # one-day events (e.g. championships) — single date near a champs keyword
-        nearby = f"{last_heading or ''} {text}".lower()
+        nearby = f"{heading or ''} {text}".lower()
         if any(k in nearby for k in ["championship", "champs", "open"]):
             for m in SINGLE_DATE_RE.finditer(text):
                 try:
                     day, month, year = m.groups()
+                    year = _normalize_year(year)
                     d = dateparser.parse(f"{day} {month} {year}").date().isoformat()
                 except (ValueError, OverflowError):
                     continue
@@ -347,10 +376,34 @@ def try_regex_dates(html, page_url):
                     continue
                 seen_keys.add(key)
                 candidates.append({
-                    "name": _choose_name(last_heading, page_title),
+                    "name": _choose_name(url_name, heading, page_title),
                     "start_date": d, "end_date": d,
                     "website": page_url, "source_url": page_url, "confidence": "low",
                 })
+
+    # Walk headings and text-bearing leaf elements in document order so a
+    # date mentioned under "Ceroc Escape 2027" gets that as its name, rather
+    # than every date on the page being lumped together as unnamed.
+    for el in soup.find_all(["h1", "h2", "h3", "h4", "p", "li", "td", "span", "div", "section", "article"]):
+        text = el.get_text(" ", strip=True)
+        if not text:
+            continue
+
+        if el.name in ("h1", "h2", "h3", "h4"):
+            # Some organiser sites (a common WordPress tile/card calendar
+            # pattern) put the date itself inside the heading, with the
+            # event's real name only present in the heading's own link URL
+            # (e.g. "#### [12-15 MARCH 2027](.../storm/)"). Scan the heading
+            # for dates too, using the link slug as the name hint, rather
+            # than only ever treating headings as name sources.
+            link = el.find("a")
+            href = link.get("href") if link else None
+            url_name = _name_from_url(href)
+            extract_from(text, url_name, last_heading)
+            last_heading = text
+            continue
+
+        extract_from(text, None, last_heading)
 
     return candidates
 
