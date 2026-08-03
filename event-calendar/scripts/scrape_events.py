@@ -487,6 +487,7 @@ def main():
             continue
         if found:
             s["strikes"] = 0
+            print(f"  found {len(found)} raw candidate(s) on {s['domain']}")
             all_raw_candidates += [(c, s["domain"]) for c in found]
         else:
             s["strikes"] = s.get("strikes", 0) + 1
@@ -510,6 +511,7 @@ def main():
             print(f"  skipping unnamed low-confidence candidate from {domain} on {start} — needs a human to name it")
             continue
         if is_known_event(name, start, events, existing_candidate_files, rejected):
+            print(f"  '{name}' ({start}) from {domain} matches an existing/known/rejected event — skipping as duplicate")
             continue
 
         candidate = build_candidate(name, start, raw.get("end_date", start), raw.get("website"), raw.get("source_url"))
