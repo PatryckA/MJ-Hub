@@ -1,26 +1,5 @@
 [
   {
-    "id": "unknown-unknown-doncaster-modern-jive-weekender-2025",
-    "name": "Doncaster Modern Jive Weekender",
-    "city": "",
-    "country": "",
-    "region": "Other",
-    "lat": null,
-    "lon": null,
-    "types": [
-      "Other"
-    ],
-    "status": "tbc",
-    "start_date": "2025-03-25",
-    "end_date": "2025-03-25",
-    "multiday": false,
-    "website": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Earl-Doncaster/",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "auto-scraped",
-    "source_url": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Earl-Doncaster/"
-  },
-  {
     "id": "united-kingdom-liphook-pure-dance-spa-weekender-2026",
     "name": "Pure Dance & Spa Weekender",
     "city": "Liphook",
@@ -851,27 +830,6 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "unknown-unknown-all-inclusive-canary-islands-winter-sun-dance-holiday-2026-jive-addiction-2026",
-    "name": "All Inclusive Canary Islands Winter Sun Dance Holiday 2026 - Jive Addiction",
-    "city": "",
-    "country": "",
-    "region": "Other",
-    "lat": null,
-    "lon": null,
-    "types": [
-      "Other"
-    ],
-    "status": "tbc",
-    "start_date": "2026-11-28",
-    "end_date": "2026-11-28",
-    "multiday": false,
-    "website": "https://jiveaddiction.com/event-type/dance-holiday/all-inclusive-canary-islands-winter-sun-dance-holiday-2026/",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "auto-scraped",
-    "source_url": "https://jiveaddiction.com/event-type/dance-holiday/all-inclusive-canary-islands-winter-sun-dance-holiday-2026/"
-  },
-  {
     "id": "united-kingdom-liphook-pure-dance-weekend-2027-2027",
     "name": "PURE Dance Weekend 2027",
     "city": "Liphook",
@@ -987,6 +945,26 @@
     "end_date": "2027-04-19",
     "multiday": true,
     "website": "https://bookings.cerocescapes.co.uk/book/3149",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-doncaster-doncaster-modern-jive-weekender-2027",
+    "name": "Doncaster Modern Jive Weekender",
+    "city": "Doncaster",
+    "country": "England",
+    "region": "Europe",
+    "lat": 53.5228,
+    "lon": -1.1335,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-04-23",
+    "end_date": "2027-04-26",
+    "multiday": true,
+    "website": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Earl-Doncaster/",
     "ai_sourced": false,
     "needs_review": false,
     "source": "organiser-submitted"
@@ -1116,7 +1094,7 @@
   {
     "id": "croatia-veli-lo-inj-blaze-2027-2027",
     "name": "Blaze 2027",
-    "city": "Veli Lo\u0161inj",
+    "city": "Veli Lošinj",
     "country": "Croatia",
     "region": "Other",
     "lat": 44.5211,
@@ -1134,25 +1112,25 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "unknown-unknown-ilkley-yorkshire-modern-jive-weekender-2027",
-    "name": "Ilkley yorkshire Modern Jive Weekender",
-    "city": "",
-    "country": "",
-    "region": "Other",
-    "lat": null,
-    "lon": null,
+    "id": "england-ilkley-ilkley-weekender-2027",
+    "name": "Ilkley Weekender",
+    "city": "Ilkley",
+    "country": "England",
+    "region": "Europe",
+    "lat": 53.9257,
+    "lon": -1.8244,
     "types": [
+      "Workshops",
       "Other"
     ],
-    "status": "tbc",
+    "status": "confirmed",
     "start_date": "2027-06-25",
     "end_date": "2027-06-28",
     "multiday": true,
     "website": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Ilkley-June/",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "auto-scraped",
-    "source_url": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Ilkley-June/"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "france-strasbourg-river-cruise-2027",
@@ -1277,24 +1255,23 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "unknown-unknown-ilkley-yorkshire-modern-jive-xmas-weekender-2027",
-    "name": "Ilkley yorkshire Modern Jive Xmas Weekender",
-    "city": "",
-    "country": "",
-    "region": "Other",
-    "lat": null,
-    "lon": null,
+    "id": "england-ilkley-xmas-weekender-2027",
+    "name": "Xmas Weekender",
+    "city": "Ilkley",
+    "country": "England",
+    "region": "Europe",
+    "lat": 53.9257,
+    "lon": -1.8244,
     "types": [
-      "Other"
+      "Workshops"
     ],
-    "status": "tbc",
+    "status": "confirmed",
     "start_date": "2027-11-26",
     "end_date": "2027-11-28",
     "multiday": true,
     "website": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Ilkley-Xmas-2027/",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "auto-scraped",
-    "source_url": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Ilkley-Xmas-2027/"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   }
 ]
