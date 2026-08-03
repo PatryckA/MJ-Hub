@@ -52,6 +52,10 @@ jobs:
           FOUND_ANY=false
 
           for f in $(grep '^CANDIDATE_FILE::' scrape_output.log | sed 's/CANDIDATE_FILE:://'); do
+            if [ ! -f "$f" ]; then
+              echo "  $f no longer exists (already processed this run?) — skipping"
+              continue
+            fi
             FOUND_ANY=true
             id=$(basename "$f" .json)
             branch="scraper/candidate-$id"
