@@ -9,28 +9,28 @@
   {
     "domain": "bookings.cerocescapes.co.uk",
     "notes": "seeded from existing event list",
-    "strikes": 7,
+    "strikes": 8,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "ceroc.com",
     "notes": "seeded from existing event list",
-    "strikes": 7,
+    "strikes": 8,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "ceroc.com.au",
     "notes": "seeded from existing event list",
-    "strikes": 7,
+    "strikes": 0,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "cerocasia.com",
     "notes": "seeded from existing event list",
-    "strikes": 7,
+    "strikes": 8,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
@@ -58,7 +58,7 @@
   {
     "domain": "cerocevents.co.nz",
     "notes": "seeded from existing event list",
-    "strikes": 7,
+    "strikes": 0,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
@@ -72,35 +72,35 @@
   {
     "domain": "facebook.com",
     "notes": "seeded from existing event list",
-    "strikes": 7,
+    "strikes": 8,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "fevah.dance",
     "notes": "seeded from existing event list",
-    "strikes": 7,
+    "strikes": 0,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "idance.co.nz",
     "notes": "seeded from existing event list",
-    "strikes": 7,
+    "strikes": 8,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "inspiredance.co.nz",
     "notes": "seeded from existing event list",
-    "strikes": 7,
+    "strikes": 8,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "instagram.com",
     "notes": "seeded from existing event list",
-    "strikes": 7,
+    "strikes": 8,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
@@ -121,7 +121,7 @@
   {
     "domain": "qmjc.com.au",
     "notes": "seeded from existing event list",
-    "strikes": 7,
+    "strikes": 0,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
@@ -142,7 +142,7 @@
   {
     "domain": "modernjive.com",
     "notes": "found via search",
-    "strikes": 5,
+    "strikes": 6,
     "discovered_via": "search",
     "added_date": "2026-08-03"
   }
