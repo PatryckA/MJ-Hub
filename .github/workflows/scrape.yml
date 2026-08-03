@@ -2,35 +2,98 @@ name: Scrape organiser sites for new events
 
 on:
   schedule:
-    - cron: "0 3 * * 1"   # every Monday 03:00 UTC
+    - cron: "0 19 * * 6"   # Saturday 19:00 UTC = Sunday 05:00 AEST (see note below on daylight saving)
   workflow_dispatch: {}    # lets you trigger it manually from the Actions tab
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 python-dateutil
+        run: pip install requests beautifulsoup4 python-dateutil duckduckgo-search
+
+      - name: Configure git identity
+        run: |
+          git config user.name "on-the-floor-scraper"
+          git config user.email "actions@users.noreply.github.com"
 
       - name: Run scraper
-        run: python scripts/scrape_events.py
+        id: scrape
+        run: python scripts/scrape_events.py | tee scrape_output.log
 
-      - name: Open a PR if anything changed
-        uses: peter-evans/create-pull-request@v6
+      - name: Open one PR per new candidate event
+        id: open_prs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "" > email_summary.txt
+          FOUND_ANY=false
+
+          for f in $(grep '^CANDIDATE_FILE::' scrape_output.log | sed 's/CANDIDATE_FILE:://'); do
+            FOUND_ANY=true
+            id=$(basename "$f" .json)
+            branch="scraper/candidate-$id"
+            name=$(python -c "import json; print(json.load(open('$f'))['name'])")
+            start=$(python -c "import json; print(json.load(open('$f'))['start_date'])")
+            end=$(python -c "import json; print(json.load(open('$f'))['end_date'])")
+            source_url=$(python -c "import json; print(json.load(open('$f')).get('source_url',''))")
+
+            git checkout -b "$branch" main
+            git add "$f"
+            git commit -m "Scraper: candidate event $id"
+            git push origin "$branch"
+
+            pr_body="Found by the weekly scraper. Source: $source_url — check it before approving.\n\nMerging this PR adds the event to events.json. Closing it without merging records it as rejected so it won't be proposed again."
+            pr_url=$(gh pr create \
+              --title "New candidate event: $name" \
+              --body "$(printf '%b' "$pr_body")" \
+              --head "$branch" --base main)
+
+            echo "----------------------------------------" >> email_summary.txt
+            echo "Event: $name" >> email_summary.txt
+            echo "Dates: $start to $end" >> email_summary.txt
+            echo "Source: $source_url" >> email_summary.txt
+            echo "Review (Approve = Merge, Deny = Close): $pr_url" >> email_summary.txt
+
+            git checkout main
+          done
+
+          echo "found_any=$FOUND_ANY" >> "$GITHUB_OUTPUT"
+
+      - name: Send summary email
+        if: steps.open_prs.outputs.found_any == 'true'
+        uses: dawidd6/action-send-mail@v3
         with:
-          commit-message: "Scraper: candidate events for review"
-          title: "New candidate events found by the scraper"
-          body: |
-            The scheduled scraper found event listings that aren't in `data/events.json` yet.
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_ADDRESS }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          from: On the Floor Scraper <${{ secrets.GMAIL_ADDRESS }}>
+          to: ${{ secrets.GMAIL_ADDRESS }}
+          subject: "On the Floor: new candidate events to review"
+          body: file://email_summary.txt
 
-            Every new entry here has `needs_review: true` and `ai_sourced: true`, and most are
-            missing fields (city, type, exact name) that only a human glance at the source can
-            fill in confidently. Please check each `source_url` before merging.
-          branch: scraper/candidate-events
-          add-paths: data/events.json
+      - name: Send failure alert
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_ADDRESS }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          from: On the Floor Scraper <${{ secrets.GMAIL_ADDRESS }}>
+          to: ${{ secrets.GMAIL_ADDRESS }}
+          subject: "On the Floor: scraper run FAILED"
+          body: "The weekly scraper run failed before completing. Check the Actions log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
