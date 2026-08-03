@@ -575,6 +575,7 @@ def main():
 
     # 4. Build de-duplicated candidate events
     new_candidate_paths = []
+    seen_ids_this_run = set()
     for raw, domain in all_raw_candidates:
         name, start = raw.get("name"), raw.get("start_date")
         if not start:
@@ -588,12 +589,22 @@ def main():
 
         candidate = build_candidate(name, start, raw.get("end_date", start), raw.get("website"), raw.get("source_url"))
 
+        # exact id collision within this run — catches cases where two raw
+        # hits have different-enough name text to dodge the fuzzy check
+        # below, but slugify still collapses them to the same id (e.g. two
+        # near-identical strings from duplicated header/nav markup on the
+        # same page).
+        if candidate["id"] in seen_ids_this_run:
+            print(f"  '{name}' ({start}) from {domain} collapses to an id already queued this run — skipping duplicate")
+            continue
+
         # also guard against two raw hits this same run producing the same candidate twice
         if any(fuzzy_matches(name, start, c.get("name", ""), c.get("start_date", ""),
                               raw.get("website"), c.get("website")) for c in existing_candidate_files):
             continue
 
         path = write_candidate_file(candidate)
+        seen_ids_this_run.add(candidate["id"])
         existing_candidate_files.append(candidate)
         new_candidate_paths.append(str(path))
         print(f"  new candidate written: {path.name}")
@@ -605,7 +616,9 @@ def main():
 
     # Emit a simple newline-separated list on stdout the workflow can capture,
     # in addition to the files themselves (git status also finds these).
-    for p in new_candidate_paths:
+    # dict.fromkeys() dedupes while preserving order, a backstop in case
+    # anything upstream still slips a repeat through.
+    for p in dict.fromkeys(new_candidate_paths):
         print(f"CANDIDATE_FILE::{p}")
 
 
