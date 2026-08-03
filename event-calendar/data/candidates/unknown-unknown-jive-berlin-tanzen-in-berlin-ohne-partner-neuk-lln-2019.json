@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-jive-berlin-tanzen-in-berlin-ohne-partner-neuk-lln-2019",
+  "name": "Jive.Berlin \u2013 Tanzen in Berlin ohne Partner | Neuk\u00f6lln",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Other"
+  ],
+  "status": "tbc",
+  "start_date": "2019-08-18",
+  "end_date": "2019-08-18",
+  "multiday": false,
+  "website": "https://jive.berlin",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://jive.berlin"
+}
