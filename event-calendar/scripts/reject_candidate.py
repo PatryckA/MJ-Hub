@@ -48,6 +48,7 @@ def main():
         "id": candidate["id"],
         "name": candidate.get("name", ""),
         "start_date": candidate.get("start_date", ""),
+        "website": candidate.get("website", ""),
         "rejected_date": date.today().isoformat(),
     })
     save_json(REJECTED_PATH, rejected)
