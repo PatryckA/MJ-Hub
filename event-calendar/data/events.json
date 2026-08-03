@@ -1011,6 +1011,27 @@
     "source": "organiser-submitted"
   },
   {
+    "id": "unknown-unknown-nrg-dance-weekender-2027-jive-addiction-2027",
+    "name": "NRG Dance weekender 2027 - Jive Addiction",
+    "city": "",
+    "country": "",
+    "region": "Other",
+    "lat": null,
+    "lon": null,
+    "types": [
+      "Other"
+    ],
+    "status": "tbc",
+    "start_date": "2027-05-03",
+    "end_date": "2027-05-03",
+    "multiday": false,
+    "website": "https://jiveaddiction.com/event-type/dance-weekender/nrg-dance-weekender-2027/",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "auto-scraped",
+    "source_url": "https://jiveaddiction.com/event-type/dance-weekender/nrg-dance-weekender-2027/"
+  },
+  {
     "id": "sri-lanka-colombo-ceroc-pan-asia-championships-cpac-2027",
     "name": "Ceroc Pan Asia Championships (CPAC)",
     "city": "Colombo",
