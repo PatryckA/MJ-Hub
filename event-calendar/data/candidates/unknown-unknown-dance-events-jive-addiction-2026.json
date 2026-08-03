@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-dance-events-jive-addiction-2026",
+  "name": "Dance Events - Jive Addiction",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Other"
+  ],
+  "status": "tbc",
+  "start_date": "2026-09-04",
+  "end_date": "2026-09-07",
+  "multiday": true,
+  "website": "https://jiveaddiction.com/event-type/all/",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://jiveaddiction.com/event-type/all/"
+}
