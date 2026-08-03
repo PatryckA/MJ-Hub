@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-ilkley-yorkshire-modern-jive-weekender-2027",
+  "name": "Ilkley yorkshire Modern Jive Weekender",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Other"
+  ],
+  "status": "tbc",
+  "start_date": "2027-06-25",
+  "end_date": "2027-06-28",
+  "multiday": true,
+  "website": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Ilkley-June/",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Ilkley-June/"
+}
