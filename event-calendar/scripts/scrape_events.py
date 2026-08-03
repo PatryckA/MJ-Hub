@@ -454,22 +454,27 @@ def main():
     rejected = load_json(REJECTED_PATH, [])
     existing_candidate_files = [load_json(p, {}) for p in CANDIDATES_DIR.glob("*.json")] if CANDIDATES_DIR.exists() else []
 
+    today = date.today().isoformat()
+
+    # seed from existing events if sources.json is completely empty (first run
+    # only). This must happen BEFORE search discovery runs — otherwise a
+    # single lucky/unlucky search result can make `sources` non-empty and
+    # silently skip seeding on what should still count as a first run.
+    if not sources:
+        seeded = sorted({root_domain(e["website"]) for e in events if e.get("website", "").startswith("http")})
+        sources = [{"domain": d, "notes": "seeded from existing event list", "strikes": 0,
+                     "discovered_via": "seeded", "added_date": today} for d in seeded]
+        print(f"sources.json was empty — seeded {len(sources)} domain(s) from events.json")
+
     existing_domains = {s["domain"] for s in sources}
 
     # 1. Discover new sources via search, tag and add them
     print("Discovering new sources via search...")
     new_domains = discover_new_sources(existing_domains)
-    today = date.today().isoformat()
     for d in new_domains:
         sources.append({"domain": d, "notes": "found via search", "strikes": 0,
                          "discovered_via": "search", "added_date": today})
         print(f"  new source added: {d}")
-
-    # seed from existing events if sources.json is completely empty (first run)
-    if not sources:
-        seeded = sorted({root_domain(e["website"]) for e in events if e.get("website", "").startswith("http")})
-        sources = [{"domain": d, "notes": "seeded from existing event list", "strikes": 0,
-                     "discovered_via": "seeded", "added_date": today} for d in seeded]
 
     # 2. Scan every source, track strikes
     all_raw_candidates = []
