@@ -809,25 +809,25 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "unknown-unknown-dance-holiday-jive-addiction-2026",
-    "name": "Dance Holiday - Jive Addiction",
-    "city": "",
-    "country": "",
-    "region": "Other",
-    "lat": null,
-    "lon": null,
+    "id": "spain-canary-islands-jive-addiction-dance-holiday-2026",
+    "name": "Jive Addiction Dance Holiday",
+    "city": "Canary Islands",
+    "country": "Spain",
+    "region": "Europe",
+    "lat": 28.2936,
+    "lon": -16.6214,
     "types": [
-      "Other"
+      "Workshops",
+      "Dance Holiday"
     ],
-    "status": "tbc",
+    "status": "confirmed",
     "start_date": "2026-11-21",
     "end_date": "2026-11-28",
     "multiday": true,
     "website": "https://jiveaddiction.com/event-type/dance-holiday/",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "auto-scraped",
-    "source_url": "https://jiveaddiction.com/event-type/dance-holiday/"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "new-zealand-auckland-cnz-championships-2026",
@@ -991,6 +991,26 @@
     "source": "organiser-submitted"
   },
   {
+    "id": "england-windsor-nrg-dance-weekender-2027",
+    "name": "NRG Dance Weekender",
+    "city": "Windsor",
+    "country": "England",
+    "region": "Europe",
+    "lat": 51.4838,
+    "lon": -0.604,
+    "types": [
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-04-30",
+    "end_date": "2027-05-03",
+    "multiday": true,
+    "website": "https://jiveaddiction.com/event-type/dance-weekender/nrg-dance-weekender-2027/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
     "id": "england-chippenham-chill-out-champs-2027-2027",
     "name": "Chill Out Champs 2027",
     "city": "Chippenham",
@@ -1009,27 +1029,6 @@
     "ai_sourced": false,
     "needs_review": false,
     "source": "organiser-submitted"
-  },
-  {
-    "id": "unknown-unknown-nrg-dance-weekender-2027-jive-addiction-2027",
-    "name": "NRG Dance weekender 2027 - Jive Addiction",
-    "city": "",
-    "country": "",
-    "region": "Other",
-    "lat": null,
-    "lon": null,
-    "types": [
-      "Other"
-    ],
-    "status": "tbc",
-    "start_date": "2027-05-03",
-    "end_date": "2027-05-03",
-    "multiday": false,
-    "website": "https://jiveaddiction.com/event-type/dance-weekender/nrg-dance-weekender-2027/",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "auto-scraped",
-    "source_url": "https://jiveaddiction.com/event-type/dance-weekender/nrg-dance-weekender-2027/"
   },
   {
     "id": "sri-lanka-colombo-ceroc-pan-asia-championships-cpac-2027",
@@ -1136,7 +1135,7 @@
   {
     "id": "croatia-veli-lo-inj-blaze-2027-2027",
     "name": "Blaze 2027",
-    "city": "Veli Lo\u0161inj",
+    "city": "Veli Lošinj",
     "country": "Croatia",
     "region": "Other",
     "lat": 44.5211,
@@ -1214,27 +1213,6 @@
     "ai_sourced": false,
     "needs_review": false,
     "source": "organiser-submitted"
-  },
-  {
-    "id": "unknown-unknown-christchurch-modern-jive-championships-2027",
-    "name": "Christchurch Modern Jive Championships",
-    "city": "",
-    "country": "",
-    "region": "Other",
-    "lat": null,
-    "lon": null,
-    "types": [
-      "Other"
-    ],
-    "status": "tbc",
-    "start_date": "2027-09-17",
-    "end_date": "2027-09-19",
-    "multiday": true,
-    "website": "https://fevah.dance/chchchamps/",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "auto-scraped",
-    "source_url": "https://fevah.dance/chchchamps/"
   },
   {
     "id": "spain-islantilla-medfest-2027-2027",
