@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-champs-2014-ignite-2014",
+  "name": "Champs 2014 \u2013 IGNITE",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Other"
+  ],
+  "status": "tbc",
+  "start_date": "2014-10-04",
+  "end_date": "2014-10-04",
+  "multiday": false,
+  "website": "https://www.qmjc.com.au/hall-of-fame/champs-2014/",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://www.qmjc.com.au/hall-of-fame/champs-2014/"
+}
