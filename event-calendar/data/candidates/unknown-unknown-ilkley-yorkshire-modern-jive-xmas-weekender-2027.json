@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-ilkley-yorkshire-modern-jive-xmas-weekender-2027",
+  "name": "Ilkley yorkshire Modern Jive Xmas Weekender",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Other"
+  ],
+  "status": "tbc",
+  "start_date": "2027-11-26",
+  "end_date": "2027-11-28",
+  "multiday": true,
+  "website": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Ilkley-Xmas-2027/",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Ilkley-Xmas-2027/"
+}
