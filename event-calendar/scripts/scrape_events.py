@@ -288,7 +288,7 @@ def try_regex_dates(html, page_url):
     # Walk headings and text-bearing leaf elements in document order so a
     # date mentioned under "Ceroc Escape 2027" gets that as its name, rather
     # than every date on the page being lumped together as unnamed.
-    for el in soup.find_all(["h1", "h2", "h3", "h4", "p", "li", "td", "span"]):
+    for el in soup.find_all(["h1", "h2", "h3", "h4", "p", "li", "td", "span", "div", "section", "article"]):
         text = el.get_text(" ", strip=True)
         if not text:
             continue
