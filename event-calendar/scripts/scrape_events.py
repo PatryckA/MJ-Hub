@@ -164,20 +164,39 @@ def dates_close(date_a, date_b, window_days=DATE_WINDOW_DAYS):
     return abs((da - db).days) <= window_days
 
 
-def fuzzy_matches(name_a, date_a, name_b, date_b):
-    return name_similarity(name_a, name_b) >= FUZZY_NAME_THRESHOLD and dates_close(date_a, date_b)
+def same_domain_and_date(website_a, date_a, website_b, date_b):
+    """Same organiser domain plus a matching date is a strong enough signal
+    on its own — this catches cases where the extracted name is a generic
+    tagline (e.g. a homepage-only scan finding a teaser blurb) too weak to
+    pass the name-similarity check, but the domain+date combination still
+    clearly points at an event that's already known."""
+    domain_a, domain_b = root_domain(website_a or ""), root_domain(website_b or "")
+    if not domain_a or not domain_b or domain_a != domain_b:
+        return False
+    return dates_close(date_a, date_b)
 
 
-def is_known_event(candidate_name, candidate_start, existing_events, existing_candidate_files, rejected):
+def fuzzy_matches(name_a, date_a, name_b, date_b, website_a=None, website_b=None):
+    if name_similarity(name_a, name_b) >= FUZZY_NAME_THRESHOLD and dates_close(date_a, date_b):
+        return True
+    if website_a or website_b:
+        return same_domain_and_date(website_a, date_a, website_b, date_b)
+    return False
+
+
+def is_known_event(candidate_name, candidate_start, existing_events, existing_candidate_files, rejected, candidate_website=None):
     """Check against confirmed events, in-flight candidate files, and the rejected denylist."""
     for e in existing_events:
-        if fuzzy_matches(candidate_name, candidate_start, e.get("name", ""), e.get("start_date", "")):
+        if fuzzy_matches(candidate_name, candidate_start, e.get("name", ""), e.get("start_date", ""),
+                          candidate_website, e.get("website")):
             return True
     for c in existing_candidate_files:
-        if fuzzy_matches(candidate_name, candidate_start, c.get("name", ""), c.get("start_date", "")):
+        if fuzzy_matches(candidate_name, candidate_start, c.get("name", ""), c.get("start_date", ""),
+                          candidate_website, c.get("website")):
             return True
     for r in rejected:
-        if fuzzy_matches(candidate_name, candidate_start, r.get("name", ""), r.get("start_date", "")):
+        if fuzzy_matches(candidate_name, candidate_start, r.get("name", ""), r.get("start_date", ""),
+                          candidate_website, r.get("website")):
             return True
     return False
 
@@ -510,14 +529,15 @@ def main():
         if not name:
             print(f"  skipping unnamed low-confidence candidate from {domain} on {start} — needs a human to name it")
             continue
-        if is_known_event(name, start, events, existing_candidate_files, rejected):
+        if is_known_event(name, start, events, existing_candidate_files, rejected, candidate_website=raw.get("website")):
             print(f"  '{name}' ({start}) from {domain} matches an existing/known/rejected event — skipping as duplicate")
             continue
 
         candidate = build_candidate(name, start, raw.get("end_date", start), raw.get("website"), raw.get("source_url"))
 
         # also guard against two raw hits this same run producing the same candidate twice
-        if any(fuzzy_matches(name, start, c.get("name", ""), c.get("start_date", "")) for c in existing_candidate_files):
+        if any(fuzzy_matches(name, start, c.get("name", ""), c.get("start_date", ""),
+                              raw.get("website"), c.get("website")) for c in existing_candidate_files):
             continue
 
         path = write_candidate_file(candidate)
