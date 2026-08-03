@@ -244,37 +244,97 @@ def try_jsonld_events(html, page_url):
     return candidates
 
 
+def _clean_name_candidate(text):
+    if not text:
+        return None
+    text = re.sub(r"\s+", " ", text).strip(" -|:")
+    return text if text else None
+
+
+def _choose_name(last_heading, page_title):
+    """Prefer a heading/title that actually mentions a relevant keyword
+    (weekender, championship, etc.) since that's a strong signal it's the
+    event name and not just a generic nav label. Fall back to whichever is a
+    plausible short name. Return None only if nothing usable at all."""
+    last_heading = _clean_name_candidate(last_heading)
+    page_title = _clean_name_candidate(page_title)
+
+    for candidate in (last_heading, page_title):
+        if candidate and any(k in candidate.lower() for k in KEYWORDS) and len(candidate) < 100:
+            return candidate
+
+    # Many organiser sites are single-event domains (e.g. cerocescape.com),
+    # so a short, sane-looking title/heading is very likely the event name
+    # even without an exact keyword match.
+    for candidate in (last_heading, page_title):
+        if candidate and 1 <= len(candidate.split()) <= 12 and len(candidate) < 100:
+            return candidate
+
+    return None
+
+
 def try_regex_dates(html, page_url):
-    text = BeautifulSoup(html, "html.parser").get_text(" ", strip=True)
-    if not any(k in text.lower() for k in KEYWORDS):
+    soup = BeautifulSoup(html, "html.parser")
+    page_title = soup.title.get_text(strip=True) if soup.title and soup.title.string else None
+
+    full_text = soup.get_text(" ", strip=True)
+    if not any(k in full_text.lower() for k in KEYWORDS):
         return []
+
     candidates = []
-    for m in DATE_RANGE_RE.finditer(text):
-        try:
-            start_day, end_day, month, year = m.groups()
-            start = dateparser.parse(f"{start_day} {month} {year}").date().isoformat()
-            end = dateparser.parse(f"{end_day} {month} {year}").date().isoformat()
+    seen_keys = set()
+    last_heading = None
+
+    # Walk headings and text-bearing leaf elements in document order so a
+    # date mentioned under "Ceroc Escape 2027" gets that as its name, rather
+    # than every date on the page being lumped together as unnamed.
+    for el in soup.find_all(["h1", "h2", "h3", "h4", "p", "li", "td", "span"]):
+        text = el.get_text(" ", strip=True)
+        if not text:
+            continue
+
+        if el.name in ("h1", "h2", "h3", "h4"):
+            last_heading = text
+            continue
+
+        for m in DATE_RANGE_RE.finditer(text):
+            try:
+                start_day, end_day, month, year = m.groups()
+                start = dateparser.parse(f"{start_day} {month} {year}").date().isoformat()
+                end = dateparser.parse(f"{end_day} {month} {year}").date().isoformat()
+            except (ValueError, OverflowError):
+                continue
+            key = (start, end)
+            if key in seen_keys:
+                continue
+            seen_keys.add(key)
             candidates.append({
-                "name": None,  # low confidence - needs a human to name it
+                "name": _choose_name(last_heading, page_title),
                 "start_date": start, "end_date": end,
                 "website": page_url, "source_url": page_url, "confidence": "low",
             })
-        except (ValueError, OverflowError):
-            continue
-    # one-day events (e.g. championships) — single date near a champs keyword
-    if any(k in text.lower() for k in ["championship", "champs", "open"]):
-        for m in SINGLE_DATE_RE.finditer(text):
-            try:
-                day, month, year = m.groups()
-                d = dateparser.parse(f"{day} {month} {year}").date().isoformat()
+
+        # one-day events (e.g. championships) — single date near a champs keyword
+        nearby = f"{last_heading or ''} {text}".lower()
+        if any(k in nearby for k in ["championship", "champs", "open"]):
+            for m in SINGLE_DATE_RE.finditer(text):
+                try:
+                    day, month, year = m.groups()
+                    d = dateparser.parse(f"{day} {month} {year}").date().isoformat()
+                except (ValueError, OverflowError):
+                    continue
+                key = (d, d)
+                if key in seen_keys:
+                    continue
+                seen_keys.add(key)
                 candidates.append({
-                    "name": None,
+                    "name": _choose_name(last_heading, page_title),
                     "start_date": d, "end_date": d,
                     "website": page_url, "source_url": page_url, "confidence": "low",
                 })
-            except (ValueError, OverflowError):
-                continue
+
     return candidates
+
 
 
 def scan_source(domain):
