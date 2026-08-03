@@ -56,9 +56,15 @@ jobs:
               echo "  $f no longer exists (already processed this run?) — skipping"
               continue
             fi
-            FOUND_ANY=true
             id=$(basename "$f" .json)
             branch="scraper/candidate-$id"
+
+            if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+              echo "  $branch already exists remotely (still awaiting your review from a previous run) — skipping duplicate PR"
+              continue
+            fi
+
+            FOUND_ANY=true
             name=$(python -c "import json; print(json.load(open('$f'))['name'])")
             start=$(python -c "import json; print(json.load(open('$f'))['start_date'])")
             end=$(python -c "import json; print(json.load(open('$f'))['end_date'])")
