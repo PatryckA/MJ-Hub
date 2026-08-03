@@ -465,8 +465,8 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "scotland-glasgow-ceroc-glasgow-braw-weekender-2026",
-    "name": "Ceroc Glasgow: Braw Weekender",
+    "id": "scotland-glasgow-braw-weekender-2026",
+    "name": "Braw Weekender",
     "city": "Glasgow",
     "country": "Scotland",
     "region": "Europe",
@@ -486,7 +486,7 @@
   },
   {
     "id": "australia-gold-coast-ignite-queensland-modern-jive-championship-2026",
-    "name": "Ignite/ Queensland Modern Jive Championship",
+    "name": "Ignite / Queensland Modern Jive Championship",
     "city": "Gold Coast",
     "country": "Australia",
     "region": "Oceania",
@@ -890,8 +890,8 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-norfolk-swish-2027",
-    "name": "Swish",
+    "id": "england-norfolk-swish-2027-2027",
+    "name": "Swish 2027",
     "city": "Norfolk",
     "country": "England",
     "region": "Europe",
@@ -910,8 +910,8 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-folkestone-storm-2027",
-    "name": "Storm",
+    "id": "england-folkestone-storm-2027-2027",
+    "name": "Storm 2027",
     "city": "Folkestone",
     "country": "England",
     "region": "Europe",
@@ -991,8 +991,8 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-sand-bay-breeze-2027",
-    "name": "Breeze",
+    "id": "england-sand-bay-breeze-2027-2027",
+    "name": "Breeze 2027",
     "city": "Sand Bay",
     "country": "England",
     "region": "Europe",
@@ -1052,8 +1052,8 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-hemsby-chill-2027",
-    "name": "Chill",
+    "id": "england-hemsby-chill-2027-2027",
+    "name": "Chill 2027",
     "city": "Hemsby",
     "country": "England",
     "region": "Europe",
@@ -1072,8 +1072,8 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "croatia-veli-lo-inj-blaze-2027",
-    "name": "Blaze",
+    "id": "croatia-veli-lo-inj-blaze-2027-2027",
+    "name": "Blaze 2027",
     "city": "Veli Lošinj",
     "country": "Croatia",
     "region": "Other",
@@ -1113,8 +1113,8 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-hemsby-jamfest-2027",
-    "name": "Jamfest",
+    "id": "england-hemsby-jamfest-2027-2027",
+    "name": "Jamfest 2027",
     "city": "Hemsby",
     "country": "England",
     "region": "Europe",
@@ -1133,8 +1133,8 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "spain-islantilla-medfest-2027",
-    "name": "Medfest",
+    "id": "spain-islantilla-medfest-2027-2027",
+    "name": "Medfest 2027",
     "city": "Islantilla",
     "country": "Spain",
     "region": "Europe",
@@ -1154,8 +1154,8 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-blackpool-bliss-2027",
-    "name": "Bliss",
+    "id": "england-blackpool-bliss-2027-2027",
+    "name": "Bliss 2027",
     "city": "Blackpool",
     "country": "England",
     "region": "Europe",
@@ -1174,8 +1174,8 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "england-folkestone-splash-2027",
-    "name": "Splash",
+    "id": "england-folkestone-splash-2027-2027",
+    "name": "Splash 2027",
     "city": "Folkestone",
     "country": "England",
     "region": "Europe",
