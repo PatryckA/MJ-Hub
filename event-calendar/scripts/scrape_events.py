@@ -1,42 +1,41 @@
 """
-Scrape organiser websites for candidate multi-day events and merge them into
-data/events.json as review-pending entries (ai_sourced: true, needs_review: true).
+Scrape organiser websites (and discover new ones) for candidate multi-day and
+one-day-championship Ceroc/Modern Jive events, and write each genuinely new
+find as its own file under data/candidates/ for individual PR review.
 
-This is a STARTING POINT, not a finished pipeline. Organiser sites vary wildly in
-structure (some are Facebook groups, some are Instagram, some are plain HTML with
-no structured data at all) so this script focuses on the sites that expose enough
-structure to be worth automating, and leaves the rest for manual/Google-Form entry.
+This is v2 of the original scraper. Key differences from v1:
 
-How it works
-------------
-1. Reads `sources.json` — a list of organiser domains/URLs to check (seeded from
-   the websites already in data/events.json, deduplicated to their root domain).
-2. For each source, tries in order:
-     a. An iCal/.ics feed if the site exposes one (best case - structured & reliable)
-     b. Schema.org "Event" JSON-LD embedded in the page HTML (common on modern sites)
-     c. A conservative regex pass over the page text for date-range patterns near
-        the words that matter (weekender, champs, festival, etc.) — this is the
-        weakest signal and always gets needs_review: true
-3. Any candidate event that doesn't already exist (matched by name + start_date)
-   is appended to events.json with ai_sourced: true, needs_review: true, and a
-   `source_url` pointing at exactly where it was found, so a human can verify fast.
-
-This script deliberately does NOT auto-publish anything. Nothing produced here
-should reach the live site until a human has looked at it (see needs_review).
+- Candidates are written one-per-file to data/candidates/<id>.json instead of
+  being appended directly to data/events.json. This lets the GitHub Action
+  open one PR per event, so you can approve/deny them individually without
+  merge conflicts between PRs.
+- Source discovery is no longer limited to a fixed domain list: a DuckDuckGo
+  search pass (no API key required) looks for new organiser domains each run,
+  filtered by a keyword check (the page must prominently mention "ceroc" or
+  "modern jive") before being trusted.
+- Sources that repeatedly return nothing get a "strike"; after enough
+  consecutive strikes they're dropped from sources.json automatically.
+- Geocoding (lat/lon) happens here via Nominatim (OpenStreetMap, free, no
+  key), rate-limited to respect their usage policy. A geocoding failure does
+  NOT block the event from being added — it's added with lat/lon as null.
+- A rejected.json denylist is checked before proposing any candidate, so
+  events you've explicitly denied don't keep coming back.
+- One-day events (e.g. the International Open Modern Jive Championships) are
+  allowed through with multiday: false — the site's display logic is a
+  separate concern from data collection.
 
 Run locally:
-    pip install requests beautifulsoup4 python-dateutil
-    python scripts/scrape_events.py
+    pip install requests beautifulsoup4 python-dateutil duckduckgo-search
 
-Intended to run on a schedule via .github/workflows/scrape.yml, which opens a
-pull request with any new candidate events rather than pushing straight to main —
-so the review step is enforced by the PR, not just the data flag.
+Intended to run on a schedule via .github/workflows/scrape.yml.
 """
 
 import json
 import re
 import sys
-from datetime import datetime
+import time
+import difflib
+from datetime import datetime, date
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
@@ -44,25 +43,77 @@ import requests
 from bs4 import BeautifulSoup
 from dateutil import parser as dateparser
 
+try:
+    from duckduckgo_search import DDGS
+except ImportError:
+    DDGS = None  # search step degrades gracefully if the package isn't installed
+
 ROOT = Path(__file__).parent.parent
 EVENTS_PATH = ROOT / "data" / "events.json"
 SOURCES_PATH = ROOT / "data" / "sources.json"
+REJECTED_PATH = ROOT / "data" / "rejected.json"
+CANDIDATES_DIR = ROOT / "data" / "candidates"
 
-HEADERS = {"User-Agent": "OnTheFloorEventBot/0.1 (+https://github.com/) - community calendar, contact organiser to opt out"}
+HEADERS = {
+    "User-Agent": "OnTheFloorEventBot/0.2 (+https://github.com/PatryckA/MJ-Hub) "
+                  "- community calendar, contact organiser to opt out"
+}
+NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
+NOMINATIM_HEADERS = {"User-Agent": "OnTheFloorEventBot/0.2 (contact via GitHub repo issues)"}
+NOMINATIM_DELAY_SECONDS = 1.1  # Nominatim usage policy: max 1 req/sec, be polite
+
+SEARCH_QUERIES = [
+    "Ceroc Escape",
+    "Ceroc Weekender",
+    "Modern Jive Weekender",
+    "Ceroc Championships",
+    "Modern Jive Championships",
+    "Ceroc Dance Holiday",
+    "Modern Jive Dance Holiday",
+    "Ceroc Cruise",
+    "Modern Jive Cruise",
+]
+KEYWORD_CHECK = ["ceroc", "modern jive"]
+
+STRIKE_LIMIT = 104  # ~24 months of consecutive weekly zero-result runs
 
 DATE_RANGE_RE = re.compile(
     r"(\d{1,2})(?:st|nd|rd|th)?\s*[-–—to]{1,3}\s*(\d{1,2})(?:st|nd|rd|th)?\s+"
     r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})",
     re.IGNORECASE,
 )
+SINGLE_DATE_RE = re.compile(
+    r"(\d{1,2})(?:st|nd|rd|th)?\s+"
+    r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})",
+    re.IGNORECASE,
+)
 
-KEYWORDS = ["weekender", "championship", "champs", "festival", "dance holiday", "cruise", "escape"]
+KEYWORDS = [
+    "weekender", "championship", "champs", "festival", "dance holiday",
+    "cruise", "escape", "open", "international",
+]
 
+FUZZY_NAME_THRESHOLD = 0.7
+DATE_WINDOW_DAYS = 5
+
+
+# ---------------------------------------------------------------- utilities
 
 def load_json(path, default):
     if path.exists():
         return json.loads(path.read_text())
     return default
+
+
+def save_json(path, data):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, indent=2) + "\n")
+
+
+def slugify(*parts):
+    text = "-".join(str(p) for p in parts if p)
+    text = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+    return text
 
 
 def root_domain(url):
@@ -73,11 +124,90 @@ def root_domain(url):
         return url
 
 
-def build_sources_from_events(events):
-    """Seed sources.json from the domains already present in events.json."""
-    domains = sorted({root_domain(e["website"]) for e in events if e.get("website", "").startswith("http")})
-    return [{"domain": d, "notes": "seeded from existing event list"} for d in domains]
+def parse_date_safe(value):
+    try:
+        return dateparser.parse(value).date()
+    except (ValueError, OverflowError, TypeError):
+        return None
 
+
+# ------------------------------------------------------------- fuzzy match
+
+def _normalize_name(name):
+    name = name.lower()
+    name = re.sub(r"\([^)]*\)", " ", name)  # drop parenthetical abbreviations like "(WMJC)"
+    name = re.sub(r"[^a-z0-9 ]+", " ", name)
+    return re.sub(r"\s+", " ", name).strip()
+
+
+def name_similarity(a, b):
+    if not a or not b:
+        return 0.0
+    na, nb = _normalize_name(a), _normalize_name(b)
+    ratio = difflib.SequenceMatcher(None, na, nb).ratio()
+
+    # word-containment check: catches cases like "World Modern Jive Champs"
+    # vs "World Modern Jive Championships" where whole-string ratio is
+    # dragged down by suffix/length differences but the words themselves
+    # substantially overlap.
+    words_a, words_b = set(na.split()), set(nb.split())
+    shorter, longer = (words_a, words_b) if len(words_a) <= len(words_b) else (words_b, words_a)
+    containment = len(shorter & longer) / len(shorter) if shorter else 0.0
+
+    return max(ratio, containment)
+
+
+def dates_close(date_a, date_b, window_days=DATE_WINDOW_DAYS):
+    da, db = parse_date_safe(date_a), parse_date_safe(date_b)
+    if not da or not db:
+        return False
+    return abs((da - db).days) <= window_days
+
+
+def fuzzy_matches(name_a, date_a, name_b, date_b):
+    return name_similarity(name_a, name_b) >= FUZZY_NAME_THRESHOLD and dates_close(date_a, date_b)
+
+
+def is_known_event(candidate_name, candidate_start, existing_events, existing_candidate_files, rejected):
+    """Check against confirmed events, in-flight candidate files, and the rejected denylist."""
+    for e in existing_events:
+        if fuzzy_matches(candidate_name, candidate_start, e.get("name", ""), e.get("start_date", "")):
+            return True
+    for c in existing_candidate_files:
+        if fuzzy_matches(candidate_name, candidate_start, c.get("name", ""), c.get("start_date", "")):
+            return True
+    for r in rejected:
+        if fuzzy_matches(candidate_name, candidate_start, r.get("name", ""), r.get("start_date", "")):
+            return True
+    return False
+
+
+# --------------------------------------------------------------- geocoding
+
+def geocode(city, country):
+    """Return (lat, lon) or (None, None). Never raises — a geocoding failure
+    should never block an event from being added."""
+    if not city and not country:
+        return None, None
+    try:
+        params = {
+            "city": city or "",
+            "country": country or "",
+            "format": "json",
+            "limit": 1,
+        }
+        r = requests.get(NOMINATIM_URL, params=params, headers=NOMINATIM_HEADERS, timeout=10)
+        time.sleep(NOMINATIM_DELAY_SECONDS)  # respect Nominatim's 1 req/sec policy
+        r.raise_for_status()
+        results = r.json()
+        if results:
+            return float(results[0]["lat"]), float(results[0]["lon"])
+    except Exception as e:
+        print(f"  geocoding failed for {city}, {country}: {e}")
+    return None, None
+
+
+# ---------------------------------------------------------- source scraping
 
 def try_ical(base_url):
     for path in ["/events.ics", "/calendar.ics", "/feed/events.ics"]:
@@ -101,10 +231,12 @@ def try_jsonld_events(html, page_url):
         items = data if isinstance(data, list) else [data]
         for item in items:
             if isinstance(item, dict) and item.get("@type") in ("Event", "Festival"):
+                start = (item.get("startDate") or "")[:10]
+                end = (item.get("endDate") or item.get("startDate") or "")[:10]
                 candidates.append({
                     "name": item.get("name"),
-                    "start_date": item.get("startDate", "")[:10],
-                    "end_date": item.get("endDate", item.get("startDate", ""))[:10],
+                    "start_date": start,
+                    "end_date": end or start,
                     "website": item.get("url", page_url),
                     "source_url": page_url,
                     "confidence": "high",
@@ -124,18 +256,30 @@ def try_regex_dates(html, page_url):
             end = dateparser.parse(f"{end_day} {month} {year}").date().isoformat()
             candidates.append({
                 "name": None,  # low confidence - needs a human to name it
-                "start_date": start,
-                "end_date": end,
-                "website": page_url,
-                "source_url": page_url,
-                "confidence": "low",
+                "start_date": start, "end_date": end,
+                "website": page_url, "source_url": page_url, "confidence": "low",
             })
         except (ValueError, OverflowError):
             continue
+    # one-day events (e.g. championships) — single date near a champs keyword
+    if any(k in text.lower() for k in ["championship", "champs", "open"]):
+        for m in SINGLE_DATE_RE.finditer(text):
+            try:
+                day, month, year = m.groups()
+                d = dateparser.parse(f"{day} {month} {year}").date().isoformat()
+                candidates.append({
+                    "name": None,
+                    "start_date": d, "end_date": d,
+                    "website": page_url, "source_url": page_url, "confidence": "low",
+                })
+            except (ValueError, OverflowError):
+                continue
     return candidates
 
 
 def scan_source(domain):
+    """Returns (candidates, ok). ok=False means the fetch itself failed
+    (network/blocked), distinct from ok=True with zero candidates."""
     base_url = f"https://{domain}"
     found = []
     try:
@@ -143,7 +287,7 @@ def scan_source(domain):
         r.raise_for_status()
     except requests.RequestException as e:
         print(f"  skip {domain}: {e}")
-        return found
+        return found, False
 
     ical = try_ical(base_url)
     if ical:
@@ -151,61 +295,178 @@ def scan_source(domain):
 
     found += try_jsonld_events(r.text, base_url)
     found += try_regex_dates(r.text, base_url)
-    return found
+    return found, True
 
 
-def merge_candidates(events, candidates):
-    existing_keys = {(e["name"], e["start_date"]) for e in events}
-    new_events = []
-    for c in candidates:
-        if not c.get("start_date"):
-            continue
-        key = (c.get("name"), c["start_date"])
-        if key in existing_keys or not c.get("name"):
-            continue
-        new_events.append({
-            "id": re.sub(r"[^a-z0-9]+", "-", f"{c.get('name','unknown')}-{c['start_date']}".lower()).strip("-"),
-            "name": c.get("name") or "Unnamed event (needs review)",
-            "city": "",
-            "country": "",
-            "region": "Other",
-            "types": ["Other"],
-            "status": "tbc",
-            "start_date": c["start_date"],
-            "end_date": c.get("end_date", c["start_date"]),
-            "multiday": c.get("end_date", c["start_date"]) > c["start_date"],
-            "website": c.get("website", ""),
-            "ai_sourced": True,
-            "needs_review": True,
-            "source": "auto-scraped",
-            "source_url": c.get("source_url", ""),
-            "confidence": c.get("confidence", "low"),
-        })
-    return new_events
+def passes_keyword_filter(html_text):
+    """Require 'ceroc' or 'modern jive' to appear prominently — in the title,
+    an h1/h2, or the first ~500 characters of body text — before we trust a
+    newly-discovered domain enough to add it to sources.json."""
+    soup = BeautifulSoup(html_text, "html.parser")
+    title = (soup.title.string if soup.title and soup.title.string else "").lower()
+    headings = " ".join(h.get_text(" ", strip=True) for h in soup.find_all(["h1", "h2"])).lower()
+    body_start = soup.get_text(" ", strip=True)[:500].lower()
+    haystack = " ".join([title, headings, body_start])
+    return any(k in haystack for k in KEYWORD_CHECK)
 
+
+# -------------------------------------------------------- source discovery
+
+def discover_new_sources(existing_domains):
+    """Search DuckDuckGo for each query term, return newly-seen domains that
+    pass the keyword filter. Degrades gracefully (returns []) if the search
+    package is missing or DDG blocks/rate-limits the runner — this must never
+    crash the whole run."""
+    if DDGS is None:
+        print("duckduckgo_search not installed — skipping discovery pass")
+        return []
+
+    new_domains = set()
+    try:
+        with DDGS() as ddgs:
+            for query in SEARCH_QUERIES:
+                try:
+                    results = list(ddgs.text(query, max_results=10))
+                except Exception as e:
+                    print(f"  search failed for '{query}': {e}")
+                    continue
+                for result in results:
+                    url = result.get("href") or result.get("link") or ""
+                    if not url:
+                        continue
+                    domain = root_domain(url)
+                    if not domain or domain in existing_domains or domain in new_domains:
+                        continue
+                    try:
+                        r = requests.get(f"https://{domain}", headers=HEADERS, timeout=10)
+                        r.raise_for_status()
+                        if passes_keyword_filter(r.text):
+                            new_domains.add(domain)
+                        else:
+                            print(f"  discovered {domain} but it failed the keyword check, skipping")
+                    except requests.RequestException as e:
+                        print(f"  couldn't verify discovered domain {domain}: {e}")
+    except Exception as e:
+        print(f"Search discovery pass failed entirely: {e} (continuing with existing sources only)")
+    return sorted(new_domains)
+
+
+# --------------------------------------------------------------- candidates
+
+def write_candidate_file(event):
+    CANDIDATES_DIR.mkdir(parents=True, exist_ok=True)
+    path = CANDIDATES_DIR / f"{event['id']}.json"
+    save_json(path, event)
+    return path
+
+
+def build_candidate(name, start_date, end_date, website, source_url):
+    city, country = "", ""  # left for human review to fill in / geocoding may still work off blank strings
+    lat, lon = geocode(city, country)
+    multiday = bool(end_date and end_date > start_date)
+    event_id = slugify(country or "unknown", city or "unknown", name or "unnamed-event", start_date[:4] if start_date else "")
+    return {
+        "id": event_id,
+        "name": name or "Unnamed event (needs review)",
+        "city": city,
+        "country": country,
+        "region": "Other",
+        "lat": lat,
+        "lon": lon,
+        "types": ["Other"],
+        "status": "tbc",
+        "start_date": start_date,
+        "end_date": end_date or start_date,
+        "multiday": multiday,
+        "website": website or "",
+        "ai_sourced": True,
+        "needs_review": True,
+        "source": "auto-scraped",
+        "source_url": source_url or "",
+    }
+
+
+# --------------------------------------------------------------------- main
 
 def main():
     events = load_json(EVENTS_PATH, [])
-    sources = load_json(SOURCES_PATH, None)
-    if sources is None:
-        sources = build_sources_from_events(events)
-        SOURCES_PATH.write_text(json.dumps(sources, indent=2))
-        print(f"Seeded {SOURCES_PATH} with {len(sources)} domains from existing events.")
+    sources = load_json(SOURCES_PATH, [])
+    rejected = load_json(REJECTED_PATH, [])
+    existing_candidate_files = [load_json(p, {}) for p in CANDIDATES_DIR.glob("*.json")] if CANDIDATES_DIR.exists() else []
 
-    all_candidates = []
+    existing_domains = {s["domain"] for s in sources}
+
+    # 1. Discover new sources via search, tag and add them
+    print("Discovering new sources via search...")
+    new_domains = discover_new_sources(existing_domains)
+    today = date.today().isoformat()
+    for d in new_domains:
+        sources.append({"domain": d, "notes": "found via search", "strikes": 0,
+                         "discovered_via": "search", "added_date": today})
+        print(f"  new source added: {d}")
+
+    # seed from existing events if sources.json is completely empty (first run)
+    if not sources:
+        seeded = sorted({root_domain(e["website"]) for e in events if e.get("website", "").startswith("http")})
+        sources = [{"domain": d, "notes": "seeded from existing event list", "strikes": 0,
+                     "discovered_via": "seeded", "added_date": today} for d in seeded]
+
+    # 2. Scan every source, track strikes
+    all_raw_candidates = []
     for s in sources:
         print(f"Scanning {s['domain']}...")
-        all_candidates += scan_source(s["domain"])
+        found, ok = scan_source(s["domain"])
+        if not ok:
+            # a fetch failure isn't the same as "genuinely nothing here" — don't strike it
+            print(f"  {s['domain']}: fetch failed this run, not counted as a strike")
+            continue
+        if found:
+            s["strikes"] = 0
+            all_raw_candidates += [(c, s["domain"]) for c in found]
+        else:
+            s["strikes"] = s.get("strikes", 0) + 1
 
-    new_events = merge_candidates(events, all_candidates)
-    if not new_events:
-        print("No new candidate events found.")
-        return
+    # 3. Prune sources that have struck out
+    before = len(sources)
+    sources = [s for s in sources if s.get("strikes", 0) < STRIKE_LIMIT]
+    pruned_count = before - len(sources)
+    if pruned_count:
+        print(f"Pruned {pruned_count} source(s) with {STRIKE_LIMIT}+ consecutive zero-result runs.")
 
-    events.extend(new_events)
-    events.sort(key=lambda e: e["start_date"])
-    EVENTS_PATH.write_text(json.dumps(events, indent=2))
-    print(f"Added {len(new_events)} candidate event(s), all flagged needs_review: true.")
+    save_json(SOURCES_PATH, sources)
+
+    # 4. Build de-duplicated candidate events
+    new_candidate_paths = []
+    for raw, domain in all_raw_candidates:
+        name, start = raw.get("name"), raw.get("start_date")
+        if not start:
+            continue
+        if not name:
+            print(f"  skipping unnamed low-confidence candidate from {domain} on {start} — needs a human to name it")
+            continue
+        if is_known_event(name, start, events, existing_candidate_files, rejected):
+            continue
+
+        candidate = build_candidate(name, start, raw.get("end_date", start), raw.get("website"), raw.get("source_url"))
+
+        # also guard against two raw hits this same run producing the same candidate twice
+        if any(fuzzy_matches(name, start, c.get("name", ""), c.get("start_date", "")) for c in existing_candidate_files):
+            continue
+
+        path = write_candidate_file(candidate)
+        existing_candidate_files.append(candidate)
+        new_candidate_paths.append(str(path))
+        print(f"  new candidate written: {path.name}")
+
+    if not new_candidate_paths:
+        print("No new candidate events found this run.")
+    else:
+        print(f"Wrote {len(new_candidate_paths)} new candidate event file(s).")
+
+    # Emit a simple newline-separated list on stdout the workflow can capture,
+    # in addition to the files themselves (git status also finds these).
+    for p in new_candidate_paths:
+        print(f"CANDIDATE_FILE::{p}")
 
 
 if __name__ == "__main__":
