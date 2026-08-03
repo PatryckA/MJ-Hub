@@ -35,6 +35,7 @@ import re
 import sys
 import time
 import difflib
+import urllib.robotparser as robotparser
 from datetime import datetime, date
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
@@ -97,6 +98,16 @@ KEYWORDS = [
     "weekender", "championship", "champs", "festival", "dance holiday",
     "cruise", "escape", "open", "international",
 ]
+
+# Many organiser sites only show real dates on a subpage (e.g. an
+# "/Events/" listing), or even a subpage of that (each event's own page), so
+# the homepage alone often isn't enough. Crawl a couple of levels deep,
+# following only same-domain links whose text/URL look event-relevant, with
+# hard caps so a large site can't run away with the whole job.
+LINK_KEYWORDS = KEYWORDS + ["event", "events", "calendar", "dates", "whats-on", "diary"]
+MAX_CRAWL_DEPTH = 2
+MAX_PAGES_PER_DOMAIN = 15
+CRAWL_DELAY_SECONDS = 0.5
 
 FUZZY_NAME_THRESHOLD = 0.7
 DATE_WINDOW_DAYS = 5
@@ -409,24 +420,112 @@ def try_regex_dates(html, page_url):
 
 
 
+_robots_cache = {}
+
+
+def _can_fetch(domain, url):
+    """Check robots.txt once per domain and cache it. If robots.txt can't be
+    read at all, default to allow — most small organiser sites don't have
+    one, and that shouldn't block a legitimate scan."""
+    if domain not in _robots_cache:
+        rp = robotparser.RobotFileParser()
+        rp.set_url(f"https://{domain}/robots.txt")
+        try:
+            rp.read()
+        except Exception:
+            rp = None
+        _robots_cache[domain] = rp
+    rp = _robots_cache[domain]
+    if rp is None:
+        return True
+    try:
+        return rp.can_fetch(HEADERS["User-Agent"], url)
+    except Exception:
+        return True
+
+
+def _is_relevant_link(link_text, href):
+    haystack = f"{link_text} {href}".lower()
+    return any(k in haystack for k in LINK_KEYWORDS)
+
+
+def discover_links(soup, page_url, domain):
+    """Same-domain links whose visible text or URL look event-relevant —
+    this is what lets the crawl find e.g. an "Events" nav link, then each
+    individual event's own page from there, without wandering into
+    About-Us/Contact/Privacy pages or off-site altogether."""
+    links = []
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+        try:
+            absolute = urljoin(page_url, href).split("#")[0]
+            parsed = urlparse(absolute)
+        except Exception:
+            continue
+        if parsed.scheme not in ("http", "https"):
+            continue
+        if parsed.netloc.replace("www.", "") != domain.replace("www.", ""):
+            continue  # stay on the same domain
+        text = a.get_text(" ", strip=True)
+        if _is_relevant_link(text, href):
+            links.append(absolute)
+    return list(dict.fromkeys(links))  # dedupe, preserve order
+
+
 def scan_source(domain):
-    """Returns (candidates, ok). ok=False means the fetch itself failed
-    (network/blocked), distinct from ok=True with zero candidates."""
+    """Returns (candidates, ok). ok=False means the homepage fetch itself
+    failed (network/blocked), distinct from ok=True with zero candidates.
+
+    Crawls up to MAX_CRAWL_DEPTH levels deep (homepage, then relevant links
+    from it, then relevant links from THOSE pages), since many organiser
+    sites only show real dates on a dedicated events subpage, or even a
+    subpage of that (each event's own page) — a homepage-only scan misses
+    those entirely. Capped by MAX_PAGES_PER_DOMAIN so one large site can't
+    consume the whole run."""
     base_url = f"https://{domain}"
     found = []
-    try:
-        r = requests.get(base_url, headers=HEADERS, timeout=10)
-        r.raise_for_status()
-    except requests.RequestException as e:
-        print(f"  skip {domain}: {e}")
-        return found, False
+    visited = set()
+    queue = [(base_url, 0)]
+    pages_fetched = 0
 
-    ical = try_ical(base_url)
-    if ical:
-        print(f"  {domain}: found an .ics feed (parse with icalendar lib - TODO wire up)")
+    while queue and pages_fetched < MAX_PAGES_PER_DOMAIN:
+        url, depth = queue.pop(0)
+        if url in visited:
+            continue
+        visited.add(url)
 
-    found += try_jsonld_events(r.text, base_url)
-    found += try_regex_dates(r.text, base_url)
+        if not _can_fetch(domain, url):
+            print(f"  robots.txt disallows {url}, skipping")
+            continue
+
+        try:
+            r = requests.get(url, headers=HEADERS, timeout=10)
+            r.raise_for_status()
+        except requests.RequestException as e:
+            if depth == 0:
+                print(f"  skip {domain}: {e}")
+                return found, False  # homepage itself failed — same as before
+            print(f"  subpage fetch failed, skipping just this page: {url}: {e}")
+            continue
+
+        pages_fetched += 1
+
+        if depth == 0:
+            ical = try_ical(base_url)
+            if ical:
+                print(f"  {domain}: found an .ics feed (parse with icalendar lib - TODO wire up)")
+
+        found += try_jsonld_events(r.text, url)
+        found += try_regex_dates(r.text, url)
+
+        if depth < MAX_CRAWL_DEPTH:
+            soup = BeautifulSoup(r.text, "html.parser")
+            for link in discover_links(soup, url, domain):
+                if link not in visited:
+                    queue.append((link, depth + 1))
+
+        time.sleep(CRAWL_DELAY_SECONDS)  # be polite between requests to the same site
+
     return found, True
 
 
