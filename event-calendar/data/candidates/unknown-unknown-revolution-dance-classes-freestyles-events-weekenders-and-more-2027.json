@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-revolution-dance-classes-freestyles-events-weekenders-and-more-2027",
+  "name": "Revolution Dance Classes Freestyles Events weekenders and more",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Other"
+  ],
+  "status": "tbc",
+  "start_date": "2027-01-29",
+  "end_date": "2027-01-29",
+  "multiday": false,
+  "website": "https://revolutiondance.co.uk",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://revolutiondance.co.uk"
+}
