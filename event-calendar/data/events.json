@@ -809,6 +809,27 @@
     "source": "organiser-submitted"
   },
   {
+    "id": "unknown-unknown-dance-holiday-jive-addiction-2026",
+    "name": "Dance Holiday - Jive Addiction",
+    "city": "",
+    "country": "",
+    "region": "Other",
+    "lat": null,
+    "lon": null,
+    "types": [
+      "Other"
+    ],
+    "status": "tbc",
+    "start_date": "2026-11-21",
+    "end_date": "2026-11-28",
+    "multiday": true,
+    "website": "https://jiveaddiction.com/event-type/dance-holiday/",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "auto-scraped",
+    "source_url": "https://jiveaddiction.com/event-type/dance-holiday/"
+  },
+  {
     "id": "new-zealand-auckland-cnz-championships-2026",
     "name": "CNZ Championships",
     "city": "Auckland",
@@ -1094,7 +1115,7 @@
   {
     "id": "croatia-veli-lo-inj-blaze-2027-2027",
     "name": "Blaze 2027",
-    "city": "Veli Lošinj",
+    "city": "Veli Lo\u0161inj",
     "country": "Croatia",
     "region": "Other",
     "lat": 44.5211,
