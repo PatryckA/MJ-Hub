@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-ball-ceroc-and-modern-jive-dance-company-2026",
+  "name": "Ball - Ceroc and Modern Jive Dance Company",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Other"
+  ],
+  "status": "tbc",
+  "start_date": "2026-03-21",
+  "end_date": "2026-03-21",
+  "multiday": false,
+  "website": "https://ceroc.com.au/events/ball/",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://ceroc.com.au/events/ball/"
+}
