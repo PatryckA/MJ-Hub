@@ -851,6 +851,27 @@
     "source": "organiser-submitted"
   },
   {
+    "id": "unknown-unknown-all-inclusive-canary-islands-winter-sun-dance-holiday-2026-jive-addiction-2026",
+    "name": "All Inclusive Canary Islands Winter Sun Dance Holiday 2026 - Jive Addiction",
+    "city": "",
+    "country": "",
+    "region": "Other",
+    "lat": null,
+    "lon": null,
+    "types": [
+      "Other"
+    ],
+    "status": "tbc",
+    "start_date": "2026-11-28",
+    "end_date": "2026-11-28",
+    "multiday": false,
+    "website": "https://jiveaddiction.com/event-type/dance-holiday/all-inclusive-canary-islands-winter-sun-dance-holiday-2026/",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "auto-scraped",
+    "source_url": "https://jiveaddiction.com/event-type/dance-holiday/all-inclusive-canary-islands-winter-sun-dance-holiday-2026/"
+  },
+  {
     "id": "united-kingdom-liphook-pure-dance-weekend-2027-2027",
     "name": "PURE Dance Weekend 2027",
     "city": "Liphook",
