@@ -1074,7 +1074,7 @@
   {
     "id": "croatia-veli-lo-inj-blaze-2027-2027",
     "name": "Blaze 2027",
-    "city": "Veli Lošinj",
+    "city": "Veli Lo\u0161inj",
     "country": "Croatia",
     "region": "Other",
     "lat": 44.5211,
@@ -1212,5 +1212,26 @@
     "ai_sourced": false,
     "needs_review": false,
     "source": "organiser-submitted"
+  },
+  {
+    "id": "unknown-unknown-ilkley-yorkshire-modern-jive-xmas-weekender-2027",
+    "name": "Ilkley yorkshire Modern Jive Xmas Weekender",
+    "city": "",
+    "country": "",
+    "region": "Other",
+    "lat": null,
+    "lon": null,
+    "types": [
+      "Other"
+    ],
+    "status": "tbc",
+    "start_date": "2027-11-26",
+    "end_date": "2027-11-28",
+    "multiday": true,
+    "website": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Ilkley-Xmas-2027/",
+    "ai_sourced": true,
+    "needs_review": true,
+    "source": "auto-scraped",
+    "source_url": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Ilkley-Xmas-2027/"
   }
 ]
