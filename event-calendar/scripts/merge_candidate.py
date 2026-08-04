@@ -1,66 +1,83 @@
-"""
-Runs after a candidate PR (data/candidates/<id>.json) is merged. Takes that
-one candidate file, does a hard id-collision check against the current
-events.json (the fuzzy check at scrape time doesn't protect against
-collisions with events added *after* the candidate was created, since a PR
-can sit unreviewed for a while), and either:
+name: Handle candidate event PR decision
 
-- appends it to events.json and deletes the candidate file (clean merge), or
-- leaves the candidate file in place and exits non-zero, so the workflow can
-  open an issue instead of silently overwriting or renaming anything.
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - "event-calendar/data/candidates/**"
 
-Usage:
-    python scripts/merge_candidate.py data/candidates/some-event-id.json
-"""
+permissions:
+  contents: write
+  issues: write
 
-import json
-import sys
-from pathlib import Path
+jobs:
+  handle-decision:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
-ROOT = Path(__file__).parent.parent
-EVENTS_PATH = ROOT / "data" / "events.json"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
+      - name: Configure git identity
+        run: |
+          git config user.name "on-the-floor-scraper"
+          git config user.email "actions@users.noreply.github.com"
 
-def load_json(path, default):
-    if path.exists():
-        return json.loads(path.read_text())
-    return default
+      - name: Get changed candidate file path
+        id: files
+        run: |
+          echo "path=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} -- event-calendar/data/candidates/ | head -n1)" >> "$GITHUB_OUTPUT"
 
+      # --- Approved (merged) path ---
+      - name: Merge candidate into events.json
+        if: github.event.pull_request.merged == true
+        run: python event-calendar/scripts/merge_candidate.py "${{ steps.files.outputs.path }}"
+        id: merge_step
+        continue-on-error: true
 
-def save_json(path, data):
-    path.write_text(json.dumps(data, indent=2) + "\n")
+      - name: Commit merged event
+        if: github.event.pull_request.merged == true && steps.merge_step.outcome == 'success'
+        run: |
+          git add event-calendar/data/events.json "${{ steps.files.outputs.path }}" 2>/dev/null || true
+          git commit -m "Merge candidate event into events.json"
+          git pull --rebase origin main
+          git push origin main
 
+      - name: Open ID-collision issue
+        if: github.event.pull_request.merged == true && steps.merge_step.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "ID collision merging ${{ steps.files.outputs.path }}" \
+            --body "The scraper's merge step hit an id collision for this candidate. It was NOT auto-merged into events.json. Please check ${{ steps.files.outputs.path }} manually and resolve the id clash before adding it by hand."
 
-def main():
-    if len(sys.argv) != 2:
-        print("Usage: python scripts/merge_candidate.py <path-to-candidate.json>")
-        return 1
+      # --- Denied (closed without merging) path ---
+      - name: Fetch candidate content from head branch
+        if: github.event.pull_request.merged != true
+        run: |
+          git fetch origin "${{ github.event.pull_request.head.ref }}" || true
+          git show "origin/${{ github.event.pull_request.head.ref }}:${{ steps.files.outputs.path }}" > /tmp/rejected_candidate.json || echo "{}" > /tmp/rejected_candidate.json
 
-    candidate_path = Path(sys.argv[1])
-    if not candidate_path.exists():
-        print(f"Candidate file not found: {candidate_path} (already merged?)")
-        return 0
+      - name: Record rejection
+        if: github.event.pull_request.merged != true
+        run: python event-calendar/scripts/reject_candidate.py /tmp/rejected_candidate.json || true
 
-    candidate = load_json(candidate_path, None)
-    if candidate is None:
-        print(f"Could not read {candidate_path}")
-        return 1
+      - name: Commit rejection record
+        if: github.event.pull_request.merged != true
+        run: |
+          git add event-calendar/data/rejected.json
+          git commit -m "Record denied candidate event"
+          git pull --rebase origin main
+          git push origin main
 
-    events = load_json(EVENTS_PATH, [])
-    existing_ids = {e["id"] for e in events}
-
-    if candidate["id"] in existing_ids:
-        print(f"ID COLLISION: '{candidate['id']}' already exists in events.json.")
-        print("Not merging automatically — leaving the candidate file in place for manual review.")
-        return 1
-
-    events.append(candidate)
-    events.sort(key=lambda e: e.get("start_date", ""))
-    save_json(EVENTS_PATH, events)
-    candidate_path.unlink()
-    print(f"Merged '{candidate['id']}' into events.json and removed the candidate file.")
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+      - name: Delete candidate branch
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/${{ github.event.pull_request.head.ref }}" || true
