@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-events-2025",
+  "name": "Events",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Other"
+  ],
+  "status": "tbc",
+  "start_date": "2025-07-01",
+  "end_date": "2025-07-01",
+  "multiday": false,
+  "website": "https://revolutiondance.co.uk/MJ-Events/",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://revolutiondance.co.uk/MJ-Events/"
+}
