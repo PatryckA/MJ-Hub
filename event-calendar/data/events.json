@@ -424,10 +424,10 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "united-kingdom-wigton-camp-and-dance-2026",
+    "id": "england-wigton-camp-and-dance-2026",
     "name": "Camp and Dance",
     "city": "Wigton",
-    "country": "United Kingdom",
+    "country": "England",
     "region": "Europe",
     "lat": 54.828,
     "lon": -3.158,
@@ -473,7 +473,7 @@
     "lat": 55.8642,
     "lon": -4.2518,
     "types": [
-      "Dance Holiday"
+      "Workshops"
     ],
     "status": "confirmed",
     "start_date": "2026-08-07",
@@ -575,7 +575,7 @@
     "lat": 50.5809,
     "lon": -3.4695,
     "types": [
-      "Dance Holiday"
+      "Workshops"
     ],
     "status": "confirmed",
     "start_date": "2026-09-04",
@@ -628,15 +628,15 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "scotland-perth-xtra-weekender-2026-2026",
-    "name": "XTRA Weekender 2026",
+    "id": "scotland-perth-xtra-2026-2026",
+    "name": "XTRA 2026",
     "city": "Perth",
     "country": "Scotland",
     "region": "Europe",
     "lat": 56.395,
     "lon": -3.4308,
     "types": [
-      "Dance Holiday"
+      "Workshops"
     ],
     "status": "confirmed",
     "start_date": "2026-10-09",
@@ -777,13 +777,14 @@
     "lat": 34.772,
     "lon": 32.4297,
     "types": [
+      "Workshops",
       "Dance Holiday"
     ],
     "status": "confirmed",
     "start_date": "2026-11-18",
     "end_date": "2026-11-25",
     "multiday": true,
-    "website": "https://www.boogaloo.dance/holidays",
+    "website": "https://www.boogaloo.dance/events/cyprus-holiday",
     "ai_sourced": false,
     "needs_review": false,
     "source": "organiser-submitted"
@@ -851,15 +852,15 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "united-kingdom-liphook-pure-dance-weekend-2027-2027",
-    "name": "PURE Dance Weekend 2027",
+    "id": "united-kingdom-liphook-pure-2027-2027",
+    "name": "PURE 2027",
     "city": "Liphook",
     "country": "United Kingdom",
     "region": "Europe",
     "lat": 51.0827,
     "lon": -0.8058,
     "types": [
-      "Dance Holiday"
+      "Workshops"
     ],
     "status": "confirmed",
     "start_date": "2027-01-22",
@@ -879,7 +880,7 @@
     "lat": 53.9591,
     "lon": -1.0815,
     "types": [
-      "Dance Holiday"
+      "Workshops"
     ],
     "status": "confirmed",
     "start_date": "2027-01-29",
@@ -891,15 +892,15 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "united-kingdom-antrim-flame-weekender-2027-2027",
-    "name": "FLAME Weekender 2027",
+    "id": "united-kingdom-antrim-flame-2027-2027",
+    "name": "Flame 2027",
     "city": "Antrim",
     "country": "United Kingdom",
     "region": "Europe",
     "lat": 54.714,
     "lon": -6.211,
     "types": [
-      "Dance Holiday"
+      "Workshops"
     ],
     "status": "confirmed",
     "start_date": "2027-02-05",
@@ -959,7 +960,7 @@
     "lat": 52.2544,
     "lon": -1.159,
     "types": [
-      "Dance Holiday"
+      "Workshops"
     ],
     "status": "confirmed",
     "start_date": "2027-04-16",
@@ -1141,7 +1142,7 @@
     "lat": 44.5211,
     "lon": 14.5017,
     "types": [
-      "Other"
+      "Workshops"
     ],
     "status": "confirmed",
     "start_date": "2027-06-12",
@@ -1161,14 +1162,34 @@
     "lat": 53.9257,
     "lon": -1.8244,
     "types": [
-      "Workshops",
-      "Other"
+      "Workshops"
     ],
     "status": "confirmed",
     "start_date": "2027-06-25",
     "end_date": "2027-06-28",
     "multiday": true,
     "website": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Ilkley-June/",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
+    "id": "england-wigton-camp-dance-2027",
+    "name": "Camp & Dance",
+    "city": "Wigton",
+    "country": "England",
+    "region": "Europe",
+    "lat": 54.8247,
+    "lon": -3.1611,
+    "types": [
+      "Workshops",
+      "Dance Holiday"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-07-02",
+    "end_date": "2027-07-05",
+    "multiday": true,
+    "website": "https://www.boogaloo.dance/events/camp-and-dance",
     "ai_sourced": false,
     "needs_review": false,
     "source": "organiser-submitted"
