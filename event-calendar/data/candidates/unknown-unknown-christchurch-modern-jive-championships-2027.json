@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-christchurch-modern-jive-championships-2027",
+  "name": "Christchurch Modern Jive Championships",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Other"
+  ],
+  "status": "tbc",
+  "start_date": "2027-09-17",
+  "end_date": "2027-09-19",
+  "multiday": true,
+  "website": "https://fevah.dance/chchchamps/",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://fevah.dance/chchchamps/"
+}
