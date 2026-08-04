@@ -1136,7 +1136,7 @@
   {
     "id": "croatia-veli-lo-inj-blaze-2027-2027",
     "name": "Blaze 2027",
-    "city": "Veli Lo\u0161inj",
+    "city": "Veli Lošinj",
     "country": "Croatia",
     "region": "Other",
     "lat": 44.5211,
@@ -1236,25 +1236,24 @@
     "source": "organiser-submitted"
   },
   {
-    "id": "unknown-unknown-christchurch-modern-jive-championships-2027",
+    "id": "zew-zealand-christchurch-christchurch-modern-jive-championships-2027",
     "name": "Christchurch Modern Jive Championships",
     "city": "Christchurch",
     "country": "Zew Zealand",
-    "region": "Oceania",
-    "lat": null,
-    "lon": null,
+    "region": "Other",
+    "lat": -43.531,
+    "lon": 172.6364,
     "types": [
-       "Competition"
+      "Competition"
     ],
-    "status": "tbc",
+    "status": "confirmed",
     "start_date": "2027-09-17",
     "end_date": "2027-09-19",
     "multiday": true,
     "website": "https://fevah.dance/chchchamps/",
-    "ai_sourced": true,
-    "needs_review": true,
-    "source": "auto-scraped",
-    "source_url": "https://fevah.dance/chchchamps/"
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
   },
   {
     "id": "spain-islantilla-medfest-2027-2027",
