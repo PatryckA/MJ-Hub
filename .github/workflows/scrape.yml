@@ -69,13 +69,17 @@ jobs:
             start=$(python -c "import json; print(json.load(open('$f'))['start_date'])")
             end=$(python -c "import json; print(json.load(open('$f'))['end_date'])")
             source_url=$(python -c "import json; print(json.load(open('$f')).get('source_url',''))")
+            city=$(python -c "import json; print(json.load(open('$f')).get('city','') or '(not extracted — fill in manually if approving)')")
+            country=$(python -c "import json; print(json.load(open('$f')).get('country','') or '(not extracted — fill in manually if approving)')")
+            types=$(python -c "import json; print(', '.join(json.load(open('$f')).get('types', ['Other'])))")
+            multiday=$(python -c "import json; print(json.load(open('$f')).get('multiday', False))")
 
             git checkout -b "$branch" main
             git add "$f"
             git commit -m "Scraper: candidate event $id"
             git push origin "$branch"
 
-            pr_body="Found by the weekly scraper. Source: $source_url — check it before approving.\n\nMerging this PR adds the event to events.json. Closing it without merging records it as rejected so it won't be proposed again."
+            pr_body="Found by the weekly scraper. Source: $source_url — check it before approving.\n\n**If merged, this is exactly what gets added to events.json:**\n\n| Field | Value |\n|---|---|\n| Name | $name |\n| City | $city |\n| Country | $country |\n| Start date | $start |\n| End date | $end |\n| Multi-day | $multiday |\n| Type | $types |\n\nCity/country/type are the scraper's best guess (or blank if it couldn't tell) — edit the candidate file in this PR directly before merging if anything needs correcting.\n\nMerging this PR adds the event to events.json. Closing it without merging records it as rejected so it won't be proposed again."
             pr_url=$(gh pr create \
               --title "New candidate event: $name" \
               --body "$(printf '%b' "$pr_body")" \
