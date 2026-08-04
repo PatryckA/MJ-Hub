@@ -268,6 +268,20 @@ def try_jsonld_events(html, page_url):
             if isinstance(item, dict) and item.get("@type") in ("Event", "Festival"):
                 start = (item.get("startDate") or "")[:10]
                 end = (item.get("endDate") or item.get("startDate") or "")[:10]
+
+                city, country = "", ""
+                location = item.get("location")
+                if isinstance(location, dict):
+                    address = location.get("address")
+                    if isinstance(address, dict):
+                        city = address.get("addressLocality", "") or ""
+                        country = address.get("addressCountry", "") or ""
+                    elif isinstance(address, str):
+                        # some sites just put a plain string address here —
+                        # not structured enough to split reliably, leave
+                        # city/country blank rather than guess wrong
+                        pass
+
                 candidates.append({
                     "name": item.get("name"),
                     "start_date": start,
@@ -275,6 +289,8 @@ def try_jsonld_events(html, page_url):
                     "website": item.get("url", page_url),
                     "source_url": page_url,
                     "confidence": "high",
+                    "city": city,
+                    "country": country,
                 })
     return candidates
 
@@ -591,8 +607,25 @@ def write_candidate_file(event):
     return path
 
 
-def build_candidate(name, start_date, end_date, website, source_url):
-    city, country = "", ""  # left for human review to fill in / geocoding may still work off blank strings
+TYPE_KEYWORDS = [
+    (["cruise"], "Cruise"),
+    (["championship", "champs", "open"], "Competition"),
+    (["dance holiday", "holiday"], "Dance Holiday"),
+    (["weekender", "escape", "festival"], "Workshops"),
+]
+
+
+def _infer_types(name):
+    if not name:
+        return ["Other"]
+    lower = name.lower()
+    for keywords, type_label in TYPE_KEYWORDS:
+        if any(k in lower for k in keywords):
+            return [type_label]
+    return ["Other"]
+
+
+def build_candidate(name, start_date, end_date, website, source_url, city="", country=""):
     lat, lon = geocode(city, country)
     multiday = bool(end_date and end_date > start_date)
     event_id = slugify(country or "unknown", city or "unknown", name or "unnamed-event", start_date[:4] if start_date else "")
@@ -604,7 +637,7 @@ def build_candidate(name, start_date, end_date, website, source_url):
         "region": "Other",
         "lat": lat,
         "lon": lon,
-        "types": ["Other"],
+        "types": _infer_types(name),
         "status": "tbc",
         "start_date": start_date,
         "end_date": end_date or start_date,
@@ -686,7 +719,8 @@ def main():
             print(f"  '{name}' ({start}) from {domain} matches an existing/known/rejected event — skipping as duplicate")
             continue
 
-        candidate = build_candidate(name, start, raw.get("end_date", start), raw.get("website"), raw.get("source_url"))
+        candidate = build_candidate(name, start, raw.get("end_date", start), raw.get("website"), raw.get("source_url"),
+                                     city=raw.get("city", ""), country=raw.get("country", ""))
 
         # exact id collision within this run — catches cases where two raw
         # hits have different-enough name text to dodge the fuzzy check
