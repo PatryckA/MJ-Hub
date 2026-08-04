@@ -88,7 +88,11 @@ jobs:
 
             echo "----------------------------------------" >> email_summary.txt
             echo "Event: $name" >> email_summary.txt
+            echo "City: $city" >> email_summary.txt
+            echo "Country: $country" >> email_summary.txt
             echo "Dates: $start to $end" >> email_summary.txt
+            echo "Multi-day: $multiday" >> email_summary.txt
+            echo "Type: $types" >> email_summary.txt
             echo "Source: $source_url" >> email_summary.txt
             echo "Review (Approve = Merge, Deny = Close): $pr_url" >> email_summary.txt
 
