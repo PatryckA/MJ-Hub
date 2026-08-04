@@ -1,0 +1,21 @@
+{
+  "id": "es-torremolinos-costa-dance-holiday-torremolinos-2026",
+  "name": "Costa Dance Holiday \u00e2\u0080\u0094 Torremolinos",
+  "city": "Torremolinos",
+  "country": "ES",
+  "region": "Other",
+  "lat": 36.6242841,
+  "lon": -4.4995448,
+  "types": [
+    "Dance Holiday"
+  ],
+  "status": "tbc",
+  "start_date": "2026-05-10",
+  "end_date": "2026-05-17",
+  "multiday": true,
+  "website": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Costa/",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://revolutiondance.co.uk/MJ-Events/Weekenders-Holidays/Costa/"
+}
