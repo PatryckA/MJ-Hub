@@ -39,7 +39,7 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "Update sources.json (strikes/discoveries/pruning)"
             git pull --rebase origin main
-            git push origin main
+            git push origin HEAD:main
           else
             echo "No changes to sources.json this run."
           fi
