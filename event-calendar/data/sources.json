@@ -9,14 +9,14 @@
   {
     "domain": "bookings.cerocescapes.co.uk",
     "notes": "seeded from existing event list",
-    "strikes": 8,
+    "strikes": 9,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "ceroc.com",
     "notes": "seeded from existing event list",
-    "strikes": 8,
+    "strikes": 9,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
@@ -30,28 +30,28 @@
   {
     "domain": "cerocasia.com",
     "notes": "seeded from existing event list",
-    "strikes": 8,
+    "strikes": 9,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "cerocblaze.com",
     "notes": "seeded from existing event list",
-    "strikes": 5,
+    "strikes": 6,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "ceroccruise.com",
     "notes": "seeded from existing event list",
-    "strikes": 6,
+    "strikes": 7,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "cerocescape.com",
     "notes": "seeded from existing event list",
-    "strikes": 0,
+    "strikes": 1,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
@@ -65,14 +65,14 @@
   {
     "domain": "cerocmedfest.com",
     "notes": "seeded from existing event list",
-    "strikes": 5,
+    "strikes": 6,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "facebook.com",
     "notes": "seeded from existing event list",
-    "strikes": 8,
+    "strikes": 9,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
@@ -86,21 +86,21 @@
   {
     "domain": "idance.co.nz",
     "notes": "seeded from existing event list",
-    "strikes": 8,
+    "strikes": 9,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "inspiredance.co.nz",
     "notes": "seeded from existing event list",
-    "strikes": 8,
+    "strikes": 9,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "instagram.com",
     "notes": "seeded from existing event list",
-    "strikes": 8,
+    "strikes": 9,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
@@ -114,7 +114,7 @@
   {
     "domain": "jiveaddiction.com",
     "notes": "seeded from existing event list",
-    "strikes": 0,
+    "strikes": 1,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
@@ -135,14 +135,14 @@
   {
     "domain": "wmjc-blackpool.com",
     "notes": "seeded from existing event list",
-    "strikes": 0,
+    "strikes": 1,
     "discovered_via": "seeded",
     "added_date": "2026-08-03"
   },
   {
     "domain": "modernjive.com",
     "notes": "found via search",
-    "strikes": 6,
+    "strikes": 7,
     "discovered_via": "search",
     "added_date": "2026-08-03"
   }
