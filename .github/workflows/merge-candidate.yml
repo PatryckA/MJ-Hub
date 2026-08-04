@@ -44,6 +44,7 @@ jobs:
         run: |
           git add event-calendar/data/events.json "${{ steps.files.outputs.path }}" 2>/dev/null || true
           git commit -m "Merge candidate event into events.json"
+          git pull --rebase origin main
           git push origin main
 
       - name: Open ID-collision issue
@@ -71,6 +72,7 @@ jobs:
         run: |
           git add event-calendar/data/rejected.json
           git commit -m "Record denied candidate event"
+          git pull --rebase origin main
           git push origin main
 
       - name: Delete candidate branch
