@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-waikato-championships-ceroc-dance-new-zealand-local-regional-national-events-2025",
+  "name": "Waikato Championships \u2013 Ceroc Dance New Zealand Local, Regional & National Events",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Competition"
+  ],
+  "status": "tbc",
+  "start_date": "2025-04-06",
+  "end_date": "2025-04-06",
+  "multiday": false,
+  "website": "https://cerocevents.co.nz/waikato-champs-2/",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://cerocevents.co.nz/waikato-champs-2/"
+}
