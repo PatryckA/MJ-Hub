@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-ceroc-dance-parties-social-dance-nights-in-sydney-2026",
+  "name": "Ceroc Dance Parties - Social Dance Nights in Sydney",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Other"
+  ],
+  "status": "tbc",
+  "start_date": "2026-08-23",
+  "end_date": "2026-08-23",
+  "multiday": false,
+  "website": "https://ceroc.com.au/dance-parties/",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://ceroc.com.au/dance-parties/"
+}
