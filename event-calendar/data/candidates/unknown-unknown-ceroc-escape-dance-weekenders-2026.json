@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-ceroc-escape-dance-weekenders-2026",
+  "name": "Ceroc ESCAPE Dance Weekenders",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Workshops"
+  ],
+  "status": "tbc",
+  "start_date": "2026-10-04",
+  "end_date": "2026-10-11",
+  "multiday": true,
+  "website": "https://cerocescape.com",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://cerocescape.com"
+}
