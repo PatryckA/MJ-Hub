@@ -217,22 +217,16 @@
   .popup-event a{color:var(--gold); text-decoration:none; font-weight:600; font-size:0.9rem;}
   .popup-event a:hover{text-decoration:underline;}
   .popup-event .popup-meta{color:var(--slate); font-size:0.78rem; margin-top:2px;}
-  .map-pin{
-    position:absolute;
-    border-radius:50% 50% 50% 0;
+  .map-marker{
+    border-radius:50%;
     border:2px solid var(--ink);
-    box-shadow:0 1px 4px rgba(0,0,0,0.4);
-    transform:rotate(-45deg);
-  }
-  .map-pin-label{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%) rotate(45deg);
     color:var(--ink);
     font-family:'IBM Plex Mono', monospace;
     font-weight:600;
-    white-space:nowrap;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 1px 4px rgba(0,0,0,0.4);
   }
   .map-hint{
     text-align:center;
@@ -242,24 +236,15 @@
   }
 
   .topbar{
-    position:absolute;
-    top:64px;
-    right:24px;
+    display:flex;
+    justify-content:flex-end;
+    max-width:1100px;
+    margin:0 auto;
+    padding:20px 24px 0;
   }
   .topbar .btn{
     padding:9px 18px;
     font-size:0.82rem;
-  }
-  @media (max-width:560px){
-    /* On narrow screens the headline can wrap onto multiple lines, so the
-       overlaid button risks colliding with it - drop back to normal flow
-       above the hero, like before. */
-    .topbar{
-      position:static;
-      display:flex;
-      justify-content:flex-end;
-      padding:20px 24px 0;
-    }
   }
 
   .legend{
@@ -282,6 +267,25 @@
     height:9px;
     border-radius:50%;
     flex-shrink:0;
+  }
+
+  .disclaimer{
+    max-width:1100px;
+    margin:18px auto 0;
+    padding:12px 24px;
+    font-size:0.8rem;
+    line-height:1.55;
+    color:#f2c675;
+    background:rgba(232,163,61,0.08);
+    border-top:1px solid rgba(232,163,61,0.25);
+    border-bottom:1px solid rgba(232,163,61,0.25);
+  }
+  .disclaimer div + div{margin-top:6px;}
+  .disclaimer-sub{font-size:0.74rem; color:var(--slate); opacity:0.85;}
+  .disclaimer-sub-wrapper{
+    max-width:1100px;
+    margin:8px auto 0;
+    padding:0 24px;
   }
 
   /* ---------- Timeline / list ---------- */
@@ -347,6 +351,7 @@
   }
   .date-stub .d{font-size:1.5rem; font-weight:600;}
   .date-stub .mo{font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; margin-top:2px;}
+  .date-stub .yr{font-size:0.74rem; opacity:0.75; margin-top:1px;}
   .date-stub::after{
     content:"";
     position:absolute;
@@ -382,10 +387,6 @@
     font-weight:700;
     font-size:0.78rem;
     padding:5px 11px;
-  }
-  .status-tbc-top{
-    display:inline-block;
-    margin-bottom:8px;
   }
   .tag.range{background:rgba(232,163,61,0.14); color:var(--gold);}
 
@@ -437,36 +438,6 @@
   .btn:hover{background:#f2b455;}
   .footer-meta{font-size:0.78rem; color:var(--slate); margin-top:28px; text-align:right;}
 
-  .footer-brand{
-    max-width:1100px;
-    margin:28px auto 0;
-    padding-top:28px;
-    border-top:1px solid var(--line);
-    text-align:center;
-  }
-  .footer-brand .share-row{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    margin-bottom:16px;
-  }
-  .footer-brand .share-btn{
-    width:38px; height:38px;
-    border-radius:50%;
-    background:var(--floor-raised);
-    border:1px solid var(--line);
-    color:var(--paper);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-decoration:none;
-    transition:border-color .15s ease, color .15s ease;
-  }
-  .footer-brand .share-btn:hover{border-color:var(--gold); color:var(--gold);}
-  .footer-brand-text{font-size:0.82rem; color:var(--slate);}
-  .footer-brand-copyright{margin-top:6px; font-size:0.82rem; color:var(--slate); opacity:0.8;}
-  .footer-brand-msg{font-size:0.78rem; color:var(--gold); margin-bottom:12px; display:none;}
-
   @media (prefers-reduced-motion: reduce){
     .ticket{transition:none;}
     html{scroll-behavior:auto;}
@@ -481,12 +452,13 @@
 </head>
 <body>
 
+  <div class="topbar">
+    <a class="btn" href="https://forms.gle/rd3Dw94GBQt66cZx9" target="_blank" rel="noopener">Submit your event</a>
+  </div>
+
   <section class="hero">
-    <div class="topbar">
-      <a class="btn" href="https://forms.gle/rd3Dw94GBQt66cZx9" target="_blank" rel="noopener">Submit an event</a>
-    </div>
     <h1>International Modern Jive<br><em>Event Calendar</em></h1>
-    <p class="hero-sub">Championships, weekenders and dance holidays across the international Ceroc & Modern Jive community — one list, always sorted by what's coming up next.</p>
+    <p class="hero-sub">Championships, weekenders and dance holidays across the international Ceroc & Modern Jive community, one list, always sorted by what's coming up next.</p>
     <div class="stat-row" id="statRow"></div>
   </section>
 
@@ -514,7 +486,15 @@
     </div>
   </div>
 
+  <div class="disclaimer">
+    Listings here are best-effort and may not always be complete or up to date. Always confirm dates and details directly with the organiser before booking or making travel plans.
+  </div>
+
   <div class="legend" id="legend"></div>
+
+  <div class="disclaimer-sub-wrapper">
+    <span class="disclaimer-sub">Dance Holiday events typically include accommodation and often run longer than a standard weekend.</span>
+  </div>
 
   <main id="main">
     <div id="listView">
@@ -1187,32 +1167,10 @@
         <h2>Running an event we don't have yet?</h2>
         <p>Tell us about it and we'll add it to the calendar after a quick check. Takes two minutes.</p>
       </div>
-      <a class="btn" href="https://forms.gle/rd3Dw94GBQt66cZx9" target="_blank" rel="noopener">Submit an event</a>
+      <a class="btn" href="https://forms.gle/rd3Dw94GBQt66cZx9" target="_blank" rel="noopener">Submit your event</a>
     </div>
     <div class="footer-meta">Data sourced from organiser listings & the community · Last built <span id="buildDate"></span></div>
-
-    <div class="footer-brand">
-      <div class="share-row">
-        <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmjhub.dance%2Fevent-calendar%2F" target="_blank" rel="noopener" aria-label="Share on Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.86c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg></a>
-        <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fmjhub.dance%2Fevent-calendar%2F&text=Championships%2C%20weekenders%20and%20dance%20holidays%20across%20the%20international%20Ceroc%20%26%20Modern%20Jive%20community." target="_blank" rel="noopener" aria-label="Share on X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2h3.06l-6.69 7.65L22.5 22h-6.16l-4.83-6.32L5.9 22H2.83l7.15-8.18L2 2h6.31l4.37 5.78L18.24 2Zm-1.08 18.17h1.7L7.02 3.75H5.2l11.96 16.42Z"/></svg></a>
-        <a class="share-btn" href="mailto:?subject=International%20Modern%20Jive%20Event%20Calendar&body=Championships%2C%20weekenders%20and%20dance%20holidays%20across%20the%20international%20Ceroc%20%26%20Modern%20Jive%20community%3A%20https%3A%2F%2Fmjhub.dance%2Fevent-calendar%2F" aria-label="Share via email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
-        <button class="share-btn" onclick="copyForInstagramEC()" aria-label="Copy link for Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="0.5" fill="currentColor" stroke="none"/></svg></button>
-      </div>
-      <div class="footer-brand-msg" id="ecShareMsg">Link copied — paste it in your Instagram bio or story.</div>
-      <div class="footer-brand-text">MJ Hub &middot; Built by and for the international Ceroc &amp; Modern Jive community</div>
-      <div class="footer-brand-copyright">&copy; 2026 Patryck Allen. All rights reserved.</div>
-    </div>
   </footer>
-
-  <script>
-    function copyForInstagramEC(){
-      navigator.clipboard.writeText('https://mjhub.dance/event-calendar/').then(() => {
-        const msg = document.getElementById('ecShareMsg');
-        msg.style.display = 'block';
-        setTimeout(() => msg.style.display = 'none', 3000);
-      });
-    }
-  </script>
 
 <script>
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -1298,7 +1256,7 @@ const TYPE_COLORS = {
   "Competition": "#3ba55d",
   "Workshops": "#9b6bd6",
   "Dance Holiday": "#4a90d9",
-  "Cruise": "#3fb8af",
+  "Cruise": "#e2703a",
   "Other": "#8b8fa3",
 };
 const FALLBACK_COLOR = "#8b8fa3";
@@ -1322,6 +1280,16 @@ function fmtRange(startISO, endISO){
   const e = new Date(endISO+"T00:00:00");
   const startStr = `${s.getDate()} ${MONTHS[s.getMonth()]}`;
   const endStr = `${e.getDate()} ${MONTHS[e.getMonth()]}`;
+  return `${startStr}–${endStr}`;
+}
+
+// Used in map popups, where there's no month-header grouping to imply the year
+function fmtRangeWithYear(startISO, endISO){
+  const s = new Date(startISO+"T00:00:00");
+  const e = new Date(endISO+"T00:00:00");
+  const sameYear = s.getFullYear() === e.getFullYear();
+  const startStr = `${s.getDate()} ${MONTHS[s.getMonth()]}${sameYear ? '' : ' ' + s.getFullYear()}`;
+  const endStr = `${e.getDate()} ${MONTHS[e.getMonth()]} ${e.getFullYear()}`;
   return `${startStr}–${endStr}`;
 }
 
@@ -1378,15 +1346,16 @@ function renderList(filtered){
       <div class="date-stub">
         <span class="d">${d.getDate()}</span>
         <span class="mo">${MONTHS[d.getMonth()]}</span>
+        <span class="yr">${d.getFullYear()}</span>
       </div>
-      ${e.status === 'tbc' ? '<span class="tag status-tbc status-tbc-top">Unconfirmed</span>' : ''}
       <a class="ticket-name" href="${websiteHref}" target="_blank" rel="noopener">${e.name}</a>
       <div class="ticket-loc">${flag} ${e.city}, ${e.country}</div>
       <div class="ticket-tags">
         <span class="tag range">${fmtRange(e.start_date, e.end_date)}</span>
         ${typeTags}
+        ${e.status === 'tbc' ? '<span class="tag status-tbc">Unconfirmed</span>' : ''}
       </div>
-      ${e.ai_sourced ? '<div class="ai-flag">⚠ Identified automatically — confirm details with the organiser before booking.</div>' : ''}
+      ${e.ai_sourced ? '<div class="ai-flag">⚠ Identified automatically. Confirm details with the organiser before booking.</div>' : ''}
       <a class="report-issue" href="${reportIssueUrl(e)}" target="_blank" rel="noopener">Report an issue</a>
     `;
     grid.appendChild(a);
@@ -1417,13 +1386,7 @@ function renderMap(filtered){
 
   Object.values(byCity).forEach(group => {
     const { lat, lon, city, country } = group[0];
-    const size = group.length > 1 ? 40 : 30;
-    // The pin is a square rotated -45deg with three rounded corners (classic
-    // "teardrop" trick). Sized at size/1.2071 and centered in the box, its sharp
-    // point lands exactly on the box's bottom-center after rotation - so iconAnchor
-    // can just point at [size/2, size] and land precisely on the marker's coordinate.
-    const pin = size / 1.2071;
-    const pinOffset = (size - pin) / 2;
+    const size = group.length > 1 ? 34 : 26;
     const primaryTypes = group.map(e => e.types[0]);
     const uniqueTypes = [...new Set(primaryTypes)];
     let markerBg;
@@ -1436,13 +1399,8 @@ function renderMap(filtered){
     }
     const icon = L.divIcon({
       className: '',
-      html: `
-        <div class="map-pin" style="width:${pin}px;height:${pin}px;top:${pinOffset}px;left:${pinOffset}px;background:${markerBg};">
-          <span class="map-pin-label" style="font-size:${group.length>1?'0.72rem':'0.62rem'};">${group.length > 1 ? group.length : ''}</span>
-        </div>
-      `,
+      html: `<div class="map-marker" style="width:${size}px;height:${size}px;font-size:${group.length>1?'0.8rem':'0.7rem'};background:${markerBg};">${group.length > 1 ? group.length : ''}</div>`,
       iconSize: [size, size],
-      iconAnchor: [size / 2, size],
     });
     const popupHtml = `
       <div class="popup-city">${countryFlag(country)} ${city}, ${country}</div>
@@ -1451,7 +1409,7 @@ function renderMap(filtered){
           <a href="${e.website}" target="_blank" rel="noopener">${e.name}</a>
           <div class="popup-meta">
             ${e.types.map(t => `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${typeColor(t)};margin-right:3px;"></span>`).join('')}
-            ${fmtRange(e.start_date, e.end_date)} · ${e.types.join(', ')}${e.status==='tbc' ? ` · <span style="color:#ef4d6f;font-weight:600;">Unconfirmed</span>` : ''}
+            ${fmtRangeWithYear(e.start_date, e.end_date)} · ${e.types.join(', ')}${e.status==='tbc' ? ' · Unconfirmed' : ''}
           </div>
         </div>
       `).join('')}
@@ -1504,7 +1462,7 @@ function populateStats(){
   const stats = [
     { b: upcoming.length, s: "Upcoming events" },
     { b: countries, s: "Countries" },
-    { b: soonest ? `${soonest.name}, ${fmtRange(soonest.start_date, soonest.end_date)}` : "—", s: "Next up", wide: true },
+    { b: soonest ? `${soonest.name}, ${fmtRange(soonest.start_date, soonest.end_date)}` : "-", s: "Next up", wide: true },
   ];
   document.getElementById('statRow').innerHTML = stats.map(s=>`<div class="stat${s.wide ? ' wide' : ''}"><b>${s.b}</b><span>${s.s}</span></div>`).join('');
 }
