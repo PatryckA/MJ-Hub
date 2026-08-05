@@ -1,0 +1,21 @@
+{
+  "id": "unknown-unknown-west-coast-swing-jive-addiction-2026",
+  "name": "West Coast Swing - Jive Addiction",
+  "city": "",
+  "country": "",
+  "region": "Other",
+  "lat": null,
+  "lon": null,
+  "types": [
+    "Other"
+  ],
+  "status": "tbc",
+  "start_date": "2026-10-16",
+  "end_date": "2026-10-19",
+  "multiday": true,
+  "website": "https://jiveaddiction.com/event-type/west-coast-swing/",
+  "ai_sourced": true,
+  "needs_review": true,
+  "source": "auto-scraped",
+  "source_url": "https://jiveaddiction.com/event-type/west-coast-swing/"
+}
