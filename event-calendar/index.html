@@ -127,17 +127,36 @@
     gap:12px;
     align-items:center;
   }
-  .search{
+  .search-wrap{
+    position:relative;
     flex:1 1 220px;
+  }
+  .search{
+    width:100%;
     background:var(--floor-raised);
     border:1px solid var(--line);
     border-radius:999px;
-    padding:10px 18px;
+    padding:10px 34px 10px 18px;
     color:var(--paper);
     font-family:'Work Sans', sans-serif;
     font-size:0.92rem;
   }
   .search::placeholder{color:var(--slate);}
+  .search-clear{
+    position:absolute;
+    right:12px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:none;
+    color:var(--slate);
+    font-size:1.15rem;
+    line-height:1;
+    cursor:pointer;
+    padding:2px 4px;
+    display:none;
+  }
+  .search-clear:hover{color:var(--paper);}
   .chip-group{display:flex; gap:8px; flex-wrap:wrap;}
   .chip{
     background:var(--floor-raised);
@@ -482,7 +501,10 @@
 
   <div class="controls">
     <div class="controls-inner">
-      <input class="search" id="search" type="text" placeholder="Search events, cities, countries…">
+      <div class="search-wrap">
+        <input class="search" id="search" type="text" placeholder="Search events, cities, countries…">
+        <button class="search-clear" id="searchClear" type="button" aria-label="Clear search">&times;</button>
+      </div>
       <select class="chip" id="regionFilter">
         <option value="">All regions</option>
       </select>
@@ -1532,6 +1554,18 @@ async function init(){
   document.getElementById('pastToggle').addEventListener('change', render);
   document.getElementById('listBtn').addEventListener('click', () => setView('list'));
   document.getElementById('mapBtn').addEventListener('click', () => setView('map'));
+
+  const searchInput = document.getElementById('search');
+  const searchClear = document.getElementById('searchClear');
+  searchInput.addEventListener('input', () => {
+    searchClear.style.display = searchInput.value ? 'block' : 'none';
+  });
+  searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    searchClear.style.display = 'none';
+    searchInput.focus();
+    render();
+  });
 }
 init();
 </script>
