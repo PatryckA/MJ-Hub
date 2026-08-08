@@ -18,7 +18,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root{
     --floor:#181220;
@@ -420,39 +419,6 @@
     body.print-detailed .wrap{padding-bottom:14px;}
   }
 
-  /* ---------- dedicated content used to generate real, one-click-download PDFs (independent of @media print) ---------- */
-  .pdf-render-root{
-    position:absolute; left:-99999px; top:0; width:1320px;
-    background:#faf7f0; font-family:'Inter',sans-serif; color:#241c33; padding:14px;
-  }
-  .pdf-header{
-    background:#241c33; padding:14px 20px; border-radius:6px; margin-bottom:12px;
-    display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
-  }
-  .pdf-header h2{ margin:0; font-family:'Bebas Neue',sans-serif; font-size:34px; letter-spacing:.02em; color:#f0932b; }
-  .pdf-header .pdf-tag{ font-family:'Inter',sans-serif; font-size:12px; color:#e3c9a0; }
-  .pdf-cat-block{ margin-bottom:14px; break-inside:avoid; page-break-inside:avoid; }
-  .pdf-cat-head{
-    border-radius:5px; padding:7px 12px; margin-bottom:7px; color:#fff;
-    display:flex; align-items:baseline; justify-content:space-between; gap:10px;
-  }
-  .pdf-cat-head .name{ font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:.02em; }
-  .pdf-cat-head .count{ font-family:'Inter',sans-serif; font-size:10.5px; opacity:.85; }
-  .pdf-tile-grid{ display:grid; gap:7px; }
-  .pdf-tile-grid.cols-4{ grid-template-columns:repeat(4,1fr); }
-  .pdf-tile-grid.cols-3{ grid-template-columns:repeat(3,1fr); }
-  .pdf-tile{
-    background:#fff; border:1px solid #ece7f2; border-left-width:3px; border-radius:4px;
-    padding:6px 9px; break-inside:avoid; page-break-inside:avoid;
-  }
-  .pdf-tile .name-row{ display:flex; align-items:center; justify-content:space-between; gap:6px; }
-  .pdf-tile .name{ font-family:'Inter',sans-serif; font-weight:700; font-size:11px; color:#241c33; }
-  .pdf-tile .pill{
-    font-family:'Inter',sans-serif; font-size:7.5px; font-weight:700; letter-spacing:.03em;
-    color:#fff; border-radius:20px; padding:1px 7px; white-space:nowrap; text-transform:uppercase; flex-shrink:0;
-  }
-  .pdf-tile .desc{ font-family:'Inter',sans-serif; font-size:9.3px; line-height:1.4; color:#5c5470; margin-top:4px; }
-  .pdf-footer{ text-align:center; font-size:9px; color:#a89bb8; padding:8px 0 2px; }
 </style>
 </head>
 <body>
@@ -509,8 +475,8 @@
 
   <div class="footer-actions">
     <div class="pdf-btn-row">
-      <button class="action-btn" id="btn-pdf-simple">&#8681; Download simple version</button>
-      <button class="action-btn" id="btn-pdf-detailed">&#8681; Download detailed version</button>
+      <a class="action-btn" href="mj-hub-skills-toolkit-simple.pdf" download>&#8681; Download simple version</a>
+      <a class="action-btn" href="mj-hub-skills-toolkit-detailed.pdf" download>&#8681; Download detailed version</a>
     </div>
     <div class="share-group">
       <span class="share-label">Like this toolkit? Share it:</span>
@@ -942,101 +908,8 @@ document.querySelectorAll('.filter-toggle button').forEach(btn => {
 });
 updateCounts();
 
-// ---------- PDF download (generates a real .pdf file client-side, no print dialog) ----------
+// ---------- PDF downloads (static files, linked directly via the buttons above) ----------
 document.getElementById('print-footer-date').textContent = new Date().toISOString().slice(0,10);
-
-const PDF_CATEGORY_HEX = {
-  "Timing & Rhythm": "#E3A44B",
-  "Technique": "#9B7FD4",
-  "Connection & Teamwork": "#C2487A",
-  "Musicality & Interpretation": "#7D8CD4",
-  "Style & Spirit": "#E8956B",
-  "Floor craft & Safety": "#7AA37A",
-  "Repertoire": "#5E7A99"
-};
-const PDF_ROLE_HEX = { LEAD: "#D55E00", FOLLOW: "#009E73" };
-
-function pdfEsc(str){
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;');
-}
-
-function buildPdfContainer(mode){
-  const root = document.createElement('div');
-  root.className = 'pdf-render-root';
-
-  const header = document.createElement('div');
-  header.className = 'pdf-header';
-  header.innerHTML = `<h2>The Modern Jive Skills Toolkit</h2><span class="pdf-tag">${SKILLS.length} skills &middot; ${mode === 'simple' ? 'Simple reference' : 'Detailed reference'} &middot; mjhub.dance</span>`;
-  root.appendChild(header);
-
-  const colsClass = mode === 'simple' ? 'cols-4' : 'cols-3';
-
-  categories.forEach(cat => {
-    const block = document.createElement('div');
-    block.className = 'pdf-cat-block';
-
-    const head = document.createElement('div');
-    head.className = 'pdf-cat-head';
-    head.style.background = PDF_CATEGORY_HEX[cat];
-    head.innerHTML = `<span class="name">${pdfEsc(cat)}</span><span class="count">${grouped[cat].length} skills</span>`;
-    block.appendChild(head);
-
-    const grid = document.createElement('div');
-    grid.className = 'pdf-tile-grid ' + colsClass;
-
-    grouped[cat].forEach(s => {
-      const tile = document.createElement('div');
-      tile.className = 'pdf-tile';
-      tile.style.borderLeftColor = PDF_CATEGORY_HEX[cat];
-      const roleHex = PDF_ROLE_HEX[s.role];
-      const pill = roleHex ? `<span class="pill" style="background:${roleHex}">${ROLE_LABEL[s.role]}</span>` : '';
-      const desc = mode === 'detailed' ? `<div class="desc">${pdfEsc(skillDescText(s))}</div>` : '';
-      tile.innerHTML = `<div class="name-row"><span class="name">${pdfEsc(s.name)}</span>${pill}</div>${desc}`;
-      grid.appendChild(tile);
-    });
-
-    block.appendChild(grid);
-    root.appendChild(block);
-  });
-
-  const footer = document.createElement('div');
-  footer.className = 'pdf-footer';
-  footer.textContent = `mjhub.dance \u00b7 The Modern Jive Skills Toolkit \u00b7 generated ${new Date().toISOString().slice(0,10)}`;
-  root.appendChild(footer);
-
-  return root;
-}
-
-function downloadPdf(mode, btn){
-  const label = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = 'Generating\u2026';
-
-  const container = buildPdfContainer(mode);
-  document.body.appendChild(container);
-
-  html2pdf().set({
-    margin: 8,
-    filename: `mj-hub-skills-toolkit-${mode}.pdf`,
-    image: { type: 'jpeg', quality: 0.97 },
-    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#faf7f0' },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
-    pagebreak: { mode: ['css'], avoid: ['.pdf-tile', '.pdf-cat-head', '.pdf-header'] }
-  }).from(container).save().then(() => {
-    container.remove();
-    btn.disabled = false;
-    btn.textContent = label;
-  }).catch(err => {
-    container.remove();
-    btn.disabled = false;
-    btn.textContent = label;
-    alert('Sorry, the PDF could not be generated. Please try again.');
-    console.error(err);
-  });
-}
-
-document.getElementById('btn-pdf-simple').addEventListener('click', (e) => downloadPdf('simple', e.currentTarget));
-document.getElementById('btn-pdf-detailed').addEventListener('click', (e) => downloadPdf('detailed', e.currentTarget));
 
 // ---------- share (per platform) ----------
 const pageUrl = window.location.href;
