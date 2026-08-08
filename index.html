@@ -3,14 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MJ Hub: International Ceroc & Modern Jive Community</title>
-<meta name="description" content="Growing the international Ceroc & Modern Jive dance family: skills, events, and community, all in one place.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2312131a'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle'%3E%F0%9F%92%83%3C/text%3E%3C/svg%3E">
+<title>MJ Hub — International Ceroc & Modern Jive Community</title>
+<meta name="description" content="Growing the international Ceroc & Modern Jive dance family — skills, events, and community, all in one place.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23181220'/%3E%3Ctext x='50' y='68' font-family='Georgia, serif' font-weight='700' font-size='46' text-anchor='middle' fill='%23f2ede4'%3EMJ%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
   :root{
     --ink:#12131a;
@@ -140,22 +138,7 @@
     background:
       linear-gradient(180deg, rgba(34,36,47,0) 82%, var(--floor-raised) 100%);
     pointer-events:none;
-    z-index:2;
   }
-  .mini-map{
-    position:absolute;
-    inset:0;
-    z-index:1;
-    background:transparent;
-    pointer-events:none;
-  }
-  .mini-map .leaflet-control-attribution{
-    pointer-events:auto;
-    font-size:9px;
-    background:rgba(18,19,26,0.6);
-    color:var(--slate);
-  }
-  .mini-map .leaflet-control-attribution a{color:var(--slate);}
 
   .tile h2{font-size:1.3rem;}
   .tile p{color:var(--slate); font-size:0.94rem; line-height:1.55; margin:0;}
@@ -230,18 +213,15 @@
   <main>
     <div class="tile-grid">
       <a class="tile skills" href="/skills-framework/">
-        <h2>Modern Jive Skills Toolkit</h2>
         <div class="tile-thumb-wrap"><img class="tile-thumb" src="hub-toolkit-thumb-v4.png" alt="Preview of the Modern Jive Skills Toolkit page"></div>
+        <h2>Modern Jive Skills Toolkit</h2>
         <p>Improve yourself and others using this map of 85 skills across 7 categories.</p>
         <div class="tile-cta">Explore the toolkit <span>→</span></div>
       </a>
 
       <a class="tile calendar" href="/event-calendar/">
+        <div class="tile-thumb-wrap"><img class="tile-thumb" src="hub-calendar-thumb-v3.png" alt="Map preview of the International Event Calendar"></div>
         <h2>International Event Calendar</h2>
-        <div class="tile-thumb-wrap">
-          <img class="tile-thumb" src="hub-calendar-thumb-v3.png" alt="Map preview of the International Event Calendar">
-          <div id="homeMiniMap" class="mini-map"></div>
-        </div>
         <p>Championships, weekenders and dance holidays across the world. Use it to plan your next trip around what's on.</p>
         <div class="tile-cta">Browse events <span>→</span></div>
       </a>
@@ -255,7 +235,7 @@
       <a class="share-btn" href="mailto:?subject=MJ%20Hub&body=Resources%20for%20the%20Ceroc%20%26%20Modern%20Jive%20community%3A%20https%3A%2F%2Fmjhub.dance" aria-label="Share via email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
       <button class="share-btn" onclick="copyForInstagram()" aria-label="Copy link for Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="0.5" fill="currentColor" stroke="none"/></svg></button>
     </div>
-    <div class="share-msg" id="shareMsg">Link copied. Paste it in your Instagram bio or story.</div>
+    <div class="share-msg" id="shareMsg">Link copied — paste it in your Instagram bio or story.</div>
     MJ Hub · Built by and for the international Ceroc &amp; Modern Jive community
     <div class="footer-copyright">© 2026 Patryck Allen. All rights reserved.</div>
   </footer>
@@ -268,80 +248,6 @@
         setTimeout(() => msg.style.display = 'none', 3000);
       });
     }
-
-    // Live preview map for the Event Calendar tile: real data, fully locked down
-    // (no pan/zoom/click) so the whole tile stays one clickable link. Falls back
-    // to the static thumbnail underneath if anything here fails to load.
-    async function initHomeMiniMap(){
-      const el = document.getElementById('homeMiniMap');
-      if (!el || typeof L === 'undefined') return;
-
-      const TYPE_COLORS = {
-        "Competition": "#3ba55d",
-        "Workshops": "#9b6bd6",
-        "Dance Holiday": "#4a90d9",
-        "Cruise": "#e2703a",
-        "Other": "#8b8fa3",
-      };
-      const typeColor = t => TYPE_COLORS[t] || "#8b8fa3";
-
-      try{
-        const res = await fetch('event-calendar/data/events.json');
-        if (!res.ok) throw new Error('fetch not ok');
-        const events = await res.json();
-        const today = new Date().toISOString().slice(0,10);
-        const upcoming = events.filter(e => e.end_date >= today && e.lat != null && e.lon != null);
-        if (upcoming.length === 0) return; // leave the static thumbnail showing
-
-        const map = L.map(el, {
-          zoomControl: false,
-          dragging: false,
-          touchZoom: false,
-          scrollWheelZoom: false,
-          doubleClickZoom: false,
-          boxZoom: false,
-          keyboard: false,
-          tap: false,
-        }).setView([20, 20], 2);
-
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; OpenStreetMap &copy; CARTO',
-          maxZoom: 18,
-        }).addTo(map);
-
-        const byCity = {};
-        upcoming.forEach(e => {
-          const key = `${e.lat},${e.lon}`;
-          (byCity[key] = byCity[key] || []).push(e);
-        });
-
-        const latlngs = [];
-        Object.values(byCity).forEach(group => {
-          const { lat, lon } = group[0];
-          L.circleMarker([lat, lon], {
-            radius: group.length > 1 ? 6 : 4,
-            fillColor: typeColor(group[0].types[0]),
-            fillOpacity: 0.9,
-            color: '#12131a',
-            weight: 1,
-          }).addTo(map);
-          latlngs.push([lat, lon]);
-        });
-
-        if (latlngs.length){
-          map.fitBounds(L.latLngBounds(latlngs), { padding: [16, 16], maxZoom: 5 });
-        }
-
-        // Live map loaded successfully, hide the static fallback underneath
-        const fallbackImg = el.parentElement.querySelector('.tile-thumb');
-        if (fallbackImg) fallbackImg.style.opacity = '0';
-      }catch(err){
-        // Silent fallback: static thumbnail stays visible, nothing looks broken
-        console.warn('Home mini-map could not load, showing static thumbnail instead.', err);
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', initHomeMiniMap);
   </script>
 
 </body>
