@@ -18,6 +18,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root{
     --floor:#181220;
@@ -187,6 +188,7 @@
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
     padding:28px 0 20px;margin-top:32px;border-top:1px solid var(--panel-line);
   }
+  .pdf-btn-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
   .share-group{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;}
   .action-btn{
     border:1px solid var(--panel-line);background:var(--panel);color:var(--cream);
@@ -264,6 +266,7 @@
   }
   .role-pill.dual{background:linear-gradient(90deg, var(--role-lead) 50%, var(--role-follow) 50%);}
   .tile-main{display:flex;align-items:center;gap:7px;min-width:0;}
+  .tile-desc{display:none;}
   .tile-icon{
     width:14px;height:14px;flex-shrink:0;
     fill:none;stroke:var(--muted);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
@@ -322,6 +325,7 @@
   .modal-fallback a{color:#7a5aa8;font-weight:600;}
 
   footer{margin-top:36px;padding:16px 0 0;border-top:1px solid var(--panel-line);font-size:10.5px;color:var(--muted);}
+  .print-footer{display:none;}
 
   @media (max-width: 640px){
     .wrap{padding:22px 18px 0;}
@@ -338,49 +342,117 @@
     *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; color-adjust:exact !important; }
     body{background:#faf7f0 !important;color:#241c33 !important;padding:0;}
     .toolbar, #detail-bar, .modal-overlay, .legend-row .tap-instruction,
-    .footer-actions, .filter-toggle, .chevron-btn, .tap-instruction, .search-wrap, .filter-reminder, .welcome-banner{display:none !important;}
+    .footer-actions, .filter-toggle, .chevron-btn, .tap-instruction, .search-wrap, .filter-reminder, .welcome-banner, .back-link{display:none !important;}
     .wrap{max-width:100%;padding:0;}
-    .title-row{gap:8px;margin-bottom:2px;}
-    h1{color:#2b2438 !important;-webkit-text-fill-color:#2b2438;background:none;font-size:24px;}
-    .beta-pill{background:#e3a44b !important;color:#2b2438 !important;border:none;font-size:8px;padding:2px 7px;}
-    .attribution{color:#5c5470 !important;font-size:9px;margin:2px 0;}
-    .sub{display:none;}
-    .usecases{display:none;}
-    .usecases-heading{display:none;}
-    .legend-row{border-top:none;padding:2px 0 4px;}
+    .sub, .usecases, .usecases-heading, .attribution, footer{display:none;}
+
+    /* -- shared branded header band -- */
+    .title-row{
+      background:#241c33 !important;gap:10px;margin-bottom:5px;
+      padding:7px 12px;border-radius:6px;align-items:baseline;
+    }
+    h1{color:#f0932b !important;-webkit-text-fill-color:#f0932b;background:none;font-size:21px;}
+    .beta-pill{background:#e3a44b !important;color:#241c33 !important;border:none;font-size:7.5px;padding:2px 7px;}
+    .legend-row{border-top:none;padding:2px 0 5px;}
     .legend{color:#5c5470;font-size:9px;gap:12px;}
     .pill-sample.both{background:#e8e4ee;color:#5c5470;border:1px solid #c9c2d6;}
     .pill-sample.lead{background:var(--role-lead) !important;}
     .pill-sample.follow{background:var(--role-follow) !important;}
 
-    #view-columns{overflow:visible !important;}
-    .col-grid{display:block !important;column-count:4;column-gap:12px;column-fill:balance;}
-    .col-wrap{break-inside:avoid;margin-bottom:7px;display:block !important;}
-    .col-wrap.collapsed .col{display:flex !important;}
-
-    .col-head{
-      position:static !important;min-height:0 !important;color:#241c33 !important;
-      border-radius:5px;padding:4px 6px 5px;margin-bottom:4px;gap:2px;
+    /* -- repeating footer credit -- */
+    .print-footer{
+      display:block !important;position:fixed;left:0;right:0;bottom:2mm;
+      text-align:center;font-size:7px;letter-spacing:.03em;color:#a89bb8 !important;
     }
-    .col-head-text{font-size:12.5px;}
-    .col-head-desc{font-size:7.5px;color:#241c33 !important;opacity:.85;}
-    .col-head .count{font-size:7px;margin-top:1px;opacity:.7;}
-    .repertoire-col{border:1.5px dashed var(--c-repertoire) !important;padding:3px 3px 4px;}
-    .repertoire-col .col-head{border-radius:4px 4px 0 0;}
 
-    .col{gap:2px;}
-    .tile{
-      background:#fff !important;color:#241c33 !important;
+    #view-columns{overflow:visible !important;}
+    .col-wrap{break-inside:avoid;display:block !important;}
+    .col-wrap.collapsed .col{display:flex !important;}
+    .col-head{position:static !important;min-height:0 !important;color:#241c33 !important;border-radius:5px;gap:2px;}
+    .tile.hidden-by-filter{display:flex !important;}
+    .role-pill{color:#fff !important;}
+    .role-pill.dual{background:linear-gradient(90deg, var(--role-lead) 50%, var(--role-follow) 50%) !important;}
+
+    /* ---------- SIMPLE: dense one-page reference sheet, no descriptions ---------- */
+    body.print-simple .col-grid{display:block !important;column-count:4;column-gap:12px;column-fill:balance;}
+    body.print-simple .col-wrap{margin-bottom:7px;}
+    body.print-simple .col-head{padding:4px 6px 5px;margin-bottom:4px;}
+    body.print-simple .col-head-text{font-size:12.5px;}
+    body.print-simple .col-head-desc{font-size:7.5px;color:#241c33 !important;opacity:.85;}
+    body.print-simple .col-head .count{font-size:7px;margin-top:1px;opacity:.7;}
+    body.print-simple .repertoire-col{border:1.5px dashed var(--c-repertoire) !important;padding:3px 3px 4px;}
+    body.print-simple .repertoire-col .col-head{border-radius:4px 4px 0 0;}
+    body.print-simple .col{gap:2px;}
+    body.print-simple .tile{
+      background:color-mix(in srgb, var(--tint, #fff) 9%, white) !important;color:#241c33 !important;
       border-top:1px solid #ece7f2 !important;border-right:1px solid #ece7f2 !important;
       border-bottom:1px solid #ece7f2 !important;border-left-width:3px !important;
       box-shadow:none !important;padding:2px 4px;font-size:8.3px;line-height:1.15;gap:3px;
     }
-    .tile.hidden-by-filter{display:flex !important;}
-    .tile-icon{width:9px;height:9px;stroke:#5c5470;}
-    .role-pill{color:#fff !important;font-size:6.5px;padding:0 4px;}
-    .role-pill.dual{background:linear-gradient(90deg, var(--role-lead) 50%, var(--role-follow) 50%) !important;}
-    footer{display:none;}
+    body.print-simple .tile-icon{width:9px;height:9px;stroke:#5c5470;}
+    body.print-simple .role-pill{font-size:6.5px;padding:0 4px;}
+    body.print-simple .tile-desc{display:none !important;}
+    body.print-simple .wrap{padding-bottom:12px;}
+
+    /* ---------- DETAILED: spacious, descriptions shown, ~2 pages ---------- */
+    body.print-detailed .col-grid{display:block !important;column-count:3;column-gap:14px;column-fill:balance;}
+    body.print-detailed .col-wrap{margin-bottom:10px;}
+    body.print-detailed .col-head{padding:6px 10px 7px;margin-bottom:6px;}
+    body.print-detailed .col-head-text{font-size:15px;}
+    body.print-detailed .col-head-desc{font-size:9px;color:#241c33 !important;opacity:.85;}
+    body.print-detailed .col-head .count{font-size:8px;margin-top:1px;opacity:.7;}
+    body.print-detailed .repertoire-col{border:1.5px dashed var(--c-repertoire) !important;padding:5px 5px 7px;}
+    body.print-detailed .repertoire-col .col-head{border-radius:4px 4px 0 0;}
+    body.print-detailed .col{gap:5px;}
+    body.print-detailed .tile{
+      background:color-mix(in srgb, var(--tint, #fff) 9%, white) !important;color:#241c33 !important;
+      border-top:1px solid #ece7f2 !important;border-right:1px solid #ece7f2 !important;
+      border-bottom:1px solid #ece7f2 !important;border-left-width:3px !important;
+      box-shadow:none !important;padding:5px 8px;font-size:9.5px;line-height:1.3;gap:3px;
+      flex-wrap:wrap;break-inside:avoid;
+    }
+    body.print-detailed .tile-icon{width:11px;height:11px;stroke:#5c5470;}
+    body.print-detailed .role-pill{font-size:7px;padding:1px 5px;}
+    body.print-detailed .tile-desc{
+      display:block !important;flex:1 1 100%;order:3;
+      color:#5c5470 !important;font-size:8.5px;line-height:1.35;margin-top:3px;
+    }
+    body.print-detailed .wrap{padding-bottom:14px;}
   }
+
+  /* ---------- dedicated content used to generate real, one-click-download PDFs (independent of @media print) ---------- */
+  .pdf-render-root{
+    position:absolute; left:-99999px; top:0; width:1320px;
+    background:#faf7f0; font-family:'Inter',sans-serif; color:#241c33; padding:14px;
+  }
+  .pdf-header{
+    background:#241c33; padding:14px 20px; border-radius:6px; margin-bottom:12px;
+    display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
+  }
+  .pdf-header h2{ margin:0; font-family:'Bebas Neue',sans-serif; font-size:34px; letter-spacing:.02em; color:#f0932b; }
+  .pdf-header .pdf-tag{ font-family:'Inter',sans-serif; font-size:12px; color:#e3c9a0; }
+  .pdf-cat-block{ margin-bottom:14px; break-inside:avoid; page-break-inside:avoid; }
+  .pdf-cat-head{
+    border-radius:5px; padding:7px 12px; margin-bottom:7px; color:#fff;
+    display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+  }
+  .pdf-cat-head .name{ font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:.02em; }
+  .pdf-cat-head .count{ font-family:'Inter',sans-serif; font-size:10.5px; opacity:.85; }
+  .pdf-tile-grid{ display:grid; gap:7px; }
+  .pdf-tile-grid.cols-4{ grid-template-columns:repeat(4,1fr); }
+  .pdf-tile-grid.cols-3{ grid-template-columns:repeat(3,1fr); }
+  .pdf-tile{
+    background:#fff; border:1px solid #ece7f2; border-left-width:3px; border-radius:4px;
+    padding:6px 9px; break-inside:avoid; page-break-inside:avoid;
+  }
+  .pdf-tile .name-row{ display:flex; align-items:center; justify-content:space-between; gap:6px; }
+  .pdf-tile .name{ font-family:'Inter',sans-serif; font-weight:700; font-size:11px; color:#241c33; }
+  .pdf-tile .pill{
+    font-family:'Inter',sans-serif; font-size:7.5px; font-weight:700; letter-spacing:.03em;
+    color:#fff; border-radius:20px; padding:1px 7px; white-space:nowrap; text-transform:uppercase; flex-shrink:0;
+  }
+  .pdf-tile .desc{ font-family:'Inter',sans-serif; font-size:9.3px; line-height:1.4; color:#5c5470; margin-top:4px; }
+  .pdf-footer{ text-align:center; font-size:9px; color:#a89bb8; padding:8px 0 2px; }
 </style>
 </head>
 <body>
@@ -396,7 +468,7 @@
     <h1>THE MODERN JIVE SKILLS TOOLKIT</h1>
     <span class="beta-pill">Beta</span>
   </div>
-  <p class="sub">A toolkit of 85 skills to draw on for strong social and competition dancing. Some skills are more or less critical at different levels of experience. Not every skill needs to be used in every dance.</p>
+  <p class="sub">A toolkit of 84 skills to draw on for strong social and competition dancing. Some skills are more or less critical at different levels of experience. Not every skill needs to be used in every dance.</p>
 
 
   <h2 class="usecases-heading">Why this framework exists</h2>
@@ -436,7 +508,10 @@
   <div id="view-columns"><div class="col-grid" id="col-grid"></div></div>
 
   <div class="footer-actions">
-    <button class="action-btn" id="btn-pdf">&#8681; Download PDF</button>
+    <div class="pdf-btn-row">
+      <button class="action-btn" id="btn-pdf-simple">&#8681; Download simple version</button>
+      <button class="action-btn" id="btn-pdf-detailed">&#8681; Download detailed version</button>
+    </div>
     <div class="share-group">
       <span class="share-label">Like this toolkit? Share it:</span>
       <div class="share-row">
@@ -458,6 +533,7 @@
 
 
   <footer>The Modern Jive Skills Toolkit: a work in progress.<br>Feedback encouraged via the button above.<br><br>No single toolkit will capture Modern Jive perfectly, and not everyone will agree with every choice made here. This resource is built on a wide variety of sources to reflect a range of perspectives: analysis of publicly available Ceroc and Modern Jive information, including competition rules from across the UK, Australia and New Zealand, over 15 years of experience teaching group classes, private lessons, feedback sessions, and competition judging, and consultation with highly respected and experienced members of the Ceroc and Modern Jive communities across the UK, Australia and New Zealand.<br><br>&copy; 2026 Patryck Allen. All rights reserved. Shared for the benefit of the Modern Jive community. Feel free to share this free resource with others.</footer>
+  <div class="print-footer" id="print-footer">mjhub.dance &middot; The Modern Jive Skills Toolkit &middot; generated <span id="print-footer-date"></span></div>
 </div>
 
 <div id="detail-bar" class="empty">
@@ -487,7 +563,7 @@
 </div>
 
 <script>
-const RAW_SKILLS = [{"cat": "Timing & Rhythm", "name": "On-beat movement", "role": "BOTH", "desc": "Making smooth, controlled contact with the floor as the body moves in time with the music's beat."}, {"cat": "Timing & Rhythm", "name": "Up/downbeat movement", "role": "BOTH", "desc": "Using the lighter lift of the upbeat and the stronger, grounded feel of the downbeat to structure the movement of the dance. Compresses through the downbeat so the weight change lands cleanly on the upbeat."}, {"cat": "Timing & Rhythm", "name": "Concertina timing", "role": "BOTH", "desc": "Timing in-and-out movements with your partner to match the downbeat and upbeat."}, {"cat": "Timing & Rhythm", "name": "Timing ownership", "role": "BOTH", "desc": "Staying on time with the music as best you can, even when your partner's timing varies. Quickly and smoothly returns to the musical beat if going off time."}, {"cat": "Timing & Rhythm", "name": "Groove", "role": "BOTH", "desc": "Moving your body continuously in a way that embodies the tempo and feeling of the music, beyond just landing on the beat."}, {"cat": "Timing & Rhythm", "name": "Syncopation", "role": "BOTH", "desc": "Using off-beat movements deliberately, then returning cleanly to standard time."}, {"cat": "Timing & Rhythm", "name": "Half/double-time shift", "role": "BOTH", "desc": "Adjusting footwork speed to match a slower or faster feel in the music, then returning cleanly to standard time."}, {"cat": "Timing & Rhythm", "name": "Patient following", "role": "FOLLOW", "desc": "Filling the full duration of a beat with movement, ensuring new movements are not rushed or made ahead of the leader."}, {"cat": "Timing & Rhythm", "name": "Pulsing", "role": "BOTH", "desc": "Dancing with a recurring, subtle accent on the upbeats of the music, creating a continuous rhythmic pulse throughout your movement. Not a bounce."}, {"cat": "Timing & Rhythm", "name": "Synchronicity", "role": "BOTH", "desc": "Matching your partner's rhythmic choices \u2014 accents, pulses, phrasing \u2014 so you're moving as one, used once both of you are confidently holding your own timing."}, {"cat": "Technique", "name": "Posture", "role": "BOTH", "desc": "Holding an upright, balanced body line."}, {"cat": "Technique", "name": "Minimal arm extension", "role": "BOTH", "desc": "Keeping elbow low and relatively close to the body in concertina movements."}, {"cat": "Technique", "name": "Balance & centring", "role": "BOTH", "desc": "Centring weight over your own axis and base, with awareness of where your centre is, so you're never accidentally off-balance."}, {"cat": "Technique", "name": "Intentional step size", "role": "BOTH", "desc": "Adjusting step size for song tempo, feel of music and partner, typically smaller rather than larger steps."}, {"cat": "Technique", "name": "Rolling footwork", "role": "BOTH", "desc": "Using foot articulation to roll feet through the floor rather than marching, bouncing, or stomping."}, {"cat": "Technique", "name": "Relaxed, supportive frame", "role": "BOTH", "desc": "Holding a frame that's firm enough to lead or follow but not tense or rigid."}, {"cat": "Technique", "name": "Sending/receiving weight", "role": "BOTH", "desc": "Sending weight smoothly off one foot, and sending your centre of gravity fully over your other (receiving) foot as you receive it."}, {"cat": "Technique", "name": "Grounding", "role": "BOTH", "desc": "Engaging your core and posterior chain, and the use of turn out in the feet, to commit weight down into the floor, creating a stable connection with the ground beneath you."}, {"cat": "Technique", "name": "Minimum force", "role": "BOTH", "desc": "Using the minimum necessary force to move yourself and/or your partner."}, {"cat": "Technique", "name": "Body flight", "role": "BOTH", "desc": "Managing your body's inertia smoothly through space when accelerating, decelerating, or maintaining constant motion."}, {"cat": "Technique", "name": "Spin technique", "role": "BOTH", "desc": "Spotting and controlling the body through a turn, maintaining a vertical axis and avoiding falling into the spin."}, {"cat": "Technique", "name": "Line of dance", "role": "BOTH", "desc": "Maintaining a line of dance suitable to the context of the surroundings, or intentionally breaking from it to create contrast or impact."}, {"cat": "Technique", "name": "Turn height adjustment", "role": "LEAD", "desc": "Adjusting hand and arm height during assisted turns to make it easier for the follower."}, {"cat": "Technique", "name": "Body articulation", "role": "BOTH", "desc": "Moving your body through space with control and fluidity, rather than moving rigidly or all at once."}, {"cat": "Connection & Teamwork", "name": "Resistance in partnership", "role": "BOTH", "desc": "Matching your partner's resistance in compression and opposition, giving genuine weight they can lead or follow off rather than just touching hands."}, {"cat": "Connection & Teamwork", "name": "Partner ability adjustment", "role": "BOTH", "desc": "Adjusting to partner's ability and style quickly."}, {"cat": "Connection & Teamwork", "name": "Visual connection", "role": "BOTH", "desc": "Staying visually engaged with your partner and/or an audience if appropriate. Not staring at your feet."}, {"cat": "Connection & Teamwork", "name": "Non-verbal check-ins", "role": "BOTH", "desc": "Offering small smiles, nods, or glances that reassure your partner mid-dance."}, {"cat": "Connection & Teamwork", "name": "Partner trust", "role": "BOTH", "desc": "Establishing and embracing trust in your partner."}, {"cat": "Connection & Teamwork", "name": "Graceful recovery", "role": "BOTH", "desc": "Re-establishing frame, rapport, and connection smoothly after a miscommunication or mistake, without a lasting impact on the dance."}, {"cat": "Connection & Teamwork", "name": "Elastic connection", "role": "BOTH", "desc": "Creating stretch in the connection and letting it recoil, rather than just pushing or pulling."}, {"cat": "Connection & Teamwork", "name": "Counterbalance", "role": "BOTH", "desc": "Using opposing weight with your partner to create shapes neither of you could hold alone."}, {"cat": "Connection & Teamwork", "name": "Conversational dynamic", "role": "BOTH", "desc": "Treating leading and following as a two-way exchange, not a one-way instruction."}, {"cat": "Connection & Teamwork", "name": "Baton passing & sharing", "role": "BOTH", "desc": "Giving, taking, or sharing the lead in a moment, whether that means initiating an idea, building on your partner's, or creating something together."}, {"cat": "Connection & Teamwork", "name": "Clear communication", "role": "BOTH", "desc": "Giving directional information that's readable and easy for your partner to interpret, whether through subtle physical or visual cues, while minimizing unnecessary physical or visual noise that could create confusion."}, {"cat": "Technique", "name": "Body leading", "role": "LEAD", "desc": "Leading with body weight and rotation, not by pulling or pushing with the arm. Influencing rather than physically moving your partner into position, often through subtle suggestion rather than firm direction."}, {"cat": "Technique", "name": "Responsive following", "role": "FOLLOW", "desc": "Reacting to the leader's communication with minimal delay, typically from your center, without forcing or resisting."}, {"cat": "Technique", "name": "Active/passive leading", "role": "LEAD", "desc": "Choosing whether to continuously guide a movement (active) or give an initial impulse and allow your partner's own momentum or interpretation to complete it (passive)."}, {"cat": "Connection & Teamwork", "name": "Owning your rhythm", "role": "FOLLOW", "desc": "Filling in your own footwork and timing opportunistically."}, {"cat": "Connection & Teamwork", "name": "Preparation", "role": "BOTH", "desc": "Creating the physical and timing conditions that allow your partner to execute a movement successfully."}, {"cat": "Musicality & Interpretation", "name": "Mood expression", "role": "BOTH", "desc": "Dancing in a way that reflects the emotional tone of the song, not just its beat."}, {"cat": "Musicality & Interpretation", "name": "Energy matching", "role": "BOTH", "desc": "Adjusting how big or small your movements are to match the song's energy."}, {"cat": "Musicality & Interpretation", "name": "Accenting hits", "role": "BOTH", "desc": "Building up to and emphasising a strong musical accent through your movements and/or moves."}, {"cat": "Musicality & Interpretation", "name": "Contrast in movement", "role": "BOTH", "desc": "Using contrast in the size and/or tempo of your movements to match changes in the music."}, {"cat": "Musicality & Interpretation", "name": "Using musical structure", "role": "BOTH", "desc": "Hearing and interpreting music in groups such as 8 and 32 beats, and recognising song sections such as the intro, verse, chorus, and bridge, and dancing in a way that reflects them."}, {"cat": "Musicality & Interpretation", "name": "Musical pauses", "role": "BOTH", "desc": "Using stillness deliberately at a musical pause, rather than filling every beat with movement."}, {"cat": "Musicality & Interpretation", "name": "Improvising surprises", "role": "BOTH", "desc": "Adjusting on the fly when the music does something unexpected."}, {"cat": "Musicality & Interpretation", "name": "Genre adaptation", "role": "BOTH", "desc": "Adapting the moves, movements, and/or timing of your dance to different music genres, and incorporating influence from other dance styles, while remaining authentically Modern Jive."}, {"cat": "Musicality & Interpretation", "name": "Tension & release", "role": "BOTH", "desc": "Reflecting the building and release of tension in the song, including building up toward key musical moments."}, {"cat": "Musicality & Interpretation", "name": "Lyrical interpretation", "role": "BOTH", "desc": "Incorporating movements relevant to the sound, melody, or literal meaning of the lyrics."}, {"cat": "Musicality & Interpretation", "name": "Staccato movement", "role": "BOTH", "desc": "Incorporating sharp, distinct movements."}, {"cat": "Musicality & Interpretation", "name": "Legato movement", "role": "BOTH", "desc": "Incorporating smooth, flowing movements."}, {"cat": "Musicality & Interpretation", "name": "Narrative arc", "role": "BOTH", "desc": "Building a sense of story or journey with your partner across the song."}, {"cat": "Style & Spirit", "name": "Personal styling", "role": "BOTH", "desc": "Adding your own individual flavour or flourishes to the dance, without being selfish or compromising the leader/follower dynamic. Includes adapting to different music genres and borrowing from other dance styles while remaining authentically Modern Jive."}, {"cat": "Style & Spirit", "name": "Aesthetic lines", "role": "BOTH", "desc": "Creating aesthetically pleasing lines through your own body shape, and together with your partner, including using your arms and legs as a natural extension of the body to add to the feel and shape of the dance."}, {"cat": "Style & Spirit", "name": "Body isolations", "role": "BOTH", "desc": "Moving one or multiple parts of your body (such as ribs, hips, or shoulders) independently of the rest, often used in a coordinated way such as a body roll or rhythmic walk."}, {"cat": "Style & Spirit", "name": "Facial expression", "role": "BOTH", "desc": "Letting your face reflect enjoyment and engagement, not a blank or serious look."}, {"cat": "Style & Spirit", "name": "Confidence & presence", "role": "BOTH", "desc": "Carrying yourself with self-assurance, even through a mistake."}, {"cat": "Style & Spirit", "name": "Playfulness", "role": "BOTH", "desc": "Bringing a fun energy to the dance rather than over-seriousness."}, {"cat": "Style & Spirit", "name": "Individuality", "role": "BOTH", "desc": "Expressing your own personality within the partnership."}, {"cat": "Style & Spirit", "name": "Enjoying the moment", "role": "BOTH", "desc": "Enjoying the dance and the partnership, rather than just executing moves."}, {"cat": "Style & Spirit", "name": "Space creation", "role": "BOTH", "desc": "Creating physical or musical space for your partner to add their own styling."}, {"cat": "Style & Spirit", "name": "Hairology", "role": "BOTH", "desc": "Using the hair to add to the feel and visual appeal of the dance."}, {"cat": "Style & Spirit", "name": "Entertainment value", "role": "BOTH", "desc": "Being entertaining to your partner or an audience, such as through your energy, charisma, appropriate humour, eye contact, adopting a persona or character, and/or creating special moments."}, {"cat": "Style & Spirit", "name": "Wardrobe choice", "role": "BOTH", "desc": "Choosing an outfit appropriate to the surroundings, that plays to your strengths, while allowing you to feel comfortable in yourself."}, {"cat": "Style & Spirit", "name": "Level variation", "role": "BOTH", "desc": "Varying the vertical height of your movement, such as going low or standing tall, for visual interest and musical expression."}, {"cat": "Floor craft & Safety", "name": "Surroundings awareness", "role": "BOTH", "desc": "Keeping a general sense of where other couples are around you as you dance."}, {"cat": "Floor craft & Safety", "name": "Space-scaled moves", "role": "BOTH", "desc": "Shrinking or growing your moves to fit the amount of floor space available."}, {"cat": "Floor craft & Safety", "name": "Collision recovery", "role": "BOTH", "desc": "Adjusting calmly and quickly if you or your partner nearly collide with another couple, and offering a quick apology."}, {"cat": "Floor craft & Safety", "name": "Respecting space", "role": "BOTH", "desc": "Not invading another couple's dancing area, even when the floor is crowded."}, {"cat": "Floor craft & Safety", "name": "Checking comfort", "role": "BOTH", "desc": "Checking and accommodating for what your partner is or isn't comfortable doing."}, {"cat": "Floor craft & Safety", "name": "Respecting physical boundaries", "role": "BOTH", "desc": "Respecting your partner's personal space and physical boundaries, and never touching inappropriately."}, {"cat": "Floor craft & Safety", "name": "Hazard steering", "role": "BOTH", "desc": "Guiding your partner actively around obstacles or other couples on the floor."}, {"cat": "Floor craft & Safety", "name": "Alert trust", "role": "FOLLOW", "desc": "Trusting the direction of the leader while maintaining spatial awareness."}, {"cat": "Repertoire", "name": "Turns", "role": "BOTH", "desc": "Safely using one or multiple turns, such as two-footed or one-footed turns, in time to the music, using good judgement based on your partner's comfort and ability. Leaders: Avoiding leading excessive consecutive turns, which can leave a follower dizzy if not broken up with non-turning movement."}, {"cat": "Repertoire", "name": "Ducks", "role": "BOTH", "desc": "Safely leading or following duck turns (ducking under a raised arm) in time to the music, using good judgement based on your partner's comfort and ability. Leaders: Avoiding leading excessive consecutive ducks, which can leave a follower dizzy if not broken up with other movement."}, {"cat": "Repertoire", "name": "Rides", "role": "BOTH", "desc": "Safely using partner's momentum and/or balance to support complementary motion, in a way that matches the music, and only with appropriate training, safety awareness, and good judgement based on your partner's comfort and ability."}, {"cat": "Repertoire", "name": "Baby aerials", "role": "BOTH", "desc": "Safely lifting the majority of a partner's weight below a certain height threshold \u2014 often the waist, chest, or shoulders depending on the school or competition \u2014 in a way that matches the music, and returning them safely and smoothly to the floor, only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Aerials", "role": "BOTH", "desc": "Safely lifting and returning your partner to the floor, in a way that matches the music, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Floorials", "role": "BOTH", "desc": "Safely incorporating movements where a body part other than the feet touch the floor, in a way that matches the music, and only with appropriate training, consent, and safety awareness."}, {"cat": "Musicality & Interpretation", "name": "Variety of moves", "role": "LEAD", "desc": "Leading a variety of moves and patterns throughout the dance."}, {"cat": "Musicality & Interpretation", "name": "Call and response", "role": "BOTH", "desc": "Replicating or building on your partner's movements when musical cues provide the opportunity to do so."}, {"cat": "Repertoire", "name": "Leans", "role": "LEAD", "desc": "Using core strength and connection points to safely support partner's weight off the vertical via a lean against the body, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Dips", "role": "LEAD", "desc": "Using core strength and connection points to safely support partner's weight off the vertical using body part(s) such as your hand, arm or leg, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Leans", "role": "FOLLOW", "desc": "Using core strength and connection points to lean weight against partner's body, waiting for a clear lead rather than anticipating the movement, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Dips", "role": "FOLLOW", "desc": "Using core strength and supporting as much of own weight as possible during a dip, waiting for a clear lead rather than anticipating the movement, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Aerials", "role": "FOLLOW", "desc": "Using core strength and strong connection points to safely be lifted from and returned to the floor, and only with appropriate training, consent, and safety awareness."}, {"cat": "Technique", "name": "Direction before rotation", "role": "LEAD", "desc": "Initiates a direction for the follower before initiating rotational motion."}];
+const RAW_SKILLS = [{"cat": "Timing & Rhythm", "name": "On-beat movement", "role": "BOTH", "desc": "Making smooth, controlled contact with the floor as the body moves in time with the music's beat."}, {"cat": "Timing & Rhythm", "name": "Up/downbeat movement", "role": "BOTH", "desc": "Using the lighter lift of the upbeat and the stronger, grounded feel of the downbeat to structure the movement of the dance. Compresses through the downbeat so the weight change lands cleanly on the upbeat."}, {"cat": "Timing & Rhythm", "name": "Concertina timing", "role": "BOTH", "desc": "Timing in-and-out movements with your partner to match the downbeat and upbeat."}, {"cat": "Timing & Rhythm", "name": "Timing ownership", "role": "BOTH", "desc": "Staying on time with the music as best you can, even when your partner's timing varies. Quickly and smoothly returns to the musical beat if going off time."}, {"cat": "Timing & Rhythm", "name": "Groove", "role": "BOTH", "desc": "Moving your body continuously in a way that embodies the tempo and feeling of the music, beyond just landing on the beat."}, {"cat": "Timing & Rhythm", "name": "Syncopation", "role": "BOTH", "desc": "Using off-beat movements deliberately, then returning cleanly to standard time."}, {"cat": "Timing & Rhythm", "name": "Half/double-time shift", "role": "BOTH", "desc": "Adjusting footwork speed to match a slower or faster feel in the music, then returning cleanly to standard time."}, {"cat": "Timing & Rhythm", "name": "Patient following", "role": "FOLLOW", "desc": "Filling the full duration of a beat with movement, ensuring new movements are not rushed or made ahead of the leader."}, {"cat": "Timing & Rhythm", "name": "Synchronicity", "role": "BOTH", "desc": "Matching your partner's rhythmic choices \u2014 accents, pulses, phrasing \u2014 so you're moving as one, used once both of you are confidently holding your own timing."}, {"cat": "Technique", "name": "Posture", "role": "BOTH", "desc": "Holding an upright, balanced body line."}, {"cat": "Technique", "name": "Minimal arm extension", "role": "BOTH", "desc": "Keeping elbow low and relatively close to the body in concertina movements."}, {"cat": "Technique", "name": "Balance & centring", "role": "BOTH", "desc": "Centring weight over your own axis and base, with awareness of where your centre is, so you're never accidentally off-balance."}, {"cat": "Technique", "name": "Intentional step size", "role": "BOTH", "desc": "Adjusting step size for song tempo, feel of music and partner, typically smaller rather than larger steps."}, {"cat": "Technique", "name": "Rolling footwork", "role": "BOTH", "desc": "Using foot articulation to roll feet through the floor rather than marching, bouncing, or stomping."}, {"cat": "Technique", "name": "Relaxed, supportive frame", "role": "BOTH", "desc": "Holding a frame that's firm enough to lead or follow but not tense or rigid."}, {"cat": "Technique", "name": "Sending/receiving weight", "role": "BOTH", "desc": "Sending weight smoothly off one foot, and sending your centre of gravity fully over your other (receiving) foot as you receive it."}, {"cat": "Technique", "name": "Grounding", "role": "BOTH", "desc": "Engaging your core and posterior chain, and the use of turn out in the feet, to commit weight down into the floor, creating a stable connection with the ground beneath you."}, {"cat": "Technique", "name": "Minimum force", "role": "BOTH", "desc": "Using the minimum necessary force to move yourself and/or your partner."}, {"cat": "Technique", "name": "Body flight", "role": "BOTH", "desc": "Managing your body's inertia smoothly through space when accelerating, decelerating, or maintaining constant motion."}, {"cat": "Technique", "name": "Spin technique", "role": "BOTH", "desc": "Spotting and controlling the body through a turn, maintaining a vertical axis and avoiding falling into the spin."}, {"cat": "Technique", "name": "Line of dance", "role": "BOTH", "desc": "Maintaining a line of dance suitable to the context of the surroundings, or intentionally breaking from it to create contrast or impact."}, {"cat": "Technique", "name": "Turn height adjustment", "role": "LEAD", "desc": "Adjusting hand and arm height during assisted turns to make it easier for the follower."}, {"cat": "Technique", "name": "Body articulation", "role": "BOTH", "desc": "Moving your body through space with control and fluidity, rather than moving rigidly or all at once."}, {"cat": "Connection & Teamwork", "name": "Resistance in partnership", "role": "BOTH", "desc": "Matching your partner's resistance in compression and opposition, giving genuine weight they can lead or follow off rather than just touching hands."}, {"cat": "Connection & Teamwork", "name": "Partner ability adjustment", "role": "BOTH", "desc": "Adjusting to partner's ability and style quickly."}, {"cat": "Connection & Teamwork", "name": "Visual connection", "role": "BOTH", "desc": "Staying visually engaged with your partner and/or an audience if appropriate. Not staring at your feet."}, {"cat": "Connection & Teamwork", "name": "Non-verbal check-ins", "role": "BOTH", "desc": "Offering small smiles, nods, or glances that reassure your partner mid-dance."}, {"cat": "Connection & Teamwork", "name": "Partner trust", "role": "BOTH", "desc": "Establishing and embracing trust in your partner."}, {"cat": "Connection & Teamwork", "name": "Graceful recovery", "role": "BOTH", "desc": "Re-establishing frame, rapport, and connection smoothly after a miscommunication or mistake, without a lasting impact on the dance."}, {"cat": "Connection & Teamwork", "name": "Elastic connection", "role": "BOTH", "desc": "Creating stretch in the connection and letting it recoil, rather than just pushing or pulling."}, {"cat": "Connection & Teamwork", "name": "Counterbalance", "role": "BOTH", "desc": "Using opposing weight with your partner to create shapes neither of you could hold alone."}, {"cat": "Connection & Teamwork", "name": "Conversational dynamic", "role": "BOTH", "desc": "Treating leading and following as a two-way exchange, not a one-way instruction."}, {"cat": "Connection & Teamwork", "name": "Baton passing & sharing", "role": "BOTH", "desc": "Giving, taking, or sharing the lead in a moment, whether that means initiating an idea, building on your partner's, or creating something together."}, {"cat": "Connection & Teamwork", "name": "Clear communication", "role": "BOTH", "desc": "Giving directional information that's readable and easy for your partner to interpret, whether through subtle physical or visual cues, while minimizing unnecessary physical or visual noise that could create confusion."}, {"cat": "Technique", "name": "Body leading", "role": "LEAD", "desc": "Leading with body weight and rotation, not by pulling or pushing with the arm. Influencing rather than physically moving your partner into position, often through subtle suggestion rather than firm direction."}, {"cat": "Technique", "name": "Responsive following", "role": "FOLLOW", "desc": "Reacting to the leader's communication with minimal delay, typically from your center, without forcing or resisting."}, {"cat": "Technique", "name": "Active/passive leading", "role": "LEAD", "desc": "Choosing whether to continuously guide a movement (active) or give an initial impulse and allow your partner's own momentum or interpretation to complete it (passive)."}, {"cat": "Connection & Teamwork", "name": "Owning your rhythm", "role": "FOLLOW", "desc": "Filling in your own footwork and timing opportunistically."}, {"cat": "Connection & Teamwork", "name": "Preparation", "role": "BOTH", "desc": "Creating the physical and timing conditions that allow your partner to execute a movement successfully."}, {"cat": "Musicality & Interpretation", "name": "Mood expression", "role": "BOTH", "desc": "Dancing in a way that reflects the emotional tone of the song, not just its beat."}, {"cat": "Musicality & Interpretation", "name": "Energy matching", "role": "BOTH", "desc": "Adjusting how big or small your movements are to match the song's energy."}, {"cat": "Musicality & Interpretation", "name": "Accenting hits", "role": "BOTH", "desc": "Building up to and emphasising a strong musical accent through your movements and/or moves."}, {"cat": "Musicality & Interpretation", "name": "Contrast in movement", "role": "BOTH", "desc": "Using contrast in the size and/or tempo of your movements to match changes in the music."}, {"cat": "Musicality & Interpretation", "name": "Using musical structure", "role": "BOTH", "desc": "Hearing and interpreting music in groups such as 8 and 32 beats, and recognising song sections such as the intro, verse, chorus, and bridge, and dancing in a way that reflects them."}, {"cat": "Musicality & Interpretation", "name": "Musical pauses", "role": "BOTH", "desc": "Using stillness deliberately at a musical pause, rather than filling every beat with movement."}, {"cat": "Musicality & Interpretation", "name": "Improvising surprises", "role": "BOTH", "desc": "Adjusting on the fly when the music does something unexpected."}, {"cat": "Musicality & Interpretation", "name": "Genre adaptation", "role": "BOTH", "desc": "Adapting the moves, movements, and/or timing of your dance to different music genres, and incorporating influence from other dance styles, while remaining authentically Modern Jive."}, {"cat": "Musicality & Interpretation", "name": "Tension & release", "role": "BOTH", "desc": "Reflecting the building and release of tension in the song, including building up toward key musical moments."}, {"cat": "Musicality & Interpretation", "name": "Lyrical interpretation", "role": "BOTH", "desc": "Incorporating movements relevant to the sound, melody, or literal meaning of the lyrics."}, {"cat": "Musicality & Interpretation", "name": "Staccato movement", "role": "BOTH", "desc": "Incorporating sharp, distinct movements."}, {"cat": "Musicality & Interpretation", "name": "Legato movement", "role": "BOTH", "desc": "Incorporating smooth, flowing movements."}, {"cat": "Musicality & Interpretation", "name": "Narrative arc", "role": "BOTH", "desc": "Building a sense of story or journey with your partner across the song."}, {"cat": "Style & Spirit", "name": "Personal styling", "role": "BOTH", "desc": "Adding your own individual flavour or flourishes to the dance, without being selfish or compromising the leader/follower dynamic. Includes adapting to different music genres and borrowing from other dance styles while remaining authentically Modern Jive."}, {"cat": "Style & Spirit", "name": "Aesthetic lines", "role": "BOTH", "desc": "Creating aesthetically pleasing lines through your own body shape, and together with your partner, including using your arms and legs as a natural extension of the body to add to the feel and shape of the dance."}, {"cat": "Style & Spirit", "name": "Body isolations", "role": "BOTH", "desc": "Moving one or multiple parts of your body (such as ribs, hips, or shoulders) independently of the rest, often used in a coordinated way such as a body roll or rhythmic walk."}, {"cat": "Style & Spirit", "name": "Facial expression", "role": "BOTH", "desc": "Letting your face reflect enjoyment and engagement, not a blank or serious look."}, {"cat": "Style & Spirit", "name": "Confidence & presence", "role": "BOTH", "desc": "Carrying yourself with self-assurance, even through a mistake."}, {"cat": "Style & Spirit", "name": "Playfulness", "role": "BOTH", "desc": "Bringing a fun energy to the dance rather than over-seriousness."}, {"cat": "Style & Spirit", "name": "Individuality", "role": "BOTH", "desc": "Expressing your own personality within the partnership."}, {"cat": "Style & Spirit", "name": "Enjoying the moment", "role": "BOTH", "desc": "Enjoying the dance and the partnership, rather than just executing moves."}, {"cat": "Style & Spirit", "name": "Space creation", "role": "BOTH", "desc": "Creating physical or musical space for your partner to add their own styling."}, {"cat": "Style & Spirit", "name": "Hairology", "role": "BOTH", "desc": "Using the hair to add to the feel and visual appeal of the dance."}, {"cat": "Style & Spirit", "name": "Entertainment value", "role": "BOTH", "desc": "Being entertaining to your partner or an audience, such as through your energy, charisma, appropriate humour, eye contact, adopting a persona or character, and/or creating special moments."}, {"cat": "Style & Spirit", "name": "Wardrobe choice", "role": "BOTH", "desc": "Choosing an outfit appropriate to the surroundings, that plays to your strengths, while allowing you to feel comfortable in yourself."}, {"cat": "Style & Spirit", "name": "Level variation", "role": "BOTH", "desc": "Varying the vertical height of your movement, such as going low or standing tall, for visual interest and musical expression."}, {"cat": "Floor craft & Safety", "name": "Surroundings awareness", "role": "BOTH", "desc": "Keeping a general sense of where other couples are around you as you dance."}, {"cat": "Floor craft & Safety", "name": "Space-scaled moves", "role": "BOTH", "desc": "Shrinking or growing your moves to fit the amount of floor space available."}, {"cat": "Floor craft & Safety", "name": "Collision recovery", "role": "BOTH", "desc": "Adjusting calmly and quickly if you or your partner nearly collide with another couple, and offering a quick apology."}, {"cat": "Floor craft & Safety", "name": "Respecting space", "role": "BOTH", "desc": "Not invading another couple's dancing area, even when the floor is crowded."}, {"cat": "Floor craft & Safety", "name": "Checking comfort", "role": "BOTH", "desc": "Checking and accommodating for what your partner is or isn't comfortable doing."}, {"cat": "Floor craft & Safety", "name": "Respecting physical boundaries", "role": "BOTH", "desc": "Respecting your partner's personal space and physical boundaries, and never touching inappropriately."}, {"cat": "Floor craft & Safety", "name": "Hazard steering", "role": "BOTH", "desc": "Guiding your partner actively around obstacles or other couples on the floor."}, {"cat": "Floor craft & Safety", "name": "Alert trust", "role": "FOLLOW", "desc": "Trusting the direction of the leader while maintaining spatial awareness."}, {"cat": "Repertoire", "name": "Turns", "role": "BOTH", "desc": "Safely using one or multiple turns, such as two-footed or one-footed turns, in time to the music, using good judgement based on your partner's comfort and ability. Leaders: Avoiding leading excessive consecutive turns, which can leave a follower dizzy if not broken up with non-turning movement."}, {"cat": "Repertoire", "name": "Ducks", "role": "BOTH", "desc": "Safely leading or following duck turns (ducking under a raised arm) in time to the music, using good judgement based on your partner's comfort and ability. Leaders: Avoiding leading excessive consecutive ducks, which can leave a follower dizzy if not broken up with other movement."}, {"cat": "Repertoire", "name": "Rides", "role": "BOTH", "desc": "Safely using partner's momentum and/or balance to support complementary motion, in a way that matches the music, and only with appropriate training, safety awareness, and good judgement based on your partner's comfort and ability."}, {"cat": "Repertoire", "name": "Baby aerials", "role": "BOTH", "desc": "Safely lifting the majority of a partner's weight below a certain height threshold \u2014 often the waist, chest, or shoulders depending on the school or competition \u2014 in a way that matches the music, and returning them safely and smoothly to the floor, only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Aerials", "role": "BOTH", "desc": "Safely lifting and returning your partner to the floor, in a way that matches the music, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Floorials", "role": "BOTH", "desc": "Safely incorporating movements where a body part other than the feet touch the floor, in a way that matches the music, and only with appropriate training, consent, and safety awareness."}, {"cat": "Musicality & Interpretation", "name": "Variety of moves", "role": "LEAD", "desc": "Leading a variety of moves and patterns throughout the dance."}, {"cat": "Musicality & Interpretation", "name": "Call and response", "role": "BOTH", "desc": "Replicating or building on your partner's movements when musical cues provide the opportunity to do so."}, {"cat": "Repertoire", "name": "Leans", "role": "LEAD", "desc": "Using core strength and connection points to safely support partner's weight off the vertical via a lean against the body, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Dips", "role": "LEAD", "desc": "Using core strength and connection points to safely support partner's weight off the vertical using body part(s) such as your hand, arm or leg, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Leans", "role": "FOLLOW", "desc": "Using core strength and connection points to lean weight against partner's body, waiting for a clear lead rather than anticipating the movement, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Dips", "role": "FOLLOW", "desc": "Using core strength and supporting as much of own weight as possible during a dip, waiting for a clear lead rather than anticipating the movement, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Aerials", "role": "FOLLOW", "desc": "Using core strength and strong connection points to safely be lifted from and returned to the floor, and only with appropriate training, consent, and safety awareness."}, {"cat": "Technique", "name": "Direction before rotation", "role": "LEAD", "desc": "Initiates a direction for the follower before initiating rotational motion."}];
 
 const CATEGORY_COLORS = {
   "Timing & Rhythm": "var(--c-timing)",
@@ -553,7 +629,7 @@ function reorderRepertoire(list){
 }
 const SKILLS = reorderRepertoire(preprocessRepertoire(RAW_SKILLS));
 
-// ---------- curated icon vocabulary (reusable shapes, mapped across all 85 skills) ----------
+// ---------- curated icon vocabulary (reusable shapes, mapped across all 84 skills) ----------
 const ICONS = {
   beat: '<line x1="6" y1="16" x2="6" y2="8"/><line x1="12" y1="19" x2="12" y2="5"/><line x1="18" y1="14" x2="18" y2="10"/>',
   clock: '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/>',
@@ -606,7 +682,7 @@ const ICONS = {
 
 const SKILL_ICON_MAP = {
   "On-beat movement":"beat","Up/downbeat movement":"beat","Concertina timing":"armsInOut","Timing ownership":"clock",
-  "Groove":"grooveFigure","Syncopation":"beat","Half/double-time shift":"clock","Pulsing":"pulseLine","Synchronicity":"handsLink",
+  "Groove":"grooveFigure","Syncopation":"beat","Half/double-time shift":"clock","Synchronicity":"handsLink",
   "Patient following":"clock",
   "Posture":"standingFigure","Minimal arm extension":"armsInOut","Balance & centring":"intentionalStep","Intentional step size":"smallStepFigure",
   "Rolling footwork":"rollingStepFigure","Relaxed, supportive frame":"danceFrameFigure","Sending/receiving weight":"intentionalStep",
@@ -685,11 +761,14 @@ function matchesFilter(role){
   return role === currentFilter;
 }
 
-function skillText(skill){
-  const descText = (skill.role === 'DUAL' && skill.pairs)
-    ? skill.pairs.map(p => p.desc).join(' ')
+function skillDescText(skill){
+  return (skill.role === 'DUAL' && skill.pairs)
+    ? skill.pairs.map(p => `${p.label}: ${p.desc}`).join('  ')
     : (skill.desc || '');
-  return (skill.name + ' ' + descText).toLowerCase();
+}
+
+function skillText(skill){
+  return (skill.name + ' ' + skillDescText(skill)).toLowerCase();
 }
 
 function matchesSearch(skill){
@@ -769,6 +848,7 @@ categories.forEach(cat => {
 
   const colWrap = document.createElement('div');
   colWrap.className = 'col-wrap' + (isRepertoire ? ' repertoire-col' : '');
+  colWrap.dataset.cat = cat;
 
   const head = document.createElement('div');
   head.className = 'col-head';
@@ -793,12 +873,14 @@ categories.forEach(cat => {
     tile.dataset.id = s._id;
     tile.dataset.role = s.role;
     tile.style.borderLeftColor = colColor;
+    tile.style.setProperty('--tint', colColor);
     let pill = '';
     if (s.role !== 'BOTH' && s.role !== 'DUAL') {
       pill = `<span class="role-pill" style="background:${ROLE_COLOR[s.role]}">${s.role === 'LEAD' ? 'L' : 'F'}</span>`;
     }
     const icon = iconSVG(SKILL_ICON_MAP[s.name]);
-    tile.innerHTML = `<span class="tile-main">${icon}<span>${s.name}</span></span>${pill}`;
+    const escDesc = skillDescText(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    tile.innerHTML = `<span class="tile-main">${icon}<span>${s.name}</span></span>${pill}<span class="tile-desc">${escDesc}</span>`;
     tile.addEventListener('click', () => selectSkill(s._id));
     col.appendChild(tile);
   });
@@ -827,7 +909,7 @@ function selectSkill(id){
   if (skill.role === 'DUAL' && skill.pairs) {
     descEl.innerHTML = skill.pairs.map(p => `<strong>${p.label}:</strong> ${p.desc}`).join('<br><br>');
   } else {
-    descEl.textContent = skill.desc;
+    descEl.textContent = skillDescText(skill);
   }
 
   const textEl = document.getElementById('detail-text');
@@ -860,12 +942,105 @@ document.querySelectorAll('.filter-toggle button').forEach(btn => {
 });
 updateCounts();
 
-// ---------- PDF / print ----------
-document.getElementById('btn-pdf').addEventListener('click', () => { window.print(); });
+// ---------- PDF download (generates a real .pdf file client-side, no print dialog) ----------
+document.getElementById('print-footer-date').textContent = new Date().toISOString().slice(0,10);
+
+const PDF_CATEGORY_HEX = {
+  "Timing & Rhythm": "#E3A44B",
+  "Technique": "#9B7FD4",
+  "Connection & Teamwork": "#C2487A",
+  "Musicality & Interpretation": "#7D8CD4",
+  "Style & Spirit": "#E8956B",
+  "Floor craft & Safety": "#7AA37A",
+  "Repertoire": "#5E7A99"
+};
+const PDF_ROLE_HEX = { LEAD: "#D55E00", FOLLOW: "#009E73" };
+
+function pdfEsc(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+}
+
+function buildPdfContainer(mode){
+  const root = document.createElement('div');
+  root.className = 'pdf-render-root';
+
+  const header = document.createElement('div');
+  header.className = 'pdf-header';
+  header.innerHTML = `<h2>The Modern Jive Skills Toolkit</h2><span class="pdf-tag">${SKILLS.length} skills &middot; ${mode === 'simple' ? 'Simple reference' : 'Detailed reference'} &middot; mjhub.dance</span>`;
+  root.appendChild(header);
+
+  const colsClass = mode === 'simple' ? 'cols-4' : 'cols-3';
+
+  categories.forEach(cat => {
+    const block = document.createElement('div');
+    block.className = 'pdf-cat-block';
+
+    const head = document.createElement('div');
+    head.className = 'pdf-cat-head';
+    head.style.background = PDF_CATEGORY_HEX[cat];
+    head.innerHTML = `<span class="name">${pdfEsc(cat)}</span><span class="count">${grouped[cat].length} skills</span>`;
+    block.appendChild(head);
+
+    const grid = document.createElement('div');
+    grid.className = 'pdf-tile-grid ' + colsClass;
+
+    grouped[cat].forEach(s => {
+      const tile = document.createElement('div');
+      tile.className = 'pdf-tile';
+      tile.style.borderLeftColor = PDF_CATEGORY_HEX[cat];
+      const roleHex = PDF_ROLE_HEX[s.role];
+      const pill = roleHex ? `<span class="pill" style="background:${roleHex}">${ROLE_LABEL[s.role]}</span>` : '';
+      const desc = mode === 'detailed' ? `<div class="desc">${pdfEsc(skillDescText(s))}</div>` : '';
+      tile.innerHTML = `<div class="name-row"><span class="name">${pdfEsc(s.name)}</span>${pill}</div>${desc}`;
+      grid.appendChild(tile);
+    });
+
+    block.appendChild(grid);
+    root.appendChild(block);
+  });
+
+  const footer = document.createElement('div');
+  footer.className = 'pdf-footer';
+  footer.textContent = `mjhub.dance \u00b7 The Modern Jive Skills Toolkit \u00b7 generated ${new Date().toISOString().slice(0,10)}`;
+  root.appendChild(footer);
+
+  return root;
+}
+
+function downloadPdf(mode, btn){
+  const label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Generating\u2026';
+
+  const container = buildPdfContainer(mode);
+  document.body.appendChild(container);
+
+  html2pdf().set({
+    margin: 8,
+    filename: `mj-hub-skills-toolkit-${mode}.pdf`,
+    image: { type: 'jpeg', quality: 0.97 },
+    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#faf7f0' },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+    pagebreak: { mode: ['css'], avoid: ['.pdf-tile', '.pdf-cat-head', '.pdf-header'] }
+  }).from(container).save().then(() => {
+    container.remove();
+    btn.disabled = false;
+    btn.textContent = label;
+  }).catch(err => {
+    container.remove();
+    btn.disabled = false;
+    btn.textContent = label;
+    alert('Sorry, the PDF could not be generated. Please try again.');
+    console.error(err);
+  });
+}
+
+document.getElementById('btn-pdf-simple').addEventListener('click', (e) => downloadPdf('simple', e.currentTarget));
+document.getElementById('btn-pdf-detailed').addEventListener('click', (e) => downloadPdf('detailed', e.currentTarget));
 
 // ---------- share (per platform) ----------
 const pageUrl = window.location.href;
-const shareText = 'A toolkit of 85 Modern Jive skills for dancers, teachers, and judges.';
+const shareText = 'A toolkit of 84 Modern Jive skills for dancers, teachers, and judges.';
 
 document.getElementById('btn-share-fb').addEventListener('click', () => {
   window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`, '_blank', 'noopener');
