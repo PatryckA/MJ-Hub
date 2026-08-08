@@ -952,6 +952,27 @@
     "source": "organiser-submitted"
   },
   {
+    "id": "australia-melbourne-dup-down-under-pros-2027",
+    "name": "DUP: Down Under Pros",
+    "city": "Melbourne",
+    "country": "Australia",
+    "region": "Oceania",
+    "lat": -37.8142,
+    "lon": 144.9632,
+    "types": [
+      "Competition",
+      "Workshops"
+    ],
+    "status": "confirmed",
+    "start_date": "2027-04-01",
+    "end_date": "2027-04-04",
+    "multiday": true,
+    "website": "https://www.thedownunderpros.com",
+    "ai_sourced": false,
+    "needs_review": false,
+    "source": "organiser-submitted"
+  },
+  {
     "id": "england-daventry-core-2027-2027",
     "name": "CORE 2027",
     "city": "Daventry",
