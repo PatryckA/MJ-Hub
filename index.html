@@ -2,253 +2,965 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MJ Hub — International Ceroc & Modern Jive Community</title>
-<meta name="description" content="Growing the international Ceroc & Modern Jive dance family — skills, events, and community, all in one place.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Modern Jive Skills Toolkit</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23181220'/%3E%3Ctext x='50' y='68' font-family='Georgia, serif' font-weight='700' font-size='46' text-anchor='middle' fill='%23f2ede4'%3EMJ%3C/text%3E%3C/svg%3E">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GM349HL57P"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GM349HL57P');
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#12131a;
-    --floor:#1a1c26;
-    --floor-raised:#22242f;
-    --paper:#f4f2ec;
-    --gold:#e8a33d;
-    --magenta:#d6396b;
-    --slate:#8b8fa3;
-    --line: rgba(244,242,236,0.09);
-    --radius: 14px;
+    --floor:#181220;
+    --panel:#241c33;
+    --panel-2:#2c2340;
+    --panel-line: rgba(242,237,228,0.10);
+    --cream:#f2ede4;
+    --muted:#a89bb8;
+
+    --role-lead:#D55E00;
+    --role-follow:#009E73;
+
+    --c-timing:#E3A44B;
+    --c-technique:#9B7FD4;
+    --c-connection:#C2487A;
+    --c-musicality:#7D8CD4;
+    --c-style:#E8956B;
+    --c-floorcraft:#7AA37A;
+    --c-repertoire:#5E7A99;
+
+    --detail-bg: #3a2447;
   }
   *{box-sizing:border-box;}
+  html,body{margin:0;}
   body{
-    margin:0;
-    background:var(--ink);
-    color:var(--paper);
-    font-family:'Work Sans', sans-serif;
-    -webkit-font-smoothing:antialiased;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-  }
-  h1,h2,h3{
-    font-family:'Bricolage Grotesque', sans-serif;
-    font-weight:700;
-    letter-spacing:-0.01em;
-    margin:0;
-  }
-  a{color:inherit;}
-  :focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
-
-  .hero{
-    padding: 90px 24px 50px;
-    max-width:1000px;
-    margin:0 auto;
-    text-align:center;
-  }
-  .hero-eyebrow{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.78rem;
-    letter-spacing:0.16em;
-    text-transform:uppercase;
-    color:var(--gold);
-    margin-bottom:20px;
-  }
-  .hero h1{
-    font-size:clamp(2.6rem, 7vw, 4.6rem);
-    line-height:1.02;
-  }
-  .hero h1 em, .hero h1 .accent{
-    font-style:normal;
-    background:linear-gradient(90deg, var(--gold), var(--magenta));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-  }
-  .hero-sub{
-    margin:22px auto 0;
-    font-size:1.1rem;
-    color:var(--slate);
-    max-width:48ch;
-    line-height:1.6;
-  }
-
-  main{
-    flex:1;
-    max-width:1000px;
-    margin:0 auto;
-    padding:20px 24px 90px;
-    width:100%;
-  }
-
-  .tile-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
-    gap:22px;
-  }
-
-  .tile{
-    position:relative;
-    background:var(--floor-raised);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:32px 28px;
-    text-decoration:none;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    transition:transform .15s ease, border-color .15s ease;
-    overflow:hidden;
-  }
-  .tile:hover{transform:translateY(-3px); border-color:var(--gold);}
-  .tile:focus-visible{transform:translateY(-3px);}
-
-  .tile-icon{
-    width:52px; height:52px;
-    border-radius:12px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:1.6rem;
-    margin-bottom:6px;
-  }
-  .tile.skills .tile-icon{background:rgba(155,107,214,0.16);}
-  .tile.calendar .tile-icon{background:rgba(232,163,61,0.16);}
-
-  .tile-thumb-wrap{
-    position:relative;
-    width:100%;
-    height:280px;
-    border-radius:10px;
-    overflow:hidden;
-    margin-bottom:4px;
-  }
-  .tile-thumb{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:top left;
-    display:block;
-  }
-  .tile-thumb-wrap::after{
-    content:"";
-    position:absolute;
-    inset:0;
     background:
-      linear-gradient(180deg, rgba(34,36,47,0) 82%, var(--floor-raised) 100%);
-    pointer-events:none;
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(155,127,212,0.18), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(211,86,106,0.12), transparent 55%),
+      var(--floor);
+    color:var(--cream);
+    font-family:'Inter',sans-serif;
+    padding-bottom:130px;
   }
+  .wrap{max-width:1500px;margin:0 auto;padding:32px 32px 0;}
 
-  .tile h2{font-size:1.3rem;}
-  .tile p{color:var(--slate); font-size:0.94rem; line-height:1.55; margin:0;}
-  .tile-cta{
-    margin-top:auto;
-    padding-top:14px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.76rem;
-    letter-spacing:0.04em;
-    text-transform:uppercase;
-    color:var(--gold);
-    display:flex;
-    align-items:center;
-    gap:6px;
+  /* ---------- back link ---------- */
+  .back-link{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:'Inter',sans-serif;font-size:13px;color:var(--muted);
+    text-decoration:none;margin-bottom:16px;
   }
-  .tile:hover .tile-cta{gap:10px;}
-  .tile-cta span{transition:margin .15s ease;}
+  .back-link:hover{color:var(--cream);}
 
-  footer{
-    border-top:1px solid var(--line);
-    padding:32px 24px;
+  /* ---------- title block ---------- */
+  .title-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  h1{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(34px,5.5vw,60px);
+    line-height:0.95;
+    margin:0;
+    background:linear-gradient(100deg,#f0932b 0%, #e3a44b 50%, #d0566a 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .beta-pill{
+    font-family:'Inter',sans-serif;font-size:11px;font-weight:800;letter-spacing:.08em;
+    background:#e3a44b;color:#1b1626;padding:4px 10px;border-radius:20px;
+    text-transform:uppercase;white-space:nowrap;
+  }
+  .welcome-banner{
+    background:#e3a44b;
+    color:#1b1626;font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;
+    padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:14px;
     text-align:center;
-    color:var(--slate);
-    font-size:0.82rem;
   }
-  .share-row{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    margin-bottom:16px;
+  .welcome-banner button{
+    flex-shrink:0;background:rgba(27,22,38,0.15);border:none;color:#1b1626;
+    width:22px;height:22px;border-radius:50%;font-size:15px;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
   }
-  .share-btn{
-    width:38px; height:38px;
-    border-radius:50%;
-    background:var(--floor-raised);
-    border:1px solid var(--line);
-    color:var(--paper);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-decoration:none;
-    font-size:0.85rem;
-    font-weight:600;
-    cursor:pointer;
-    transition:border-color .15s ease;
+  .welcome-banner button:hover{background:rgba(27,22,38,0.28);}
+  @media (max-width:640px){
+    .welcome-banner{padding:10px 14px;font-size:11.5px;text-align:left;}
   }
-  .share-btn:hover{border-color:var(--gold); color:var(--gold);}
-  .share-msg{
-    font-size:0.76rem;
-    color:var(--gold);
-    margin-bottom:12px;
-    display:none;
+  .attribution{
+    font-size:13px;color:var(--muted);margin:8px 0 0;
   }
-  .footer-copyright{
-    margin-top:8px;
-    color:var(--slate);
-    opacity:0.8;
+  .sub{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:500;
+    font-size:16px;color:var(--muted);max-width:680px;line-height:1.5;margin:14px 0 24px;
   }
 
-  @media (prefers-reduced-motion: reduce){
-    .tile{transition:none;}
+  /* ---------- use case cards ---------- */
+  .usecases-heading{
+    font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:16px;letter-spacing:.03em;
+    color:var(--muted);margin:0 0 10px;text-transform:uppercase;
   }
+  .usecases{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;
+    margin:0 0 26px;padding:0;list-style:none;counter-reset:usecase;
+  }
+  .usecase-card{
+    background:var(--panel);border:1px solid var(--panel-line);border-radius:10px;
+    padding:13px 15px 13px 40px;font-size:12.8px;line-height:1.45;color:var(--cream);
+    position:relative;counter-increment:usecase;
+  }
+  .usecase-card::before{
+    content:counter(usecase);
+    position:absolute;left:13px;top:13px;
+    width:18px;height:18px;border-radius:50%;background:#3a2e52;color:#e3a44b;
+    font-family:'Inter',sans-serif;font-size:11px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .usecase-role{color:#e3a44b;font-weight:700;}
+
+  /* ---------- legend ---------- */
+  .legend-row{
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
+    padding:14px 0;border-top:1px solid var(--panel-line);
+  }
+  .legend{display:flex;gap:20px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted);}
+  .legend-item{display:flex;align-items:center;gap:7px;}
+  .pill-sample{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:18px;height:16px;border-radius:5px;font-size:9.5px;font-weight:800;color:#fff;
+  }
+  .pill-sample.both{background:#4a4458;color:var(--muted);font-size:14px;}
+  .pill-sample.lead{background:var(--role-lead);}
+  .pill-sample.follow{background:var(--role-follow);}
+
+  .tap-instruction{font-size:12.5px;color:var(--muted);margin:0 0 16px;font-style:italic;}
+
+  /* ---------- toolbar ---------- */
+  .toolbar{
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;
+    padding:20px 0;border-top:1px solid var(--panel-line);border-bottom:1px solid var(--panel-line);
+    margin-bottom:28px;
+  }
+  .filter-toggle{display:flex;gap:6px;background:var(--panel);border-radius:10px;padding:4px;}
+  .filter-toggle button{
+    border:none;background:transparent;color:var(--muted);font-family:'Inter',sans-serif;font-weight:700;
+    font-size:12px;letter-spacing:.02em;padding:8px 14px;border-radius:7px;cursor:pointer;transition:all .15s ease;
+  }
+  .filter-toggle button.active{background:#3a2e52;color:var(--cream);}
+  .filter-toggle button:hover:not(.active){color:var(--cream);}
+
+  .search-wrap{flex:1;min-width:160px;max-width:280px;position:relative;}
+  .skill-search-input{
+    width:100%;background:var(--panel);border:1px solid var(--panel-line);border-radius:9px;
+    padding:9px 32px 9px 14px;color:var(--cream);font-family:'Inter',sans-serif;font-size:12.5px;
+    outline:none;transition:border-color .15s ease;box-sizing:border-box;
+  }
+  .skill-search-input:focus{border-color:#7a5aa8;}
+  .skill-search-input::placeholder{color:var(--muted);}
+  .skill-search-clear{
+    position:absolute;right:6px;top:50%;transform:translateY(-50%);
+    background:rgba(242,237,228,0.10);border:none;color:var(--cream);
+    width:20px;height:20px;border-radius:50%;font-size:14px;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .skill-search-clear:hover{background:rgba(242,237,228,0.2);}
+
+  .filter-reminder{
+    position:fixed;top:14px;right:14px;z-index:60;
+    display:flex;align-items:center;gap:8px;
+    background:#3a2e52;border:1px solid rgba(242,237,228,0.18);border-radius:20px;
+    padding:8px 8px 8px 14px;font-size:12px;font-weight:600;color:var(--cream);
+    box-shadow:0 6px 20px rgba(0,0,0,0.35);
+  }
+  .filter-reminder button{
+    background:rgba(242,237,228,0.12);border:none;color:var(--cream);
+    width:20px;height:20px;border-radius:50%;font-size:14px;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .filter-reminder button:hover{background:rgba(242,237,228,0.22);}
+
+  .footer-actions{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+    padding:28px 0 20px;margin-top:32px;border-top:1px solid var(--panel-line);
+  }
+  .pdf-btn-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+  .share-group{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;}
+  .action-btn{
+    border:1px solid var(--panel-line);background:var(--panel);color:var(--cream);
+    font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+    padding:9px 14px;border-radius:8px;cursor:pointer;transition:background .15s ease;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .action-btn:hover{background:var(--panel-2);}
+  .action-btn.share{background:linear-gradient(100deg,#4a3866,#5a2f4a);}
+  .share-label{font-size:12px;color:var(--muted);align-self:center;margin-right:-2px;}
+  .share-row{display:flex;gap:6px;}
+  .icon-btn{
+    width:34px;height:34px;border-radius:50%;border:1px solid var(--panel-line);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;
+    transition:transform .12s ease, filter .12s ease;
+  }
+  .icon-btn:hover{transform:translateY(-2px);filter:brightness(1.15);}
+  .icon-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .share-fb{background:#3b5998;}
+  .share-fb svg{fill:currentColor;stroke:none;}
+  .share-x{background:#15181c;}
+  .share-email{background:#5c5470;}
+  .share-ig{background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af);}
+
+  /* ---------- column view ---------- */
+  #view-columns{overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;}
+  .col-grid{display:grid;grid-auto-flow:column;grid-auto-columns:190px;gap:14px;min-width:max-content;align-items:start;}
+  .col-wrap{scroll-snap-align:start;}
+  .col-head{
+    position:sticky;top:0;z-index:5;min-height:118px;
+    padding:11px 10px 9px;border-radius:8px 8px 0 0;margin-bottom:8px;color:#1b1626;
+    display:flex;flex-direction:column;gap:5px;
+  }
+  .col-head-top{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;}
+  .col-head-text{
+    flex:1;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.02em;line-height:1.1;
+  }
+  .col-head-desc{
+    font-family:'Inter',sans-serif;font-size:10.5px;line-height:1.35;font-weight:500;
+    color:#1b1626;opacity:.82;margin:0;flex:1;
+  }
+  .col-head .count{display:block;font-family:'Inter',sans-serif;font-size:9.5px;font-weight:700;opacity:.6;margin-top:auto;}
+  .chevron-btn{
+    background:rgba(0,0,0,0.15);border:none;border-radius:5px;width:22px;height:22px;
+    color:#1b1626;font-size:12px;cursor:pointer;flex-shrink:0;transition:transform .15s ease;
+  }
+  .col-wrap.collapsed .chevron-btn{transform:rotate(-90deg);}
+  .col-wrap.collapsed .col{display:none;}
+
+  /* --- Repertoire: visually distinct (different in kind, not just another category) --- */
+  /* A single dashed border wraps the whole column as one unit, rather than dashing every tile. */
+  .repertoire-col{
+    border:2px dashed var(--c-repertoire);
+    border-radius:12px;
+    padding:8px 8px 10px;
+  }
+  .repertoire-col .col-head{
+    border-radius:8px 8px 0 0;
+  }
+
+  .col{display:flex;flex-direction:column;gap:6px;}
+  .tile{
+    background:var(--panel);border:1px solid var(--panel-line);border-left:4px solid transparent;
+    border-radius:6px;padding:9px 10px;font-size:12px;line-height:1.3;cursor:pointer;position:relative;
+    transition:transform .12s ease, background .12s ease;
+    display:flex;justify-content:space-between;align-items:flex-start;gap:6px;
+  }
+  .tile:hover{background:var(--panel-2);transform:translateX(2px);}
+  .tile.selected{background:var(--panel-2);box-shadow: inset 0 0 0 1.5px rgba(242,237,228,0.35);}
+  .tile.hidden-by-filter{display:none;}
+  .role-pill{
+    flex-shrink:0;font-family:'Inter',sans-serif;font-size:9px;font-weight:800;color:#fff;
+    padding:1px 6px;border-radius:9px;line-height:1.5;
+  }
+  .role-pill.dual{background:linear-gradient(90deg, var(--role-lead) 50%, var(--role-follow) 50%);}
+  .tile-main{display:flex;align-items:center;gap:7px;min-width:0;}
+  .tile-desc{display:none;}
+  .tile-icon{
+    width:14px;height:14px;flex-shrink:0;
+    fill:none;stroke:var(--muted);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
+    opacity:.85;
+  }
+
+  /* ---------- detail bar ---------- */
+  #detail-bar{
+    position:fixed;left:0;right:0;bottom:0;
+    background:#100c18;border-top:1px solid rgba(242,237,228,0.14);
+    padding:16px 24px;z-index:50;
+    box-shadow:0 -8px 30px rgba(0,0,0,0.4);
+    transition:background .2s ease;
+  }
+  #detail-bar.populated{background:var(--detail-bg);}
+  .detail-inner{max-width:1500px;margin:0 auto;display:flex;gap:14px;align-items:flex-start;}
+  .detail-text{flex:1;min-width:0;
+    opacity:0; transform:translateY(6px); transition:opacity .25s ease, transform .25s ease;}
+  .detail-text.show{opacity:1;transform:translateY(0);}
+  .detail-name{font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin:0 0 4px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .detail-role-badge{
+    font-family:'Inter',sans-serif;font-size:9.5px;font-weight:800;letter-spacing:.05em;
+    padding:2px 8px;border-radius:4px;color:#fff;
+  }
+  .detail-desc{font-size:13.5px;color:#e9e2f2;line-height:1.5;margin:0;}
+  .detail-placeholder{font-size:13px;color:var(--muted);font-style:italic;}
+  .detail-close-btn{
+    flex-shrink:0;background:rgba(242,237,228,0.08);border:none;color:var(--cream);
+    width:28px;height:28px;border-radius:50%;font-size:18px;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:background .15s ease;
+  }
+  .detail-close-btn:hover{background:rgba(242,237,228,0.18);}
+
+  /* ---------- modal (feedback) ---------- */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(10,7,15,0.72);
+    z-index:100;align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-box{
+    background:#f4f1e8;border-radius:12px;max-width:640px;width:100%;
+    max-height:85vh;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .modal-header{
+    background:var(--floor);color:var(--cream);padding:14px 18px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.02em;
+  }
+  .modal-close{
+    background:none;border:none;color:var(--cream);font-size:22px;cursor:pointer;line-height:1;
+    padding:2px 6px;
+  }
+  .modal-box iframe{width:100%;height:70vh;border:none;display:block;}
+  .modal-fallback{font-size:11.5px;color:#6b6478;text-align:center;padding:8px 12px;margin:0;background:#f4f1e8;}
+  .modal-fallback a{color:#7a5aa8;font-weight:600;}
+
+  footer{margin-top:36px;padding:16px 0 0;border-top:1px solid var(--panel-line);font-size:10.5px;color:var(--muted);}
+  .print-footer{display:none;}
+
+  @media (max-width: 640px){
+    .wrap{padding:22px 18px 0;}
+    #detail-bar{padding:14px 16px;}
+    .footer-actions{width:100%;}
+    .action-btn{flex:1;justify-content:center;}
+    .search-wrap{max-width:none;order:3;width:100%;}
+    .filter-reminder{top:auto;bottom:100px;right:14px;}
+  }
+
+  /* ================= PRINT / PDF STYLESHEET ================= */
+  @media print{
+    @page{ size: A4 landscape; margin: 8mm; }
+    *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; color-adjust:exact !important; }
+    body{background:#faf7f0 !important;color:#241c33 !important;padding:0;}
+    .toolbar, #detail-bar, .modal-overlay, .legend-row .tap-instruction,
+    .footer-actions, .filter-toggle, .chevron-btn, .tap-instruction, .search-wrap, .filter-reminder, .welcome-banner, .back-link{display:none !important;}
+    .wrap{max-width:100%;padding:0;}
+    .sub, .usecases, .usecases-heading, .attribution, footer{display:none;}
+
+    /* -- shared branded header band -- */
+    .title-row{
+      background:#241c33 !important;gap:10px;margin-bottom:5px;
+      padding:7px 12px;border-radius:6px;align-items:baseline;
+    }
+    h1{color:#f0932b !important;-webkit-text-fill-color:#f0932b;background:none;font-size:21px;}
+    .beta-pill{background:#e3a44b !important;color:#241c33 !important;border:none;font-size:7.5px;padding:2px 7px;}
+    .legend-row{border-top:none;padding:2px 0 5px;}
+    .legend{color:#5c5470;font-size:9px;gap:12px;}
+    .pill-sample.both{background:#e8e4ee;color:#5c5470;border:1px solid #c9c2d6;}
+    .pill-sample.lead{background:var(--role-lead) !important;}
+    .pill-sample.follow{background:var(--role-follow) !important;}
+
+    /* -- repeating footer credit -- */
+    .print-footer{
+      display:block !important;position:fixed;left:0;right:0;bottom:2mm;
+      text-align:center;font-size:7px;letter-spacing:.03em;color:#a89bb8 !important;
+    }
+
+    #view-columns{overflow:visible !important;}
+    .col-wrap{break-inside:avoid;display:block !important;}
+    .col-wrap.collapsed .col{display:flex !important;}
+    .col-head{position:static !important;min-height:0 !important;color:#241c33 !important;border-radius:5px;gap:2px;}
+    .tile.hidden-by-filter{display:flex !important;}
+    .role-pill{color:#fff !important;}
+    .role-pill.dual{background:linear-gradient(90deg, var(--role-lead) 50%, var(--role-follow) 50%) !important;}
+
+    /* ---------- SIMPLE: dense one-page reference sheet, no descriptions ---------- */
+    body.print-simple .col-grid{display:block !important;column-count:4;column-gap:12px;column-fill:balance;}
+    body.print-simple .col-wrap{margin-bottom:7px;}
+    body.print-simple .col-head{padding:4px 6px 5px;margin-bottom:4px;}
+    body.print-simple .col-head-text{font-size:12.5px;}
+    body.print-simple .col-head-desc{font-size:7.5px;color:#241c33 !important;opacity:.85;}
+    body.print-simple .col-head .count{font-size:7px;margin-top:1px;opacity:.7;}
+    body.print-simple .repertoire-col{border:1.5px dashed var(--c-repertoire) !important;padding:3px 3px 4px;}
+    body.print-simple .repertoire-col .col-head{border-radius:4px 4px 0 0;}
+    body.print-simple .col{gap:2px;}
+    body.print-simple .tile{
+      background:color-mix(in srgb, var(--tint, #fff) 9%, white) !important;color:#241c33 !important;
+      border-top:1px solid #ece7f2 !important;border-right:1px solid #ece7f2 !important;
+      border-bottom:1px solid #ece7f2 !important;border-left-width:3px !important;
+      box-shadow:none !important;padding:2px 4px;font-size:8.3px;line-height:1.15;gap:3px;
+    }
+    body.print-simple .tile-icon{width:9px;height:9px;stroke:#5c5470;}
+    body.print-simple .role-pill{font-size:6.5px;padding:0 4px;}
+    body.print-simple .tile-desc{display:none !important;}
+    body.print-simple .wrap{padding-bottom:12px;}
+
+    /* ---------- DETAILED: spacious, descriptions shown, ~2 pages ---------- */
+    body.print-detailed .col-grid{display:block !important;column-count:3;column-gap:14px;column-fill:balance;}
+    body.print-detailed .col-wrap{margin-bottom:10px;}
+    body.print-detailed .col-head{padding:6px 10px 7px;margin-bottom:6px;}
+    body.print-detailed .col-head-text{font-size:15px;}
+    body.print-detailed .col-head-desc{font-size:9px;color:#241c33 !important;opacity:.85;}
+    body.print-detailed .col-head .count{font-size:8px;margin-top:1px;opacity:.7;}
+    body.print-detailed .repertoire-col{border:1.5px dashed var(--c-repertoire) !important;padding:5px 5px 7px;}
+    body.print-detailed .repertoire-col .col-head{border-radius:4px 4px 0 0;}
+    body.print-detailed .col{gap:5px;}
+    body.print-detailed .tile{
+      background:color-mix(in srgb, var(--tint, #fff) 9%, white) !important;color:#241c33 !important;
+      border-top:1px solid #ece7f2 !important;border-right:1px solid #ece7f2 !important;
+      border-bottom:1px solid #ece7f2 !important;border-left-width:3px !important;
+      box-shadow:none !important;padding:5px 8px;font-size:9.5px;line-height:1.3;gap:3px;
+      flex-wrap:wrap;break-inside:avoid;
+    }
+    body.print-detailed .tile-icon{width:11px;height:11px;stroke:#5c5470;}
+    body.print-detailed .role-pill{font-size:7px;padding:1px 5px;}
+    body.print-detailed .tile-desc{
+      display:block !important;flex:1 1 100%;order:3;
+      color:#5c5470 !important;font-size:8.5px;line-height:1.35;margin-top:3px;
+    }
+    body.print-detailed .wrap{padding-bottom:14px;}
+  }
+
 </style>
 </head>
 <body>
+<div id="welcome-banner" class="welcome-banner" style="display:none;">
+  <span>This is a best-effort toolkit for the community, not a definitive rulebook. Feedback and suggestions are genuinely welcome.</span>
+  <button id="welcome-banner-close" title="Dismiss" aria-label="Dismiss">&times;</button>
+</div>
+<div class="wrap">
 
-  <section class="hero">
-    <h1>MJ Hub: Resources for the <span class="accent" style="white-space:nowrap;">Ceroc &amp; Modern Jive</span> <span class="accent">Community</span></h1>
-    <p class="hero-sub">Supporting the growth of our international dance family.</p>
-  </section>
+  <a class="back-link" href="/">&larr; Back to MJ Hub</a>
 
-  <main>
-    <div class="tile-grid">
-      <a class="tile skills" href="/skills-framework/">
-        <div class="tile-thumb-wrap"><img class="tile-thumb" src="hub-toolkit-thumb-v4.png" alt="Preview of the Modern Jive Skills Toolkit page"></div>
-        <h2>Modern Jive Skills Toolkit</h2>
-        <p>Improve yourself and others using this map of 85 skills across 7 categories.</p>
-        <div class="tile-cta">Explore the toolkit <span>→</span></div>
-      </a>
+  <div class="title-row">
+    <h1>THE MODERN JIVE SKILLS TOOLKIT</h1>
+    <span class="beta-pill">Beta</span>
+  </div>
+  <p class="sub">A toolkit of 84 skills to draw on for strong social and competition dancing. Some skills are more or less critical at different levels of experience. Not every skill needs to be used in every dance.</p>
 
-      <a class="tile calendar" href="/event-calendar/">
-        <div class="tile-thumb-wrap"><img class="tile-thumb" src="hub-calendar-thumb-v3.png" alt="Map preview of the International Event Calendar"></div>
-        <h2>International Event Calendar</h2>
-        <p>Championships, weekenders and dance holidays across the world. Use it to plan your next trip around what's on.</p>
-        <div class="tile-cta">Browse events <span>→</span></div>
-      </a>
+
+  <h2 class="usecases-heading">Why this framework exists</h2>
+  <ol class="usecases">
+    <li class="usecase-card"><span class="usecase-role">Help Dancers</span> build a specific, shared vocabulary for what to practice next.</li>
+    <li class="usecase-card"><span class="usecase-role">Help Teachers</span> diagnose what a student needs next, and plan group or private lessons around specific, nameable skills.</li>
+    <li class="usecase-card"><span class="usecase-role">Help Judges</span> describe what they're seeing with more precise, specific language.</li>
+  </ol>
+
+  <div class="legend-row">
+    <div class="legend">
+      <div class="legend-item"><span class="pill-sample both"></span> Both roles</div>
+      <div class="legend-item"><span class="pill-sample lead">L</span> Leader specific</div>
+      <div class="legend-item"><span class="pill-sample follow">F</span> Follower specific</div>
     </div>
-  </main>
+  </div>
+  <p class="tap-instruction">Tap or click any skill below for a short description.</p>
 
-  <footer>
-    <div class="share-row">
-      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmjhub.dance" target="_blank" rel="noopener" aria-label="Share on Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.86c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg></a>
-      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fmjhub.dance&text=Resources%20for%20the%20Ceroc%20%26%20Modern%20Jive%20community%20%E2%80%94%20MJ%20Hub" target="_blank" rel="noopener" aria-label="Share on X"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2h3.06l-6.69 7.65L22.5 22h-6.16l-4.83-6.32L5.9 22H2.83l7.15-8.18L2 2h6.31l4.37 5.78L18.24 2Zm-1.08 18.17h1.7L7.02 3.75H5.2l11.96 16.42Z"/></svg></a>
-      <a class="share-btn" href="mailto:?subject=MJ%20Hub&body=Resources%20for%20the%20Ceroc%20%26%20Modern%20Jive%20community%3A%20https%3A%2F%2Fmjhub.dance" aria-label="Share via email"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
-      <button class="share-btn" onclick="copyForInstagram()" aria-label="Copy link for Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="0.5" fill="currentColor" stroke="none"/></svg></button>
+  <div class="toolbar">
+    <div class="filter-toggle">
+      <button data-filter="ALL" class="active">Both Roles</button>
+      <button data-filter="LEAD">Leader Skills</button>
+      <button data-filter="FOLLOW">Follower Skills</button>
     </div>
-    <div class="share-msg" id="shareMsg">Link copied — paste it in your Instagram bio or story.</div>
-    MJ Hub · Built by and for the international Ceroc &amp; Modern Jive community
-    <div class="footer-copyright">© 2026 Patryck Allen. All rights reserved.</div>
-  </footer>
+    <div class="search-wrap">
+      <input type="text" id="skill-search" class="skill-search-input" placeholder="Search skills&hellip;" aria-label="Search skills">
+      <button id="skill-search-clear" class="skill-search-clear" style="display:none;" title="Clear search" aria-label="Clear search">&times;</button>
+    </div>
+    <button class="action-btn" id="btn-feedback">Share Feedback or a Suggestion</button>
+  </div>
 
-  <script>
-    function copyForInstagram(){
-      navigator.clipboard.writeText('https://mjhub.dance').then(() => {
-        const msg = document.getElementById('shareMsg');
-        msg.style.display = 'block';
-        setTimeout(() => msg.style.display = 'none', 3000);
-      });
+  <div id="filter-reminder" class="filter-reminder" style="display:none;">
+    <span id="filter-reminder-text">Showing: Leader Skills</span>
+    <button id="filter-reminder-clear" title="Show all skills" aria-label="Clear filter">&times;</button>
+  </div>
+
+  <div id="view-columns"><div class="col-grid" id="col-grid"></div></div>
+
+  <div class="footer-actions">
+    <div class="pdf-btn-row">
+      <a class="action-btn" href="mj-hub-skills-toolkit-simple.pdf" download>&#8681; Download simple version</a>
+      <a class="action-btn" href="mj-hub-skills-toolkit-detailed.pdf" download>&#8681; Download detailed version</a>
+    </div>
+    <div class="share-group">
+      <span class="share-label">Like this toolkit? Share it:</span>
+      <div class="share-row">
+        <button class="icon-btn share-fb" id="btn-share-fb" title="Share on Facebook" aria-label="Share on Facebook">
+          <svg viewBox="0 0 24 24"><path d="M15 4h-2a4 4 0 0 0-4 4v3H7v4h2v7h4v-7h3l1-4h-4V8a1 1 0 0 1 1-1h3z"/></svg>
+        </button>
+        <button class="icon-btn share-x" id="btn-share-x" title="Share on X" aria-label="Share on X">
+          <svg viewBox="0 0 24 24"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
+        </button>
+        <button class="icon-btn share-email" id="btn-share-email" title="Share by Email" aria-label="Share by Email">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
+        </button>
+        <button class="icon-btn share-ig" id="btn-share-ig" title="Copy link for Instagram" aria-label="Copy link for Instagram">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <footer>The Modern Jive Skills Toolkit: a work in progress.<br>Feedback encouraged via the button above.<br><br>No single toolkit will capture Modern Jive perfectly, and not everyone will agree with every choice made here. This resource is built on a wide variety of sources to reflect a range of perspectives: analysis of publicly available Ceroc and Modern Jive information, including competition rules from across the UK, Australia and New Zealand, over 15 years of experience teaching group classes, private lessons, feedback sessions, and competition judging, and consultation with highly respected and experienced members of the Ceroc and Modern Jive communities across the UK, Australia and New Zealand.<br><br>&copy; 2026 Patryck Allen. All rights reserved. Shared for the benefit of the Modern Jive community. Feel free to share this free resource with others.</footer>
+  <div class="print-footer" id="print-footer">mjhub.dance &middot; The Modern Jive Skills Toolkit &middot; generated <span id="print-footer-date"></span></div>
+</div>
+
+<div id="detail-bar" class="empty">
+  <div class="detail-inner">
+    <div class="detail-text" id="detail-text">
+      <p class="detail-placeholder" id="detail-placeholder">Tap a skill above to see its description here.</p>
+      <div id="detail-content" style="display:none;">
+        <p class="detail-name" id="detail-name"></p>
+        <p class="detail-desc" id="detail-desc"></p>
+      </div>
+    </div>
+    <button id="detail-close" class="detail-close-btn" title="Close" aria-label="Close description" style="display:none;">&times;</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="feedback-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      Give Feedback
+      <button class="modal-close" id="feedback-close">&times;</button>
+    </div>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHQqA0h2cysRBlU6uzekMzQ8Rnm_G2VjoJ9Q4jSEqFG34faQ/viewform?embedded=true">Loading form&hellip;</iframe>
+    <p class="modal-fallback">
+      Form not loading? <a href="https://docs.google.com/forms/d/e/1FAIpQLScHQqA0h2cysRBlU6uzekMzQ8Rnm_G2VjoJ9Q4jSEqFG34faQ/viewform" target="_blank" rel="noopener">Open it in a new tab instead</a>.
+    </p>
+  </div>
+</div>
+
+<script>
+const RAW_SKILLS = [{"cat": "Timing & Rhythm", "name": "On-beat movement", "role": "BOTH", "desc": "Making controlled contact with the floor as the body moves in time with the music's beat."}, {"cat": "Timing & Rhythm", "name": "Up/downbeat movement", "role": "BOTH", "desc": "Using the lighter lift of the upbeat and the stronger, grounded feel of the downbeat \u2014 the 1, 3, 5, and 7 of the musical count \u2014 to structure the movement of the dance. Movement and momentum commence on the upbeat and resolve on the downbeat, the signature rhythm of Modern Jive."}, {"cat": "Timing & Rhythm", "name": "Timing ownership", "role": "BOTH", "desc": "Staying on time with the music as best you can, even when your partner's timing varies. Quickly and smoothly returns to the musical beat if going off time."}, {"cat": "Timing & Rhythm", "name": "Syncopation", "role": "BOTH", "desc": "Using off-beat movements deliberately, then returning cleanly to standard time."}, {"cat": "Timing & Rhythm", "name": "Speed changes", "role": "BOTH", "desc": "Adjusting the speed of your movement and dynamics, not just your footwork, to match a slower or faster feel in the music, then returning cleanly to standard time."}, {"cat": "Timing & Rhythm", "name": "Patient following", "role": "FOLLOW", "desc": "Ensuring new movements are not rushed or made ahead of the leader, filling the full duration of a beat with movement."}, {"cat": "Technique", "name": "Concertina action", "role": "BOTH", "desc": "Timing in-and-out movements with your partner to match the downbeat and upbeat."}, {"cat": "Technique", "name": "Posture", "role": "BOTH", "desc": "Holding an upright, balanced body line."}, {"cat": "Technique", "name": "Intentional step size", "role": "BOTH", "desc": "Adjusting step size for song tempo, feel of music and partner, typically smaller rather than larger steps."}, {"cat": "Technique", "name": "Minimal arm extension", "role": "BOTH", "desc": "Keeping elbow low and relatively close to the body in concertina movements, with the forearm as horizontal to the floor as possible."}, {"cat": "Technique", "name": "Balance & centring", "role": "BOTH", "desc": "Centring weight over your own axis and base, with awareness of where your centre is, so you're never accidentally off-balance."}, {"cat": "Technique", "name": "Rolling footwork", "role": "BOTH", "desc": "Using foot articulation to roll feet through the floor rather than marching, bouncing, or stomping."}, {"cat": "Technique", "name": "Relaxed, supportive frame", "role": "BOTH", "desc": "Holding a frame that's firm enough to lead or follow but not tense or rigid."}, {"cat": "Technique", "name": "Sending/receiving weight", "role": "BOTH", "desc": "Sending weight smoothly off one foot, and sending your centre of gravity fully over your other (receiving) foot as you receive it."}, {"cat": "Technique", "name": "Grounding", "role": "BOTH", "desc": "Engaging your core and posterior chain, and the use of turn out in the feet, to commit weight down into the floor, creating a stable connection with the ground beneath you."}, {"cat": "Technique", "name": "Minimum force", "role": "BOTH", "desc": "Using the minimum necessary force to move yourself and/or your partner."}, {"cat": "Technique", "name": "Body flight", "role": "BOTH", "desc": "Managing your body's inertia smoothly through space when accelerating, decelerating, or maintaining constant motion."}, {"cat": "Technique", "name": "Spin technique", "role": "BOTH", "desc": "Spotting and controlling the body through a turn, maintaining a vertical axis and avoiding falling into the spin."}, {"cat": "Technique", "name": "Line of dance", "role": "BOTH", "desc": "Maintaining a line of dance suitable to the context of the surroundings, or intentionally breaking from it to create contrast or impact."}, {"cat": "Technique", "name": "Turn height adjustment", "role": "BOTH", "desc": "Adjusting hand and arm height during assisted turns to suit both partners' comfort, height, and turning style."}, {"cat": "Technique", "name": "Body articulation", "role": "BOTH", "desc": "Moving your body through space with control and fluidity, rather than moving rigidly or all at once."}, {"cat": "Connection & Teamwork", "name": "Resistance in partnership", "role": "BOTH", "desc": "Matching your partner's resistance in compression and opposition, giving genuine weight they can lead or follow off rather than just touching hands."}, {"cat": "Connection & Teamwork", "name": "Partner ability adjustment", "role": "BOTH", "desc": "Adjusting to partner's ability and style quickly."}, {"cat": "Connection & Teamwork", "name": "Visual connection", "role": "BOTH", "desc": "Staying visually engaged with your partner and/or an audience if appropriate. Not staring at your feet."}, {"cat": "Connection & Teamwork", "name": "Non-verbal check-ins", "role": "BOTH", "desc": "Offering small smiles, nods, or glances that reassure your partner mid-dance."}, {"cat": "Connection & Teamwork", "name": "Partner trust", "role": "BOTH", "desc": "Establishing and embracing trust in your partner."}, {"cat": "Connection & Teamwork", "name": "Graceful recovery", "role": "BOTH", "desc": "Re-establishing frame, rapport, and connection smoothly after a miscommunication or mistake, without a lasting impact on the dance."}, {"cat": "Connection & Teamwork", "name": "Elastic connection", "role": "BOTH", "desc": "Creating stretch in the connection and letting it recoil, rather than just pushing or pulling."}, {"cat": "Connection & Teamwork", "name": "Counterbalance", "role": "BOTH", "desc": "Using opposing weight with your partner to create shapes neither of you could hold alone."}, {"cat": "Connection & Teamwork", "name": "Conversational dynamic", "role": "BOTH", "desc": "Treating leading and following as a two-way exchange, not a one-way instruction."}, {"cat": "Connection & Teamwork", "name": "Baton passing & sharing", "role": "BOTH", "desc": "Giving, taking, or sharing the lead in a moment, whether that means initiating an idea, building on your partner's, or creating something together."}, {"cat": "Connection & Teamwork", "name": "Clear communication", "role": "BOTH", "desc": "Giving directional information that's readable and easy for your partner to interpret, whether through subtle physical or visual cues, while minimizing unnecessary physical or visual noise that could create confusion."}, {"cat": "Connection & Teamwork", "name": "Synchronicity", "role": "BOTH", "desc": "Transferring weight in sync with your partner \u2014 with the leader slightly ahead to initiate movements on time \u2014 and matching your partner's rhythmic choices, such as accents and pulses, so you're moving as one. Used once both of you are confidently holding your own timing."}, {"cat": "Connection & Teamwork", "name": "Call and response", "role": "BOTH", "desc": "Replicating or building on your partner's movements when musical cues provide the opportunity to do so."}, {"cat": "Technique", "name": "Body leading", "role": "LEAD", "desc": "Leading with body weight and rotation, not by pulling or pushing with the arm. Influencing rather than physically moving your partner into position, often through subtle suggestion rather than firm direction."}, {"cat": "Technique", "name": "Responsive following", "role": "FOLLOW", "desc": "Reacting to the leader's communication with minimal delay, typically from your center, without forcing or resisting."}, {"cat": "Technique", "name": "Active/passive leading", "role": "LEAD", "desc": "Choosing whether to continuously guide a movement (active) or give an initial impulse and allow your partner's own momentum or interpretation to complete it (passive)."}, {"cat": "Connection & Teamwork", "name": "Owning your rhythm", "role": "FOLLOW", "desc": "Filling in your own footwork and timing opportunistically."}, {"cat": "Connection & Teamwork", "name": "Preparation", "role": "BOTH", "desc": "Creating the physical and timing conditions that allow your partner to execute a movement successfully."}, {"cat": "Musicality & Interpretation", "name": "Mood expression", "role": "BOTH", "desc": "Dancing in a way that reflects the emotional tone of the song, not just its beat."}, {"cat": "Musicality & Interpretation", "name": "Energy matching", "role": "BOTH", "desc": "Adjusting how big or small your movements are to match the song's energy."}, {"cat": "Musicality & Interpretation", "name": "Accenting hits", "role": "BOTH", "desc": "Building up to and emphasising a strong musical accent through your movements and/or moves."}, {"cat": "Musicality & Interpretation", "name": "Contrast in movement", "role": "BOTH", "desc": "Using contrast in the size and/or tempo of your movements to match changes in the music."}, {"cat": "Musicality & Interpretation", "name": "Using musical structure", "role": "BOTH", "desc": "Hearing and interpreting music in groups such as 8 and 32 beats, and recognising song sections such as the intro, verse, chorus, and bridge, and dancing in a way that reflects them."}, {"cat": "Musicality & Interpretation", "name": "Musical pauses", "role": "BOTH", "desc": "Using stillness deliberately at a musical pause, rather than filling every beat with movement."}, {"cat": "Musicality & Interpretation", "name": "Improvising surprises", "role": "BOTH", "desc": "Adjusting on the fly when the music does something unexpected."}, {"cat": "Musicality & Interpretation", "name": "Genre adaptation", "role": "BOTH", "desc": "Adapting the moves, movements, and/or timing of your dance to different music genres, and incorporating influence from other dance styles, while remaining authentically Modern Jive."}, {"cat": "Musicality & Interpretation", "name": "Tension & release", "role": "BOTH", "desc": "Reflecting the building and release of tension in the song, including building up toward key musical moments."}, {"cat": "Musicality & Interpretation", "name": "Lyrical interpretation", "role": "BOTH", "desc": "Incorporating movements relevant to the sound, melody, or literal meaning of the lyrics."}, {"cat": "Musicality & Interpretation", "name": "Groove", "role": "BOTH", "desc": "Moving your body continuously in a way that embodies the tempo and feeling of the music, beyond just landing on the beat \u2014 can include using staccato and legato movements to shape that feel."}, {"cat": "Musicality & Interpretation", "name": "Staccato movement", "role": "BOTH", "desc": "Incorporating sharp, distinct movements."}, {"cat": "Musicality & Interpretation", "name": "Legato movement", "role": "BOTH", "desc": "Incorporating smooth, flowing movements."}, {"cat": "Musicality & Interpretation", "name": "Narrative arc", "role": "BOTH", "desc": "Building a sense of story or journey with your partner across the song."}, {"cat": "Style & Spirit", "name": "Personal styling", "role": "BOTH", "desc": "Adding your own individual flavour or flourishes to the dance, without being selfish or compromising the leader/follower dynamic. Includes adapting to different music genres and borrowing from other dance styles while remaining authentically Modern Jive."}, {"cat": "Style & Spirit", "name": "Aesthetic lines", "role": "BOTH", "desc": "Creating aesthetically pleasing lines through your own body shape, and together with your partner, including using your arms and legs as a natural extension of the body to add to the feel and shape of the dance."}, {"cat": "Style & Spirit", "name": "Body isolations", "role": "BOTH", "desc": "Moving one or multiple parts of your body (such as ribs, hips, or shoulders) independently of the rest, often used in a coordinated way such as a body roll or rhythmic walk."}, {"cat": "Style & Spirit", "name": "Facial expression", "role": "BOTH", "desc": "Letting your face reflect enjoyment and engagement, not a blank or serious look."}, {"cat": "Style & Spirit", "name": "Confidence & presence", "role": "BOTH", "desc": "Carrying yourself with self-assurance, even through a mistake."}, {"cat": "Style & Spirit", "name": "Playfulness", "role": "BOTH", "desc": "Bringing a fun energy to the dance rather than over-seriousness."}, {"cat": "Style & Spirit", "name": "Individuality", "role": "BOTH", "desc": "Expressing your own personality within the partnership."}, {"cat": "Style & Spirit", "name": "Enjoying the moment", "role": "BOTH", "desc": "Enjoying the dance and the partnership, rather than just executing moves."}, {"cat": "Style & Spirit", "name": "Space creation", "role": "BOTH", "desc": "Creating physical or musical space for your partner to add their own styling."}, {"cat": "Style & Spirit", "name": "Hairology", "role": "BOTH", "desc": "Using the hair to add to the feel and visual appeal of the dance."}, {"cat": "Style & Spirit", "name": "Entertainment value", "role": "BOTH", "desc": "Being entertaining to your partner or an audience, such as through your energy, charisma, appropriate humour, eye contact, adopting a persona or character, and/or creating special moments."}, {"cat": "Style & Spirit", "name": "Wardrobe choice", "role": "BOTH", "desc": "Choosing an outfit appropriate to the surroundings, that plays to your strengths, while allowing you to feel comfortable in yourself."}, {"cat": "Style & Spirit", "name": "Level variation", "role": "BOTH", "desc": "Varying the vertical height of your movement, such as going low or standing tall, for visual interest and musical expression."}, {"cat": "Floor craft & Safety", "name": "Surroundings awareness", "role": "BOTH", "desc": "Keeping a general sense of where other couples are around you as you dance."}, {"cat": "Floor craft & Safety", "name": "Space-scaled moves", "role": "BOTH", "desc": "Shrinking or growing your moves to fit the amount of floor space available."}, {"cat": "Floor craft & Safety", "name": "Collision recovery", "role": "BOTH", "desc": "Adjusting calmly and quickly if you or your partner nearly collide with another couple, and offering a quick apology."}, {"cat": "Floor craft & Safety", "name": "Respecting space", "role": "BOTH", "desc": "Not invading another couple's dancing area, even when the floor is crowded."}, {"cat": "Floor craft & Safety", "name": "Checking comfort", "role": "BOTH", "desc": "Checking and accommodating for what your partner is or isn't comfortable doing."}, {"cat": "Floor craft & Safety", "name": "Respecting physical boundaries", "role": "BOTH", "desc": "Respecting your partner's personal space and physical boundaries, and never touching inappropriately."}, {"cat": "Floor craft & Safety", "name": "Hazard steering", "role": "BOTH", "desc": "Guiding your partner actively around obstacles or other couples on the floor."}, {"cat": "Floor craft & Safety", "name": "Alert trust", "role": "FOLLOW", "desc": "Trusting the direction of the leader while maintaining spatial awareness."}, {"cat": "Repertoire", "name": "Turns", "role": "BOTH", "desc": "Safely using one or multiple turns, such as two-footed or one-footed turns, in time to the music, using good judgement based on your partner's comfort and ability. Leaders: Avoiding leading excessive consecutive turns, which can leave a follower dizzy if not broken up with non-turning movement."}, {"cat": "Repertoire", "name": "Ducks", "role": "BOTH", "desc": "Safely leading or following duck turns (ducking under a raised arm) in time to the music, using good judgement based on your partner's comfort and ability. Leaders: Avoiding leading excessive consecutive ducks, which can leave a follower dizzy if not broken up with other movement."}, {"cat": "Repertoire", "name": "Rides", "role": "BOTH", "desc": "Safely using partner's momentum and/or balance to support complementary motion, in a way that matches the music, and only with appropriate training, safety awareness, and good judgement based on your partner's comfort and ability."}, {"cat": "Repertoire", "name": "Baby aerials", "role": "BOTH", "desc": "Safely lifting the majority of a partner's weight below a certain height threshold \u2014 often the waist, chest, or shoulders depending on the school or competition \u2014 in a way that matches the music, and returning them safely and smoothly to the floor, only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Aerials", "role": "BOTH", "desc": "Safely lifting and returning your partner to the floor, in a way that matches the music, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Floorials", "role": "BOTH", "desc": "Safely incorporating movements where a body part other than the feet touch the floor, in a way that matches the music, and only with appropriate training, consent, and safety awareness."}, {"cat": "Musicality & Interpretation", "name": "Variety of moves", "role": "LEAD", "desc": "Leading a variety of moves and patterns throughout the dance."}, {"cat": "Repertoire", "name": "Leans", "role": "LEAD", "desc": "Using core strength and connection points to safely support partner's weight off the vertical via a lean against the body, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Dips", "role": "LEAD", "desc": "Using core strength and connection points to safely support partner's weight off the vertical using body part(s) such as your hand, arm or leg, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Leans", "role": "FOLLOW", "desc": "Using core strength and connection points to lean weight against partner's body, waiting for a clear lead rather than anticipating the movement, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Dips", "role": "FOLLOW", "desc": "Using core strength and supporting as much of own weight as possible during a dip, waiting for a clear lead rather than anticipating the movement, and only with appropriate training, consent, and safety awareness."}, {"cat": "Repertoire", "name": "Aerials", "role": "FOLLOW", "desc": "Using core strength and strong connection points to safely be lifted from and returned to the floor, and only with appropriate training, consent, and safety awareness."}, {"cat": "Technique", "name": "Direction before rotation", "role": "LEAD", "desc": "Initiate a direction for the follower before initiating rotational motion."}];
+
+const CATEGORY_COLORS = {
+  "Timing & Rhythm": "var(--c-timing)",
+  "Technique": "var(--c-technique)",
+  "Connection & Teamwork": "var(--c-connection)",
+  "Musicality & Interpretation": "var(--c-musicality)",
+  "Style & Spirit": "var(--c-style)",
+  "Floor craft & Safety": "var(--c-floorcraft)",
+  "Repertoire": "var(--c-repertoire)"
+};
+const CATEGORY_DESC = {
+  "Timing & Rhythm": "Moving with the music's beat and feel.",
+  "Technique": "Applying efficient body mechanics for control and ease.",
+  "Connection & Teamwork": "How you communicate and move together.",
+  "Musicality & Interpretation": "Reflecting the music's mood and structure.",
+  "Style & Spirit": "Expressing your personal flair, presence, and fun.",
+  "Floor craft & Safety": "Navigating the floor safely and considerately.",
+  "Repertoire": "Types of skill-based moves and tricks you can draw on."
+};
+const ROLE_COLOR = { LEAD: "var(--role-lead)", FOLLOW: "var(--role-follow)" };
+const ROLE_LABEL = { LEAD: "LEAD", FOLLOW: "FOLLOW", BOTH: "BOTH ROLES", DUAL: "BOTH ROLES \u2014 DIFFERS BY ROLE" };
+
+// ---------- merge Repertoire's duplicate-named entries (e.g. Leans/Dips/Aerials) into one tile each ----------
+function preprocessRepertoire(skills){
+  const byName = {};
+  const result = [];
+  skills.forEach(s => {
+    if (s.cat === 'Repertoire') {
+      byName[s.name] = byName[s.name] || [];
+      byName[s.name].push(s);
+    } else {
+      result.push(s);
     }
-  </script>
+  });
+  Object.keys(byName).forEach(name => {
+    const group = byName[name];
+    if (name === 'Aerials') {
+      result.push({
+        cat: 'Repertoire', name, role: 'BOTH',
+        desc: 'Using core strength and strong connection points to safely lift and return a partner from/to the floor, in a way that matches the music, and only with appropriate training, consent, and safety awareness.'
+      });
+    } else if (group.length > 1) {
+      const roleLabel = { BOTH: 'Both', LEAD: 'Leading', FOLLOW: 'Following' };
+      const order = { LEAD: 0, BOTH: 0, FOLLOW: 1 };
+      const sorted = [...group].sort((a,b) => order[a.role]-order[b.role]);
+      const pairs = sorted.map(g => ({ label: roleLabel[g.role], desc: g.desc }));
+      result.push({
+        cat: 'Repertoire', name, role: 'DUAL', pairs,
+        desc: pairs.map(p => `${p.label}: ${p.desc}`).join(' ')
+      });
+    } else {
+      result.push(group[0]);
+    }
+  });
+  return result;
+}
+const REPERTOIRE_ORDER = ["Turns","Leans","Dips","Ducks","Rides","Floorials","Baby aerials","Aerials"];
+function reorderRepertoire(list){
+  const repertoire = list.filter(s => s.cat === 'Repertoire')
+    .sort((a,b) => REPERTOIRE_ORDER.indexOf(a.name) - REPERTOIRE_ORDER.indexOf(b.name));
+  const others = list.filter(s => s.cat !== 'Repertoire');
+  return others.concat(repertoire);
+}
+const SKILLS = reorderRepertoire(preprocessRepertoire(RAW_SKILLS));
 
+// ---------- curated icon vocabulary (reusable shapes, mapped across all 84 skills) ----------
+const ICONS = {
+  beat: '<line x1="6" y1="16" x2="6" y2="8"/><line x1="12" y1="19" x2="12" y2="5"/><line x1="18" y1="14" x2="18" y2="10"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/>',
+  wave: '<path d="M2 12c2-5 4 5 6 0s4-5 6 0 4 5 6 0 4-5 6 0"/>',
+  armsInOut: '<line x1="4" y1="12" x2="10" y2="12"/><polyline points="7 9 10 12 7 15"/><line x1="20" y1="12" x2="14" y2="12"/><polyline points="17 9 14 12 17 15"/>',
+  footprint: '<ellipse cx="9" cy="14" rx="3" ry="5"/><circle cx="9" cy="7" r="2"/>',
+  scale: '<line x1="3" y1="12" x2="21" y2="12"/><circle cx="12" cy="12" r="2"/><line x1="3" y1="9" x2="3" y2="15"/><line x1="21" y1="9" x2="21" y2="15"/>',
+  bolt: '<polygon points="13 2 4 14 11 14 9 22 20 10 13 10"/>',
+  anchor: '<circle cx="12" cy="5" r="2"/><line x1="12" y1="7" x2="12" y2="19"/><path d="M6 13a6 6 0 0 0 12 0"/><line x1="6" y1="13" x2="4" y2="13"/><line x1="18" y1="13" x2="20" y2="13"/>',
+  intentionalStep: '<circle cx="12" cy="4" r="2"/><line x1="12" y1="6" x2="11" y2="14"/><line x1="12" y1="9" x2="8" y2="8"/><line x1="12" y1="9" x2="16" y2="10"/><line x1="11" y1="14" x2="7" y2="19"/><line x1="11" y1="14" x2="16" y2="20"/>',
+  compassLine: '<line x1="4" y1="12" x2="20" y2="12"/><polyline points="15 7 20 12 15 17"/>',
+  handsLink: '<circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/>',
+  eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+  shield: '<path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6z"/>',
+  musicNote: '<circle cx="7" cy="17" r="3"/><circle cx="17" cy="15" r="3"/><path d="M10 17V5l10-2v12"/>',
+  heart: '<path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/>',
+
+  /* --- figure-based icons (Olympic-pictogram style) --- */
+  standingFigure: '<circle cx="12" cy="4" r="2"/><line x1="12" y1="6" x2="12" y2="14"/><line x1="12" y1="9" x2="7" y2="7"/><line x1="12" y1="9" x2="17" y2="7"/><line x1="12" y1="14" x2="8" y2="21"/><line x1="12" y1="14" x2="16" y2="21"/>',
+  partnerPairFigure: '<circle cx="7" cy="4" r="2"/><line x1="7" y1="6" x2="7" y2="14"/><line x1="7" y1="14" x2="4" y2="21"/><line x1="7" y1="14" x2="10" y2="21"/><line x1="7" y1="9" x2="12" y2="10"/><circle cx="17" cy="4" r="2"/><line x1="17" y1="6" x2="17" y2="14"/><line x1="17" y1="14" x2="14" y2="21"/><line x1="17" y1="14" x2="20" y2="21"/><line x1="17" y1="9" x2="12" y2="10"/>',
+  spinningFigure: '<circle cx="12" cy="4" r="2"/><line x1="12" y1="6" x2="12" y2="13"/><line x1="12" y1="8" x2="6" y2="6"/><line x1="12" y1="8" x2="18" y2="10"/><line x1="12" y1="13" x2="9" y2="20"/><line x1="12" y1="13" x2="17" y2="16"/>',
+  leaningFigure: '<g transform="rotate(25 12 12)"><circle cx="12" cy="4" r="2"/><line x1="12" y1="6" x2="12" y2="14"/><line x1="12" y1="9" x2="7" y2="8"/><line x1="12" y1="9" x2="17" y2="11"/><line x1="12" y1="14" x2="8" y2="21"/><line x1="12" y1="14" x2="16" y2="21"/></g>',
+  liftFigure: '<circle cx="12" cy="3" r="2"/><line x1="12" y1="5" x2="12" y2="11"/><line x1="12" y1="6" x2="7" y2="3"/><line x1="12" y1="6" x2="17" y2="3"/><line x1="12" y1="11" x2="9" y2="17"/><line x1="12" y1="11" x2="15" y2="17"/><line x1="4" y1="20" x2="20" y2="20"/>',
+  dynamicFigure: '<circle cx="11" cy="4" r="2"/><line x1="11" y1="6" x2="13" y2="13"/><line x1="11" y1="8" x2="5" y2="5"/><line x1="13" y1="9" x2="19" y2="13"/><line x1="13" y1="13" x2="10" y2="20"/><line x1="13" y1="13" x2="18" y2="18"/>',
+  afroFigure: '<circle cx="12" cy="5" r="2"/><path d="M10 4c-3-1-5 0-6-2"/><path d="M10 5c-3 0-5 2-7 1"/><path d="M11 6c-2 1-4 3-6 3"/><line x1="12" y1="7" x2="12" y2="15"/><line x1="12" y1="10" x2="8" y2="9"/><line x1="12" y1="10" x2="16" y2="9"/><line x1="12" y1="15" x2="9" y2="21"/><line x1="12" y1="15" x2="15" y2="21"/>',
+  adjustFigure: '<circle cx="8" cy="4" r="2"/><line x1="8" y1="6" x2="8" y2="13"/><line x1="8" y1="9" x2="4" y2="7"/><line x1="8" y1="9" x2="12" y2="9"/><line x1="8" y1="13" x2="5" y2="20"/><line x1="8" y1="13" x2="11" y2="20"/><path d="M12 9l6 0M18 9l-3-3M18 9l-3 3"/>',
+  storyArc: '<line x1="3" y1="19" x2="21" y2="19"/><path d="M4 19c3-11 13-11 16 0"/>',
+
+  /* --- added for icon refinement round --- */
+  chatBubble: '<path d="M4 4h16v12H8l-4 4z"/>',
+  floorTouch: '<circle cx="15" cy="4" r="2"/><line x1="15" y1="6" x2="10" y2="10"/><line x1="10" y1="10" x2="5" y2="18"/><line x1="10" y1="10" x2="16" y2="12"/><line x1="10" y1="10" x2="9" y2="17"/><line x1="16" y1="12" x2="19" y2="18"/><line x1="4" y1="20" x2="20" y2="20"/>',
+  liftOverhead: '<circle cx="7" cy="3" r="2"/><line x1="7" y1="5" x2="7" y2="9"/><line x1="7" y1="6" x2="3" y2="4"/><line x1="7" y1="6" x2="11" y2="4"/><line x1="7" y1="9" x2="4" y2="10"/><line x1="7" y1="9" x2="10" y2="10"/><circle cx="7" cy="17" r="2"/><line x1="7" y1="19" x2="7" y2="22"/><line x1="7" y1="19" x2="4" y2="10"/><line x1="7" y1="19" x2="10" y2="10"/><line x1="7" y1="22" x2="4" y2="24"/><line x1="7" y1="22" x2="10" y2="24"/>',
+  liftLow: '<circle cx="18" cy="6" r="2"/><line x1="18" y1="8" x2="18" y2="16"/><line x1="18" y1="11" x2="12" y2="12"/><line x1="18" y1="16" x2="15" y2="22"/><line x1="18" y1="16" x2="21" y2="22"/><circle cx="7" cy="11" r="2"/><line x1="7" y1="13" x2="12" y2="12"/><line x1="7" y1="13" x2="4" y2="17"/><line x1="7" y1="13" x2="4" y2="9"/>',
+  rideSupport: '<circle cx="12" cy="6" r="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="12" y1="10" x2="9" y2="8"/><line x1="12" y1="10" x2="15" y2="8"/><line x1="12" y1="16" x2="9" y2="22"/><line x1="12" y1="16" x2="15" y2="22"/><path d="M4 12a8 8 0 0 1 10-7.7" stroke-dasharray="1.5 2"/><circle cx="19" cy="9" r="1.6"/>',
+  smiley: '<circle cx="12" cy="12" r="9"/><circle cx="8.5" cy="10" r="1"/><circle cx="15.5" cy="10" r="1"/><path d="M7.5 14.5c1.5 2 6.5 2 8 0"/>',
+  lighthouse: '<path d="M10 21h4"/><path d="M9 21l1.5-14h3L15 21"/><path d="M9.5 10h5"/><line x1="12" y1="4" x2="12" y2="1"/><line x1="8" y1="5" x2="6" y2="3"/><line x1="16" y1="5" x2="18" y2="3"/>',
+  steadyingFigure: '<circle cx="12" cy="4" r="2"/><line x1="12" y1="6" x2="13" y2="14"/><line x1="12" y1="8" x2="6" y2="7"/><line x1="12" y1="8" x2="18" y2="9"/><line x1="13" y1="14" x2="9" y2="21"/><line x1="13" y1="14" x2="19" y2="17"/>',
+  smallStepFigure: '<circle cx="12" cy="4" r="2"/><line x1="12" y1="6" x2="12" y2="14"/><line x1="12" y1="9" x2="9" y2="8"/><line x1="12" y1="9" x2="15" y2="8"/><line x1="12" y1="14" x2="10" y2="20"/><line x1="12" y1="14" x2="14" y2="20"/>',
+  danceFrameFigure: '<circle cx="6" cy="5" r="2"/><line x1="6" y1="7" x2="6" y2="16"/><line x1="6" y1="10" x2="11" y2="10"/><line x1="6" y1="16" x2="4" y2="22"/><line x1="6" y1="16" x2="8" y2="22"/><circle cx="18" cy="5" r="2"/><line x1="18" y1="7" x2="18" y2="16"/><line x1="18" y1="10" x2="13" y2="10"/><line x1="18" y1="16" x2="16" y2="22"/><line x1="18" y1="16" x2="20" y2="22"/>',
+  directionChangeArrow: '<path d="M4 18h9"/><polyline points="9 14 13 18 9 22"/><path d="M13 18c3-6 4-10 7-13"/><polyline points="17 5 20 5 20 8"/>',
+  rollingStepFigure: '<circle cx="12" cy="4" r="2"/><line x1="12" y1="6" x2="11" y2="14"/><line x1="12" y1="9" x2="8" y2="8"/><line x1="12" y1="9" x2="16" y2="10"/><line x1="11" y1="14" x2="7" y2="19"/><line x1="11" y1="14" x2="16" y2="20"/><path d="M5 20a3 2 0 0 0 4 1"/>',
+  leanForwardStepFigure: '<circle cx="13" cy="4" r="2"/><line x1="13" y1="6" x2="10" y2="13"/><line x1="13" y1="8" x2="17" y2="6"/><line x1="13" y1="8" x2="8" y2="9"/><line x1="10" y1="13" x2="5" y2="17"/><line x1="10" y1="13" x2="15" y2="19"/>',
+  grooveFigure: '<circle cx="12" cy="4" r="2"/><path d="M12 6c-1 3 2 5 0 8"/><line x1="10" y1="9" x2="6" y2="11"/><line x1="13" y1="10" x2="17" y2="12"/><path d="M12 14c-2 2-3 4-2 7"/><path d="M12 14c2 2 4 3 3 7"/>',
+  levelArrows: '<line x1="8" y1="20" x2="8" y2="4"/><polyline points="4 8 8 4 12 8"/><line x1="16" y1="4" x2="16" y2="20"/><polyline points="12 16 16 20 20 16"/>',
+  pulseLine: '<polyline points="2 12 7 12 9 6 12 18 15 12 22 12"/>',
+  activePassiveDots: '<circle cx="7" cy="12" r="4" fill="currentColor"/><circle cx="17" cy="12" r="4"/>',
+  movingFigureArrow: '<circle cx="6" cy="5" r="2"/><line x1="6" y1="7" x2="6" y2="13"/><line x1="6" y1="9" x2="3" y2="7"/><line x1="6" y1="9" x2="9" y2="10"/><line x1="6" y1="13" x2="3" y2="18"/><line x1="6" y1="13" x2="9" y2="17"/><line x1="12" y1="12" x2="21" y2="12"/><polyline points="17 8 21 12 17 16"/>',
+  lungingFigure: '<circle cx="10" cy="4" r="2"/><line x1="10" y1="6" x2="10" y2="13"/><line x1="10" y1="8" x2="6" y2="6"/><line x1="10" y1="8" x2="14" y2="6"/><line x1="10" y1="13" x2="8" y2="19"/><line x1="10" y1="13" x2="18" y2="16"/>'
+};
+
+const SKILL_ICON_MAP = {
+  "On-beat movement":"beat","Up/downbeat movement":"beat","Concertina action":"armsInOut","Timing ownership":"clock",
+  "Groove":"grooveFigure","Syncopation":"beat","Speed changes":"clock","Synchronicity":"handsLink",
+  "Patient following":"clock",
+  "Posture":"standingFigure","Minimal arm extension":"armsInOut","Balance & centring":"intentionalStep","Intentional step size":"smallStepFigure",
+  "Rolling footwork":"rollingStepFigure","Relaxed, supportive frame":"danceFrameFigure","Sending/receiving weight":"intentionalStep",
+  "Grounding":"intentionalStep","Minimum force":"bolt","Body flight":"movingFigureArrow","Spin technique":"spinningFigure","Body articulation":"wave",
+  "Line of dance":"compassLine","Turn height adjustment":"spinningFigure","Active/passive leading":"activePassiveDots",
+  "Resistance in partnership":"armsInOut","Partner ability adjustment":"adjustFigure",
+  "Visual connection":"eye","Non-verbal check-ins":"eye","Partner trust":"partnerPairFigure",
+  "Graceful recovery":"steadyingFigure","Elastic connection":"partnerPairFigure","Counterbalance":"scale","Conversational dynamic":"partnerPairFigure",
+  "Baton passing & sharing":"partnerPairFigure","Clear communication":"lighthouse","Body leading":"intentionalStep",
+  "Responsive following":"eye","Owning your rhythm":"beat","Preparation":"partnerPairFigure",
+  "Mood expression":"heart","Energy matching":"bolt","Accenting hits":"beat",
+  "Contrast in movement":"scale","Using musical structure":"musicNote","Musical pauses":"musicNote","Improvising surprises":"dynamicFigure",
+  "Genre adaptation":"adjustFigure","Tension & release":"wave","Lyrical interpretation":"chatBubble",
+  "Staccato movement":"beat","Legato movement":"wave","Narrative arc":"storyArc","Call and response":"partnerPairFigure",
+  "Personal styling":"dynamicFigure","Body isolations":"wave","Facial expression":"smiley","Confidence & presence":"standingFigure",
+  "Playfulness":"dynamicFigure","Individuality":"standingFigure","Enjoying the moment":"heart","Space creation":"partnerPairFigure","Entertainment value":"smiley","Aesthetic lines":"lungingFigure",
+  "Hairology":"afroFigure","Wardrobe choice":"standingFigure","Level variation":"levelArrows",
+  "Surroundings awareness":"eye","Space-scaled moves":"scale","Collision recovery":"shield","Respecting space":"shield",
+  "Checking comfort":"heart","Respecting physical boundaries":"shield","Hazard steering":"shield","Alert trust":"eye",
+  "Turns":"spinningFigure","Ducks":"spinningFigure","Rides":"rideSupport","Baby aerials":"liftLow","Aerials":"liftOverhead","Floorials":"floorTouch","Variety of moves":"adjustFigure",
+  "Leans":"leaningFigure","Dips":"liftFigure","Direction before rotation":"directionChangeArrow"
+};
+
+function iconSVG(key){
+  const path = ICONS[key] || ICONS.heart;
+  return `<svg class="tile-icon" viewBox="0 0 24 24">${path}</svg>`;
+}
+
+const categories = [];
+const grouped = {};
+SKILLS.forEach(s => { if (!grouped[s.cat]) { grouped[s.cat] = []; categories.push(s.cat); } grouped[s.cat].push(s); });
+
+// keep Both/Dual-role skills at the top of each column; Lead- and Follow-specific skills sink to the bottom
+const ROLE_ORDER = { BOTH: 0, DUAL: 0, LEAD: 1, FOLLOW: 2 };
+categories.forEach(cat => {
+  grouped[cat] = grouped[cat]
+    .map((s, i) => ({ s, i })) // preserve original relative order within the same role tier (stable sort)
+    .sort((a, b) => (ROLE_ORDER[a.s.role] - ROLE_ORDER[b.s.role]) || (a.i - b.i))
+    .map(x => x.s);
+});
+let idCounter = 0;
+SKILLS.forEach(s => { s._id = idCounter++; });
+
+let currentFilter = "ALL";
+let currentSearch = "";
+
+// curated synonym list -- catches likely alternate terms not already present in name/description text
+const SYNONYMS = {
+  "throw": ["Aerials","Baby aerials"],
+  "toss": ["Aerials","Baby aerials"],
+  "drop": ["Dips"],
+  "wobble": ["Balance & centring"],
+  "stumble": ["Graceful recovery"],
+  "mistake": ["Graceful recovery","Timing ownership"],
+  "oops": ["Graceful recovery"],
+  "smile": ["Facial expression","Entertainment value"],
+  "eye contact": ["Visual connection","Entertainment value"],
+  "hips": ["Body isolations"],
+  "roll": ["Rolling footwork","Body isolations"],
+  "signal": ["Clear communication"],
+  "duck": ["Ducks"],
+  "crowd": ["Surroundings awareness","Space-scaled moves"],
+  "personality": ["Individuality","Personal styling"],
+  "flair": ["Personal styling"],
+  "vibe": ["Groove"],
+  "fun": ["Playfulness","Enjoying the moment","Entertainment value"],
+  "charisma": ["Entertainment value"],
+  "audience": ["Entertainment value","Visual connection"],
+  "collision": ["Collision recovery","Surroundings awareness"],
+  "trick": ["Turns","Ducks","Rides","Baby aerials","Aerials","Floorials"]
+};
+
+function matchesFilter(role){
+  if (currentFilter === "ALL") return true;
+  if (role === "BOTH" || role === "DUAL") return true;
+  return role === currentFilter;
+}
+
+function skillDescText(skill){
+  return (skill.role === 'DUAL' && skill.pairs)
+    ? skill.pairs.map(p => `${p.label}: ${p.desc}`).join('  ')
+    : (skill.desc || '');
+}
+
+function skillText(skill){
+  return (skill.name + ' ' + skillDescText(skill)).toLowerCase();
+}
+
+function matchesSearch(skill){
+  if (!currentSearch) return true;
+  const q = currentSearch.toLowerCase().trim();
+  if (skillText(skill).includes(q)) return true;
+  for (const [syn, names] of Object.entries(SYNONYMS)) {
+    if (syn.includes(q) && names.includes(skill.name)) return true;
+  }
+  return false;
+}
+
+function tileVisible(skill){
+  return matchesFilter(skill.role) && matchesSearch(skill);
+}
+
+function updateCounts(){
+  categories.forEach(cat => {
+    const items = grouped[cat];
+    const visible = items.filter(s => tileVisible(s)).length;
+    const countEl = document.getElementById('count-' + cat.replace(/[^a-zA-Z0-9]/g,''));
+    if (countEl) countEl.textContent = (currentFilter === "ALL" && !currentSearch) ? `${items.length} skills` : `${visible} of ${items.length}`;
+  });
+}
+
+function applyFilter(){
+  document.querySelectorAll('.tile').forEach(tile => {
+    const skill = SKILLS.find(s => s._id === parseInt(tile.dataset.id));
+    tile.classList.toggle('hidden-by-filter', !tileVisible(skill));
+  });
+  updateCounts();
+  updateFilterReminder();
+}
+
+function updateFilterReminder(){
+  const reminder = document.getElementById('filter-reminder');
+  const text = document.getElementById('filter-reminder-text');
+  if (currentFilter === "ALL") {
+    reminder.style.display = 'none';
+  } else {
+    const label = currentFilter === 'LEAD' ? 'Leader Skills' : 'Follower Skills';
+    text.textContent = 'Showing: ' + label;
+    reminder.style.display = 'flex';
+  }
+}
+
+const skillSearchInput = document.getElementById('skill-search');
+const skillSearchClear = document.getElementById('skill-search-clear');
+
+skillSearchInput.addEventListener('input', (e) => {
+  currentSearch = e.target.value;
+  skillSearchClear.style.display = currentSearch ? 'flex' : 'none';
+  applyFilter();
+});
+
+skillSearchClear.addEventListener('click', () => {
+  skillSearchInput.value = '';
+  currentSearch = '';
+  skillSearchClear.style.display = 'none';
+  applyFilter();
+  skillSearchInput.focus();
+});
+
+document.getElementById('filter-reminder-clear').addEventListener('click', () => {
+  currentFilter = 'ALL';
+  document.querySelectorAll('.filter-toggle button').forEach(b => b.classList.toggle('active', b.dataset.filter === 'ALL'));
+  applyFilter();
+});
+
+// ---------- build column view ----------
+const colGrid = document.getElementById('col-grid');
+categories.forEach(cat => {
+  const items = grouped[cat];
+  const colColor = CATEGORY_COLORS[cat];
+  const safeId = cat.replace(/[^a-zA-Z0-9]/g,'');
+  const isRepertoire = cat === 'Repertoire';
+
+  const colWrap = document.createElement('div');
+  colWrap.className = 'col-wrap' + (isRepertoire ? ' repertoire-col' : '');
+  colWrap.dataset.cat = cat;
+
+  const head = document.createElement('div');
+  head.className = 'col-head';
+  head.style.background = colColor;
+  head.innerHTML = `
+    <div class="col-head-top">
+      <span class="col-head-text">${cat}</span>
+      <button class="chevron-btn" title="Collapse/expand">&#9660;</button>
+    </div>
+    <p class="col-head-desc">${CATEGORY_DESC[cat] || ''}</p>
+    <span class="count" id="count-${safeId}">${items.length} skills</span>`;
+  head.querySelector('.chevron-btn').addEventListener('click', () => {
+    colWrap.classList.toggle('collapsed');
+  });
+  colWrap.appendChild(head);
+
+  const col = document.createElement('div');
+  col.className = 'col';
+  items.forEach(s => {
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+    tile.dataset.id = s._id;
+    tile.dataset.role = s.role;
+    tile.style.borderLeftColor = colColor;
+    tile.style.setProperty('--tint', colColor);
+    let pill = '';
+    if (s.role !== 'BOTH' && s.role !== 'DUAL') {
+      pill = `<span class="role-pill" style="background:${ROLE_COLOR[s.role]}">${s.role === 'LEAD' ? 'L' : 'F'}</span>`;
+    }
+    const icon = iconSVG(SKILL_ICON_MAP[s.name]);
+    const escDesc = skillDescText(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    tile.innerHTML = `<span class="tile-main">${icon}<span>${s.name}</span></span>${pill}<span class="tile-desc">${escDesc}</span>`;
+    tile.addEventListener('click', () => selectSkill(s._id));
+    col.appendChild(tile);
+  });
+  colWrap.appendChild(col);
+  colGrid.appendChild(colWrap);
+});
+
+// ---------- detail bar ----------
+function selectSkill(id){
+  const skill = SKILLS.find(s => s._id === id);
+  document.querySelectorAll('.tile').forEach(el => {
+    el.classList.toggle('selected', parseInt(el.dataset.id) === id);
+  });
+  const bar = document.getElementById('detail-bar');
+  bar.classList.remove('empty');
+  bar.classList.add('populated');
+  document.getElementById('detail-placeholder').style.display = 'none';
+  const contentEl = document.getElementById('detail-content');
+  contentEl.style.display = 'block';
+
+  const badgeColor = skill.role === 'BOTH' ? '#4a4458' : (skill.role === 'DUAL' ? 'linear-gradient(90deg, var(--role-lead) 50%, var(--role-follow) 50%)' : ROLE_COLOR[skill.role]);
+  document.getElementById('detail-name').innerHTML =
+    `${skill.name} <span class="detail-role-badge" style="background:${badgeColor}">${ROLE_LABEL[skill.role]}</span>`;
+
+  const descEl = document.getElementById('detail-desc');
+  if (skill.role === 'DUAL' && skill.pairs) {
+    descEl.innerHTML = skill.pairs.map(p => `<strong>${p.label}:</strong> ${p.desc}`).join('<br><br>');
+  } else {
+    descEl.textContent = skillDescText(skill);
+  }
+
+  const textEl = document.getElementById('detail-text');
+  textEl.classList.remove('show');
+  void textEl.offsetWidth; // restart animation
+  textEl.classList.add('show');
+
+  document.getElementById('detail-close').style.display = 'flex';
+}
+
+function closeDetail(){
+  const bar = document.getElementById('detail-bar');
+  bar.classList.add('empty');
+  bar.classList.remove('populated');
+  document.getElementById('detail-placeholder').style.display = 'block';
+  document.getElementById('detail-content').style.display = 'none';
+  document.getElementById('detail-close').style.display = 'none';
+  document.querySelectorAll('.tile.selected').forEach(el => el.classList.remove('selected'));
+}
+document.getElementById('detail-close').addEventListener('click', closeDetail);
+
+// ---------- filter toggle ----------
+document.querySelectorAll('.filter-toggle button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-toggle button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    applyFilter();
+  });
+});
+updateCounts();
+
+// ---------- PDF downloads (static files, linked directly via the buttons above) ----------
+document.getElementById('print-footer-date').textContent = new Date().toISOString().slice(0,10);
+
+// ---------- share (per platform) ----------
+const pageUrl = window.location.href;
+const shareText = 'A toolkit of 84 Modern Jive skills for dancers, teachers, and judges.';
+
+document.getElementById('btn-share-fb').addEventListener('click', () => {
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`, '_blank', 'noopener');
+});
+
+document.getElementById('btn-share-x').addEventListener('click', () => {
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`, '_blank', 'noopener');
+});
+
+document.getElementById('btn-share-email').addEventListener('click', () => {
+  const subject = encodeURIComponent('The Modern Jive Skills Toolkit');
+  const body = encodeURIComponent(`Thought you might like this: ${shareText}\n\n${pageUrl}`);
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+});
+
+document.getElementById('btn-share-ig').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(pageUrl);
+    alert('Link copied! Instagram doesn\'t support direct link-sharing from a browser \u2014 paste this into your bio or a story instead.');
+  } catch (e) {
+    prompt('Instagram doesn\'t support direct link-sharing \u2014 copy this link to paste into your bio or a story:', pageUrl);
+  }
+});
+
+// ---------- feedback modal ----------
+const feedbackModal = document.getElementById('feedback-modal');
+document.getElementById('btn-feedback').addEventListener('click', () => feedbackModal.classList.add('open'));
+document.getElementById('feedback-close').addEventListener('click', () => feedbackModal.classList.remove('open'));
+feedbackModal.addEventListener('click', (e) => { if (e.target === feedbackModal) feedbackModal.classList.remove('open'); });
+
+// ---------- welcome banner (shown once per visitor, remembered via localStorage) ----------
+(function initWelcomeBanner(){
+  const banner = document.getElementById('welcome-banner');
+  const STORAGE_KEY = 'mjst-welcome-dismissed';
+  try {
+    if (!localStorage.getItem(STORAGE_KEY)) {
+      banner.style.display = 'flex';
+    }
+  } catch (e) {
+    // localStorage unavailable (e.g. private browsing) -- show banner, just won't persist dismissal
+    banner.style.display = 'flex';
+  }
+  document.getElementById('welcome-banner-close').addEventListener('click', () => {
+    banner.style.display = 'none';
+    try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* ignore */ }
+  });
+})();
+</script>
 </body>
 </html>
